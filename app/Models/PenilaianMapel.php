@@ -39,4 +39,9 @@ class PenilaianMapel extends Model
     {
         return $this->belongsTo(Jadwal_Pelajaran::class, 'jadwal_pelajaran_id', 'id');
     }
+
+    public function jadwalPelajaran()
+    {
+        return $this->belongsTo(Jadwal_Pelajaran::class, 'jadwal_pelajaran_id', 'id');
+    }
 }

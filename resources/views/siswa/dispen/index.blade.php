@@ -2,12 +2,12 @@
 
 @section('title', 'Dispensasi')
 
-    @push('styles')
-        <style>
-            body {
-                font-family: 'poppins', sans-serif;
-                color: 
-            }
+@push('styles')
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #1f2937;
+        }
 
         .dispen-page {
             width: 100%;
@@ -22,20 +22,21 @@
         }
 
         .dispen-header h1 {
-            color: 
+            color: #1e293b;
             font-size: 25px;
             font-weight: 500;
             margin-bottom: .35rem;
         }
 
         .dispen-card {
-            border: 0;
-            border-top: 4px solid 
+            border: 1px solid #e5e7eb;
+            border-top: 4px solid #2449a4;
+            border-radius: 12px;
         }
 
         .dispen-table th {
-            background: 
-            color: 
+            background: #eff6ff;
+            color: #1e40af;
             font-size: .82rem;
             white-space: nowrap;
         }
@@ -84,30 +85,11 @@
 
         </div>
 
-
-        
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-1"></i>{{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <ul class="mb-0 ps-3">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        
         <div id="dispenContent">
 
             <div class="card dispen-card shadow-sm">
-            <div class="card-body p-3 p-md-4">
-                <div class="table-responsive">
+                <div class="card-body p-3 p-md-4">
+                    <div class="table-responsive">
 
                         <table class="table table-hover dispen-table align-middle mb-0">
 
@@ -121,6 +103,10 @@
 
                                     <th>
                                         Tanggal Dispensasi
+                                    </th>
+
+                                    <th>
+                                        Kegiatan
                                     </th>
 
                                     <th>
@@ -150,7 +136,7 @@
 
                                                             <tr>
 
-                                                                
+
                                                                 <td class="text-center">
 
                                                                     {{ $dispensasi->firstItem() + $index }}
@@ -158,7 +144,9 @@
                                                                 </td>
 
 
-                                                                
+
+                                                                <td>{{ $item->kegiatan ?? '-' }}</td>
+
                                                                 <td>
 
                                                                     <div class="fw-semibold">
@@ -182,7 +170,7 @@
                                                                 </td>
 
 
-                                                                
+
                                                                 <td>
 
                                                                     <div class="reason-cell">
@@ -197,7 +185,7 @@
                                                                 </td>
 
 
-                                                                
+
                                                                 <td class="text-center">
                                                                     @if ($item->status === 'disetujui')
                                                                         <span class="badge bg-success">Disetujui</span>
@@ -210,7 +198,7 @@
                                                                     @endif
                                                                 </td>
 
-                                                                
+
                                                                 <td class="text-center">
 
                                                                     @if($item->surat)
@@ -237,7 +225,7 @@
                                                                 </td>
 
 
-                                                                
+
                                                                 <td class="text-center">
 
                                                                     <a href="{{ route(
@@ -257,7 +245,7 @@
 
                                     <tr>
 
-                                        <td colspan="6" class="text-center py-5">
+                                        <td colspan="7" class="text-center py-5">
 
                                             <h5 class="mt-3">
                                                 Belum Ada Pengajuan
@@ -280,19 +268,19 @@
                     </div>
 
 
-                    
-                    
-                    
+
+
+
 
                     @if($dispensasi->hasPages())
 
                         <div class="d-flex
-                                       justify-content-between
-                                       align-items-center
-                                       flex-wrap
-                                       gap-3
-                                       p-4
-                                       border-top">
+                                                       justify-content-between
+                                                       align-items-center
+                                                       flex-wrap
+                                                       gap-3
+                                                       p-4
+                                                       border-top">
 
                             <div class="text-muted small">
 

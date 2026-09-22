@@ -13,7 +13,9 @@ class KelasController extends Controller
     
     public function index()
     {
-        $kelases = Kelas::with(['jurusan', 'waliKelas', 'tahunAjaran'])->get();
+        $kelases = Kelas::with(['jurusan', 'waliKelas', 'tahunAjaran'])
+            ->latest('id')
+            ->paginate(5);
 
         return view('admin.master-data.kelas.index', compact('kelases'));
     }

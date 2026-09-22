@@ -5,13 +5,58 @@
 @push('styles')
     <style>
         body {
-            font-family: 'poppins', sans-serif;
-            color: 
+            font-family: 'Poppins', sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .password-page {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .password-header {
+            margin-bottom: 22px;
+        }
+
+        .password-header h1 {
+            margin: 0 0 8px;
+            color: #1e293b;
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        .password-header p {
+            margin: 0;
+            color: #64748b;
+        }
+
+        .password-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(30, 64, 102, 0.08) !important;
+        }
+
+        .password-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
         }
 
         h1 {
             font-weight: 500;
             font-size: 25px;
+        }
+
+        @media (max-width: 576px) {
+            .password-actions {
+                flex-direction: column-reverse;
+            }
+
+            .password-actions .btn {
+                width: 100%;
+            }
         }
     </style>
 @endpush
@@ -23,26 +68,7 @@
             <p>Perbarui password akunmu secara berkala agar tetap aman.</p>
         </div>
 
-        @if (session('success'))
-            <div class="alert alert-success d-flex align-items-center gap-2" role="alert">
-                <i class="bi bi-check-circle-fill"></i><span>{{ session('success') }}</span>
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <div class="d-flex align-items-center gap-2 mb-2">
-                    <i class="bi bi-exclamation-triangle-fill"></i><strong>Password belum dapat diubah.</strong>
-                </div>
-                <ul class="mb-0 ps-4">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <div class="card password-card shadow-sm">
+        <div class="card password-card">
             <div class="card-body p-4 p-md-5">
                 @php
                     $roleId = auth()->user()?->role_id;

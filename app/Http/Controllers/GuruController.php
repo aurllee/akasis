@@ -12,15 +12,17 @@ use Illuminate\Support\Str;
 
 class GuruController extends Controller
 {
-    
+
     public function index()
     {
-        $gurus = Guru::with('mataPelajaran')->get();
+        $gurus = Guru::with('mataPelajaran')
+            ->latest('id')
+            ->paginate(10);
 
         return view('admin.master-data.guru.index', compact('gurus'));
     }
 
-    
+
     public function create()
     {
         $mataPelajaran = MataPelajaran::orderBy('nama_mapel')->get();
@@ -28,20 +30,20 @@ class GuruController extends Controller
         return view('admin.master-data.guru.create', compact('mataPelajaran'));
     }
 
-    
+
     public function store(Request $request)
     {
         $data = $request->validate($this->guruRules());
 
         [$guru, $passwordAwal] = DB::transaction(function () use ($data) {
 
-            
+
             $guru = Guru::create($data);
 
-            
+
             $passwordAwal = Str::random(8);
 
-            
+
             User::create([
                 'username' => $guru->nip,
                 'password' => Hash::make($passwordAwal),
@@ -59,13 +61,10 @@ class GuruController extends Controller
             ->with('password_awal', $passwordAwal);
     }
 
-    
-    public function show(string $id)
-    {
-        
-    }
 
-    
+    public function show(string $id) {}
+
+
     public function edit(string $id)
     {
         $guru = Guru::findOrFail($id);
@@ -74,7 +73,7 @@ class GuruController extends Controller
         return view('admin.master-data.guru.edit', compact('guru', 'mataPelajaran'));
     }
 
-    
+
     public function update(Request $request, string $id)
     {
         $data = $request->validate($this->guruRules($id));
@@ -84,7 +83,7 @@ class GuruController extends Controller
         return redirect()->route('guru.index')->with('success', 'Data guru berhasil diperbarui.');
     }
 
-    
+
     public function destroy(string $id)
     {
         Guru::findOrFail($id)->delete();
@@ -95,6 +94,7 @@ class GuruController extends Controller
     private function guruRules(?string $id = null): array
     {
         return [
+            'kode_guru' => 'required|max:30|unique:dataguru,kode_guru' . ($id ? ',' . $id : ''),
             'nip' => 'required|max:30|unique:dataguru,nip' . ($id ? ',' . $id : ''),
             'nama' => 'required|max:255',
             'jk' => 'required|in:Laki-laki,Perempuan',

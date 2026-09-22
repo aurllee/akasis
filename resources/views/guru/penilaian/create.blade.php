@@ -6,8 +6,8 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: 
-            background: 
+            color: #1f2937;
+            background: #f4f7fb;
         }
 
         .page-wrap {
@@ -15,8 +15,8 @@
         }
 
         .page-card {
-            background: 
-            border: 1px solid 
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
             padding: 24px;
@@ -38,14 +38,14 @@
 
         .page-header p {
             margin: 0;
-            color: 
+            color: #64748b;
         }
 
         .form-control,
         .form-select {
             box-sizing: border-box;
             padding: 8px 12px;
-            border: 1px solid 
+            border: 1px solid #cbd5e1;
             border-radius: 8px;
         }
 
@@ -65,8 +65,8 @@
         }
 
         .table th {
-            background: 
-            color: 
+            background: #eff6ff;
+            color: #1e40af;
             font-size: 0.82rem;
         }
 
@@ -87,13 +87,13 @@
         }
 
         .btn-primary {
-            background: 
-            color: 
+            background: #2449a4;
+            color: #ffffff;
         }
 
         .btn-secondary {
-            background: 
-            color: 
+            background: #64748b;
+            color: #ffffff;
         }
 
         .btn-action:hover {
@@ -110,7 +110,6 @@
         .fs-12 {
             font-size: 13px;
         }
-    </style>
     </style>
 @endpush
 

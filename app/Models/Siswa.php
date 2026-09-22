@@ -18,11 +18,11 @@ class Siswa extends Model
         'tempat_lahir',
         'tanggal_lahir',
         'jk',
-        'tgl_lahir',
         'agama',
         'nik',
         'no_kk',
         'alamat',
+        'nama_orang_tua',
         'no_hp',
         'email',
     ];
@@ -33,7 +33,7 @@ class Siswa extends Model
 
     public $timestamps = false;
 
-    
+
     public static function generateNis()
     {
         $lastSiswa = self::orderBy('nis', 'desc')->first();
@@ -58,44 +58,44 @@ class Siswa extends Model
         return $this->hasMany(PembagianKelas::class);
     }
     public function absensi()
-{
-    return $this->hasMany(
-        Absen::class,
-        'siswa_id'
-    );
-}
+    {
+        return $this->hasMany(
+            Absensi::class,
+            'siswa_id'
+        );
+    }
 
-public function sakit()
-{
-    return $this->hasMany(
-        Sakit::class,
-        'siswa_id'
-    );
-}
+    public function sakit()
+    {
+        return $this->hasMany(
+            Sakit::class,
+            'siswa_id'
+        );
+    }
 
-public function izinKeluar()
-{
-    return $this->hasMany(
-        IzinKeluar::class,
-        'siswa_id'
-    );
-}
+    public function izinKeluar()
+    {
+        return $this->hasMany(
+            IzinKeluar::class,
+            'siswa_id'
+        );
+    }
 
-public function izinPulang()
-{
-    return $this->hasMany(
-        IzinPulang::class,
-        'siswa_id'
-    );
-}
+    public function izinPulang()
+    {
+        return $this->hasMany(
+            IzinPulang::class,
+            'siswa_id'
+        );
+    }
 
-public function dispen()
-{
-    return $this->hasMany(
-        Dispen::class,
-        'siswa_id'
-    );
-}
+    public function dispen()
+    {
+        return $this->hasMany(
+            Dispen::class,
+            'siswa_id'
+        );
+    }
 
     public function penilaianMapel()
     {

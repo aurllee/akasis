@@ -13,6 +13,7 @@ class Dispen extends Model
         'siswa_id',
         'tanggal_mulai',
         'tanggal_selesai',
+        'kegiatan',
         'alasan',
         'surat',
         'status',

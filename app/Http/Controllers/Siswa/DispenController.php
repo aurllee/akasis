@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DispenController extends Controller
 {
-    
+
 
     private function siswaLogin()
     {
@@ -31,7 +31,7 @@ class DispenController extends Controller
     }
 
 
-    
+
 
     public function index(Request $request)
     {
@@ -39,7 +39,7 @@ class DispenController extends Controller
 
         $query = Dispen::where('siswa_id', $siswa->id);
 
-        
+
 
         if ($request->filled('search')) {
 
@@ -49,21 +49,19 @@ class DispenController extends Controller
 
                 $q->where('alasan', 'like', "%{$search}%")
                     ->orWhere('status', 'like', "%{$search}%");
-
             });
         }
 
 
-        
+
 
         if ($request->filled('status')) {
 
             $query->where('status', $request->status);
-
         }
 
 
-        
+
 
         $dispensasi = $query
             ->latest('created_at')
@@ -81,7 +79,7 @@ class DispenController extends Controller
     }
 
 
-    
+
 
     public function create()
     {
@@ -94,13 +92,13 @@ class DispenController extends Controller
     }
 
 
-    
+
 
     public function store(Request $request)
     {
         $siswa = $this->siswaLogin();
 
-        
+
 
         $data = $request->validate([
 
@@ -113,6 +111,12 @@ class DispenController extends Controller
                 'required',
                 'date',
                 'after_or_equal:tanggal_mulai',
+            ],
+
+            'kegiatan' => [
+                'required',
+                'string',
+                'max:255',
             ],
 
             'alasan' => [
@@ -131,7 +135,7 @@ class DispenController extends Controller
         ]);
 
 
-        
+
 
         $namaSurat = null;
 
@@ -139,11 +143,10 @@ class DispenController extends Controller
 
             $namaSurat = $request->file('surat')
                 ->store('dispen', 'public');
-
         }
 
 
-        
+
 
         $dispen = new Dispen();
 
@@ -154,6 +157,9 @@ class DispenController extends Controller
 
         $dispen->tanggal_selesai =
             $data['tanggal_selesai'];
+
+        $dispen->kegiatan =
+            $data['kegiatan'];
 
         $dispen->alasan =
             $data['alasan'];
@@ -167,7 +173,7 @@ class DispenController extends Controller
         $dispen->save();
 
 
-        
+
 
         return redirect()
             ->route('siswa.dispen.index')
@@ -178,13 +184,13 @@ class DispenController extends Controller
     }
 
 
-    
+
 
     public function show($id)
     {
         $siswa = $this->siswaLogin();
 
-        
+
 
         $dispen = Dispen::where(
             'siswa_id',

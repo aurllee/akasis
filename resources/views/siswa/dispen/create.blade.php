@@ -3,285 +3,262 @@
 @section('title', 'Ajukan Dispensasi')
 
 @section('content')
-@push('styles')
-    <style>
-        body {
-            font-family: 'poppins', sans-serif;
-            color: 
-        }
+    @push('styles')
+        <style>
+            body {
+                font-family: 'Poppins', sans-serif;
+                color: #1f2937;
+            }
 
-        h3 {
-            font-size: 25px;
-        }
-    </style>
-@endpush
+            h3 {
+                font-size: 25px;
+            }
 
-<div class="container-fluid py-4">
+            .card {
+                border: 1px solid #e5e7eb !important;
+                border-radius: 14px;
+            }
 
-    <div class="mb-4">
-        <h3 class="fw-500 mt-3 mb-3">
+            .form-control {
+                border-color: #cbd5e1;
+                border-radius: 8px;
+            }
 
-            Ajukan Dispensasi
+            .form-control:focus {
+                border-color: #3c73fe;
+                box-shadow: 0 0 0 3px rgba(60, 115, 254, 0.15);
+            }
+        </style>
+    @endpush
 
-        </h3>
+    <div class="container-fluid py-4">
 
+        <div class="mb-4">
+            <h3 class="fw-500 mt-3 mb-3">
 
-        <p class="text-muted mb-0">
+                Ajukan Dispensasi
 
-            Silakan isi data pengajuan dispensasi dengan lengkap.
-
-        </p>
-
-    </div>
-
-
-    
-
-    <div class="card border-0 shadow-sm">
-
-        <div class="card-body p-4">
-
-            <form
-                action="{{ route('siswa.dispen.store') }}"
-                method="POST"
-                enctype="multipart/form-data"
-            >
-
-                @csrf
-
-                <div class="mb-4">
-
-                    <h5 class="fw-400 mb-4">
-                        Data Siswa
-                    </h5>
+            </h3>
 
 
-                    <div class="row g-3">
+            <p class="text-muted mb-0">
 
-                        <div class="col-md-6">
+                Silakan isi data pengajuan dispensasi dengan lengkap.
 
-                            <label class="form-label">
-                                Nama Siswa
-                            </label>
+            </p>
 
-                            <input
-                                type="text"
-                                class="form-control"
-                                value="{{ $siswa->nama }}"
-                                readonly
-                            >
-
-                        </div>
+        </div>
 
 
-                        <div class="col-md-6">
-
-                            <label class="form-label">
-                                NIS
-                            </label>
-
-                            <input
-                                type="text"
-                                class="form-control"
-                                value="{{ $siswa->nis }}"
-                                readonly
-                            >
-
-                        </div>
-
-                    </div>
-
-                </div>
 
 
-                <hr class="mb-4">
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-4">
+
+                <form action="{{ route('siswa.dispen.store') }}" method="POST" enctype="multipart/form-data">
+
+                    @csrf
+
+                    <div class="mb-4">
+
+                        <h5 class="fw-400 mb-4">
+                            Data Siswa
+                        </h5>
 
 
-                
+                        <div class="row g-3">
 
-                <div class="mb-4">
+                            <div class="col-md-6">
 
-                    <h5 class="fw-400 mb-4">
-                        Periode Dispensasi
-                    </h5>
+                                <label class="form-label">
+                                    Nama Siswa
+                                </label>
 
+                                <input type="text" class="form-control" value="{{ $siswa->nama }}" readonly>
 
-                    <div class="row g-3">
-
-                        <div class="col-md-6">
-
-                            <label
-                                for="tanggal_mulai"
-                                class="form-label"
-                            >
-                                Tanggal Mulai
-                                <span class="text-danger">*</span>
-                            </label>
-
-                            <input
-                                type="date"
-                                name="tanggal_mulai"
-                                id="tanggal_mulai"
-                                class="form-control @error('tanggal_mulai') is-invalid @enderror"
-                                value="{{ old('tanggal_mulai') }}"
-                                required
-                            >
-
-                            @error('tanggal_mulai')
-
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-
-                            @enderror
-
-                        </div>
+                            </div>
 
 
-                        <div class="col-md-6">
+                            <div class="col-md-6">
 
-                            <label
-                                for="tanggal_selesai"
-                                class="form-label"
-                            >
-                                Tanggal Selesai
-                                <span class="text-danger">*</span>
-                            </label>
+                                <label class="form-label">
+                                    NIS
+                                </label>
 
-                            <input
-                                type="date"
-                                name="tanggal_selesai"
-                                id="tanggal_selesai"
-                                class="form-control @error('tanggal_selesai') is-invalid @enderror"
-                                value="{{ old('tanggal_selesai') }}"
-                                required
-                            >
+                                <input type="text" class="form-control" value="{{ $siswa->nis }}" readonly>
 
-                            @error('tanggal_selesai')
-
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-
-                            @enderror
+                            </div>
 
                         </div>
 
                     </div>
 
-                </div>
+
+                    <hr class="mb-4">
 
 
-                
-
-                <div class="mb-4">
-
-                    <label
-                        for="alasan"
-                        class="form-label fw-500"
-                    >
-
-                        Alasan Dispensasi
-
-                        <span class="text-danger">*</span>
-
-                    </label>
 
 
-                    <textarea
-                        name="alasan"
-                        id="alasan"
-                        rows="5"
-                        class="form-control @error('alasan') is-invalid @enderror"
-                        placeholder="Jelaskan alasan pengajuan dispensasi..."
-                        required
-                    >{{ old('alasan') }}</textarea>
+                    <div class="mb-4">
+
+                        <h5 class="fw-400 mb-4">
+                            Periode Dispensasi
+                        </h5>
 
 
-                    @error('alasan')
+                        <div class="row g-3">
 
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                            <div class="col-md-6">
+
+                                <label for="tanggal_mulai" class="form-label">
+                                    Tanggal Mulai
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <input type="date" name="tanggal_mulai" id="tanggal_mulai"
+                                    class="form-control @error('tanggal_mulai') is-invalid @enderror"
+                                    value="{{ old('tanggal_mulai') }}" required>
+
+                                @error('tanggal_mulai')
+
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+
+                                @enderror
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label for="tanggal_selesai" class="form-label">
+                                    Tanggal Selesai
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <input type="date" name="tanggal_selesai" id="tanggal_selesai"
+                                    class="form-control @error('tanggal_selesai') is-invalid @enderror"
+                                    value="{{ old('tanggal_selesai') }}" required>
+
+                                @error('tanggal_selesai')
+
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+
+                                @enderror
+
+                            </div>
+
                         </div>
 
-                    @enderror
-
-                </div>
+                    </div>
 
 
-                
-
-                <div class="mb-4">
-
-                    <label
-                        for="surat"
-                     class="form-label fw-semibold"
->
-    Surat Dispensasi dari Kesiswaan
-    <span class="text-danger">*</span>
-</label>
 
 
-                    <input
-    type="file"
-    name="surat"
-    id="surat"
-    class="form-control @error('surat') is-invalid @enderror"
-    accept=".pdf,.jpg,.jpeg,.png"
-    required
->
+                    <div class="mb-4">
+                        <label for="kegiatan" class="form-label fw-500">
+                            Kegiatan Dispensasi
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <input type="text" name="kegiatan" id="kegiatan"
+                            class="form-control @error('kegiatan') is-invalid @enderror" value="{{ old('kegiatan') }}"
+                            placeholder="Contoh: Lomba atau kegiatan sekolah" required>
+
+                        @error('kegiatan')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label for="alasan" class="form-label fw-500">
+
+                            Alasan Dispensasi
+
+                            <span class="text-danger">*</span>
+
+                        </label>
 
 
-                    <div class="form-text">
-    Upload surat dispensasi yang sudah diberikan oleh kesiswaan.
-    Format PDF, JPG, JPEG, atau PNG. Maksimal 2 MB.
-</div>
+                        <textarea name="alasan" id="alasan" rows="5"
+                            class="form-control @error('alasan') is-invalid @enderror"
+                            placeholder="Jelaskan alasan pengajuan dispensasi..." required>{{ old('alasan') }}</textarea>
 
 
-                    @error('surat')
+                        @error('alasan')
 
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+
+                        @enderror
+
+                    </div>
+
+
+
+
+                    <div class="mb-4">
+
+                        <label for="surat" class="form-label fw-semibold">
+                            Surat Dispensasi dari Kesiswaan
+                            <span class="text-danger">*</span>
+                        </label>
+
+
+                        <input type="file" name="surat" id="surat" class="form-control @error('surat') is-invalid @enderror"
+                            accept=".pdf,.jpg,.jpeg,.png" required>
+
+
+                        <div class="form-text">
+                            Upload surat dispensasi yang sudah diberikan oleh kesiswaan.
+                            Format PDF, JPG, JPEG, atau PNG. Maksimal 2 MB.
                         </div>
 
-                    @enderror
 
-                </div>
+                        @error('surat')
 
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
 
-                
+                        @enderror
 
-                <div class="d-flex gap-2">
-
-                    <a
-                        href="{{ route('siswa.dispen.index') }}"
-                        class="btn btn-secondary"
-                    >
-
-                        Kembali
-
-                    </a>
+                    </div>
 
 
-                    <button
-                        type="submit"
-                        class="btn btn-success"
-                    >
 
-                        <i class="bi bi-send me-1"></i>
 
-                        Ajukan Dispensasi
+                    <div class="d-flex gap-2">
 
-                    </button>
+                        <a href="{{ route('siswa.dispen.index') }}" class="btn btn-secondary">
 
-                </div>
+                            Kembali
 
-            </form>
+                        </a>
+
+
+                        <button type="submit" class="btn btn-success">
+
+                            <i class="bi bi-send me-1"></i>
+
+                            Ajukan Dispensasi
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 @endsection

@@ -153,213 +153,212 @@
 @endpush
 
 @section('content')
-<div class="academic-container">
-    <a href="{{ route('admin.penilaian.pjbl.index') }}" class="btn-back-link">
-        <i class="bi bi-arrow-left"></i> Kembali ke Kelas
-    </a>
+    <div class="academic-container">
+        <a href="{{ route('admin.penilaian.pjbl.index') }}" class="btn-back-link">
+            <i class="bi bi-arrow-left"></i> Kembali ke Kelas
+        </a>
 
-    <div class="academic-card">
-        <div class="academic-header">
-            <h1>PJBL {{ $kelas->tingkat }} {{ $kelas->nama_kelas }}</h1>
-            <p>{{ $kelas->jurusan?->nama_jurusan ?? 'Umum' }} — Pilih periode PJBL</p>
-        </div>
+        <div class="academic-card">
+            <div class="academic-header">
+                <h1>PJBL {{ $kelas->tingkat }} {{ $kelas->nama_kelas }}</h1>
+                <p>{{ $kelas->jurusan?->nama_jurusan ?? 'Umum' }} — Pilih periode PJBL</p>
+            </div>
 
-        {{-- FILTER BAR --}}
-        <div class="filter-section">
-            <div class="row g-3 align-items-end">
-                <div class="col-md-5 filter-field">
-                    <label for="searchPjbl">Cari Periode PJBL</label>
-                    <div class="input-group">
-                        <input type="text" id="searchPjbl" class="border-start-0 ps-0"
-                            placeholder="Cari Ganjil, Genap, SMT 1, SMT 2..." autocomplete="off">
+            <div class="filter-section">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-5 filter-field">
+                        <label for="searchPjbl">Cari Periode PJBL</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0">
+                                <i class="bi bi-search text-muted"></i>
+                            </span>
+                            <input type="text" id="searchPjbl" class="border-start-0 ps-0"
+                                placeholder="Cari Ganjil, Genap, SMT 1, SMT 2..." autocomplete="off">
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-3 filter-field">
-                    <label for="filterTanggal">Tanggal PJBL</label>
-                    <input type="date" id="filterTanggal">
-                </div>
+                    <div class="col-md-3 filter-field">
+                        <label for="filterTanggal">Tanggal PJBL</label>
+                        <input type="date" id="filterTanggal">
+                    </div>
 
-                <div class="col-md-2 filter-field">
-                    <label for="filterTahun">Tahun Ajaran</label>
-                    <select id="filterTahun">
-                        <option value="">Semua Tahun</option>
-                        @foreach($pjbl->pluck('tahunAjaran')->filter()->unique('id') as $tahun)
-                            <option value="{{ $tahun->id }}">
-                                {{ $tahun->tahun_ajaran ?? $tahun->tahun ?? $tahun->nama ?? $tahun->nama_tahun ?? $tahun->id }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+                    <div class="col-md-2 filter-field">
+                        <label for="filterTahun">Tahun Ajaran</label>
+                        <select id="filterTahun">
+                            <option value="">Semua Tahun</option>
+                            @foreach($pjbl->pluck('tahunAjaran')->filter()->unique('id') as $tahun)
+                                <option value="{{ $tahun->id }}">
+                                    {{ $tahun->tahun_ajaran ?? $tahun->tahun ?? $tahun->nama ?? $tahun->nama_tahun ?? $tahun->id }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <div class="col-md-2">
-                    <button type="button" id="resetFilter" class="btn btn-outline-secondary w-100 py-2" style="font-size: 13px; font-weight: 600;">
-                        <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
-                    </button>
+                    <div class="col-md-2">
+                        <button type="button" id="resetFilter" class="btn btn-outline-secondary w-100 py-2"
+                            style="font-size: 13px; font-weight: 600;">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        {{-- COUNTER --}}
-        <div class="mb-3">
-            <small class="text-muted">
-                Menampilkan <span id="jumlahPjbl" class="fw-semibold text-dark">{{ $pjbl->count() }}</span> periode PJBL
-            </small>
-        </div>
+            <div class="mb-3">
+                <small class="text-muted">
+                    Menampilkan <span id="jumlahPjbl" class="fw-semibold text-dark">{{ $pjbl->count() }}</span> periode PJBL
+                </small>
+            </div>
 
-        {{-- CARD GRID LIST --}}
-        <div class="row g-4" id="pjblContainer">
-            @forelse($pjbl as $p)
-                @php
-                    $namaPeriode = strtolower(trim($p->nama_periode ?? ''));
+            <div class="row g-4" id="pjblContainer">
+                @forelse($pjbl as $p)
+                    @php
+                        $namaPeriode = strtolower(trim($p->nama_periode ?? ''));
 
-                    if (str_contains($namaPeriode, 'ganjil') || str_contains($namaPeriode, 'semester 1') || str_contains($namaPeriode, 'smt 1')) {
-                        $semester = 'Ganjil';
-                    } elseif (str_contains($namaPeriode, 'genap') || str_contains($namaPeriode, 'semester 2') || str_contains($namaPeriode, 'smt 2')) {
-                        $semester = 'Genap';
-                    } else {
-                        $semester = 'Ganjil';
-                    }
+                        if (str_contains($namaPeriode, 'ganjil') || str_contains($namaPeriode, 'semester 1') || str_contains($namaPeriode, 'smt 1')) {
+                            $semester = 'Ganjil';
+                        } elseif (str_contains($namaPeriode, 'genap') || str_contains($namaPeriode, 'semester 2') || str_contains($namaPeriode, 'smt 2')) {
+                            $semester = 'Genap';
+                        } else {
+                            $semester = 'Ganjil';
+                        }
 
-                    if (str_contains($namaPeriode, 'smt 2') || str_contains($namaPeriode, 'semester 2')) {
-                        $smt = 'SMT 2';
-                    } else {
-                        $smt = 'SMT 1';
-                    }
+                        if (str_contains($namaPeriode, 'smt 2') || str_contains($namaPeriode, 'semester 2')) {
+                            $smt = 'SMT 2';
+                        } else {
+                            $smt = 'SMT 1';
+                        }
 
-                    $periodeDisplay = 'PJBL ' . $semester . ' ' . $smt;
+                        $periodeDisplay = 'PJBL ' . $semester . ' ' . $smt;
 
-                    $searchText = strtolower(
-                        $periodeDisplay . ' ' .
-                        ($p->nama_periode ?? '') . ' ' .
-                        ($p->tanggal ?? '')
-                    );
+                        $searchText = strtolower(
+                            $periodeDisplay . ' ' .
+                            ($p->nama_periode ?? '') . ' ' .
+                            ($p->tanggal ?? '')
+                        );
 
-                    $tanggalDisplay = $p->tanggal
-                        ? \Carbon\Carbon::parse($p->tanggal)->format('d/m/Y')
-                        : '-';
+                        $tanggalDisplay = $p->tanggal
+                            ? \Carbon\Carbon::parse($p->tanggal)->format('d/m/Y')
+                            : '-';
 
-                    $tanggalFilter = $p->tanggal
-                        ? \Carbon\Carbon::parse($p->tanggal)->format('Y-m-d')
-                        : '';
-                @endphp
+                        $tanggalFilter = $p->tanggal
+                            ? \Carbon\Carbon::parse($p->tanggal)->format('Y-m-d')
+                            : '';
+                    @endphp
 
-                <div class="col-xl-3 col-lg-4 col-md-6 pjbl-card"
-                     data-search="{{ $searchText }}"
-                     data-tahun="{{ $p->tahunAjaran?->id ?? '' }}"
-                     data-tanggal="{{ $tanggalFilter }}">
-                    <a href="{{ route('admin.penilaian.pjbl.penilaian', ['kelasId' => $kelas->id, 'pjblId' => $p->id]) }}" class="item-card">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="item-icon">
-                                <i class="bi bi-kanban-fill"></i>
+                    <div class="col-xl-3 col-lg-4 col-md-6 pjbl-card" data-search="{{ $searchText }}"
+                        data-tahun="{{ $p->tahunAjaran?->id ?? '' }}" data-tanggal="{{ $tanggalFilter }}">
+                        <a href="{{ route('admin.penilaian.pjbl.penilaian', ['kelasId' => $kelas->id, 'pjblId' => $p->id]) }}"
+                            class="item-card">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="item-icon">
+                                    <i class="bi bi-kanban-fill"></i>
+                                </div>
+                                <i class="bi bi-arrow-right text-muted"></i>
                             </div>
-                            <i class="bi bi-arrow-right text-muted"></i>
-                        </div>
 
-                        <div class="item-title">
-                            {{ $periodeDisplay }}
-                        </div>
+                            <div class="item-title">
+                                {{ $periodeDisplay }}
+                            </div>
 
-                        <div class="item-subtitle">
-                            <i class="bi bi-calendar3 me-1"></i> {{ $tanggalDisplay }}
-                        </div>
+                            <div class="item-subtitle">
+                                <i class="bi bi-calendar3 me-1"></i> {{ $tanggalDisplay }}
+                            </div>
 
-                        <div class="mb-3">
-                            <span class="badge-academic">
-                                <i class="bi bi-calendar-range me-1"></i>
-                                {{ $p->tahunAjaran?->tahun_ajaran ?? $p->tahunAjaran?->tahun ?? $p->tahunAjaran?->nama ?? $p->tahunAjaran?->nama_tahun ?? '-' }}
-                            </span>
-                        </div>
+                            <div class="mb-3">
+                                <span class="badge-academic">
+                                    <i class="bi bi-calendar-range me-1"></i>
+                                    {{ $p->tahunAjaran?->tahun_ajaran ?? $p->tahunAjaran?->tahun ?? $p->tahunAjaran?->nama ?? $p->tahunAjaran?->nama_tahun ?? '-' }}
+                                </span>
+                            </div>
 
-                        <div class="item-footer">
-                            <span>
-                                <i class="bi bi-person-badge me-1"></i> {{ $p->penguji->count() }} Penguji
-                            </span>
-                            <span class="fw-semibold text-primary">Lihat Detail</span>
-                        </div>
-                    </a>
-                </div>
-            @empty
-                <div class="col-12">
-                    <div class="text-center py-5 border rounded bg-light">
-                        <i class="bi bi-kanban fs-1 text-muted"></i>
-                        <h5 class="mt-3 text-dark">Belum ada PJBL</h5>
-                        <p class="text-muted mb-0">Belum ada data PJBL untuk kelas ini.</p>
+                            <div class="item-footer">
+                                <span>
+                                    <i class="bi bi-person-badge me-1"></i> {{ $p->penguji->count() }} Penguji
+                                </span>
+                                <span class="fw-semibold text-primary">Lihat Detail</span>
+                            </div>
+                        </a>
                     </div>
-                </div>
-            @endforelse
-        </div>
+                @empty
+                    <div class="col-12">
+                        <div class="text-center py-5 border rounded bg-light">
+                            <i class="bi bi-kanban fs-1 text-muted"></i>
+                            <h5 class="mt-3 text-dark">Belum ada PJBL</h5>
+                            <p class="text-muted mb-0">Belum ada data PJBL untuk kelas ini.</p>
+                        </div>
+                    </div>
+                @endforelse
+            </div>
 
-        {{-- EMPTY FILTER RESULT --}}
-        <div id="pjblEmpty" class="card border-0 shadow-sm mt-4" style="display: none;">
-            <div class="card-body text-center py-5">
-                <i class="bi bi-search fs-1 text-muted"></i>
-                <h5 class="mt-3 text-dark">PJBL tidak ditemukan</h5>
-                <p class="text-muted mb-0">Coba ubah kata pencarian, tanggal, atau tahun ajaran.</p>
+            <div id="pjblEmpty" class="card border-0 shadow-sm mt-4" style="display: none;">
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-search fs-1 text-muted"></i>
+                    <h5 class="mt-3 text-dark">PJBL tidak ditemukan</h5>
+                    <p class="text-muted mb-0">Coba ubah kata pencarian, tanggal, atau tahun ajaran.</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const searchInput = document.getElementById('searchPjbl');
-        const filterTanggal = document.getElementById('filterTanggal');
-        const filterTahun = document.getElementById('filterTahun');
-        const resetButton = document.getElementById('resetFilter');
-        const cards = document.querySelectorAll('.pjbl-card');
-        const emptyMessage = document.getElementById('pjblEmpty');
-        const jumlahPjbl = document.getElementById('jumlahPjbl');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchPjbl');
+            const filterTanggal = document.getElementById('filterTanggal');
+            const filterTahun = document.getElementById('filterTahun');
+            const resetButton = document.getElementById('resetFilter');
+            const cards = document.querySelectorAll('.pjbl-card');
+            const emptyMessage = document.getElementById('pjblEmpty');
+            const jumlahPjbl = document.getElementById('jumlahPjbl');
 
-        function filterPjbl() {
-            const keyword = searchInput.value.trim().toLowerCase();
-            const tanggal = filterTanggal.value.trim();
-            const tahun = filterTahun.value.trim();
-            let jumlahTampil = 0;
+            function filterPjbl() {
+                const keyword = searchInput.value.trim().toLowerCase();
+                const tanggal = filterTanggal.value.trim();
+                const tahun = filterTahun.value.trim();
+                let jumlahTampil = 0;
 
-            cards.forEach(function (card) {
-                const searchText = (card.dataset.search || '').toLowerCase();
-                const cardTanggal = card.dataset.tanggal || '';
-                const cardTahun = card.dataset.tahun || '';
+                cards.forEach(function (card) {
+                    const searchText = (card.dataset.search || '').toLowerCase();
+                    const cardTanggal = card.dataset.tanggal || '';
+                    const cardTahun = card.dataset.tahun || '';
 
-                const cocokSearch = keyword === '' || searchText.includes(keyword);
-                const cocokTanggal = tanggal === '' || cardTanggal === tanggal;
-                const cocokTahun = tahun === '' || cardTahun === tahun;
+                    const cocokSearch = keyword === '' || searchText.includes(keyword);
+                    const cocokTanggal = tanggal === '' || cardTanggal === tanggal;
+                    const cocokTahun = tahun === '' || cardTahun === tahun;
 
-                if (cocokSearch && cocokTanggal && cocokTahun) {
-                    card.style.display = '';
-                    jumlahTampil++;
-                } else {
-                    card.style.display = 'none';
+                    if (cocokSearch && cocokTanggal && cocokTahun) {
+                        card.style.display = '';
+                        jumlahTampil++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                if (jumlahPjbl) {
+                    jumlahPjbl.textContent = jumlahTampil;
                 }
-            });
 
-            if (jumlahPjbl) {
-                jumlahPjbl.textContent = jumlahTampil;
+                if (emptyMessage) {
+                    emptyMessage.style.display = jumlahTampil === 0 ? 'block' : 'none';
+                }
             }
 
-            if (emptyMessage) {
-                emptyMessage.style.display = jumlahTampil === 0 ? 'block' : 'none';
+            if (searchInput) searchInput.addEventListener('input', filterPjbl);
+            if (filterTanggal) filterTanggal.addEventListener('change', filterPjbl);
+            if (filterTahun) filterTahun.addEventListener('change', filterPjbl);
+
+            if (resetButton) {
+                resetButton.addEventListener('click', function () {
+                    searchInput.value = '';
+                    filterTanggal.value = '';
+                    filterTahun.value = '';
+                    filterPjbl();
+                    searchInput.focus();
+                });
             }
-        }
 
-        if (searchInput) searchInput.addEventListener('input', filterPjbl);
-        if (filterTanggal) filterTanggal.addEventListener('change', filterPjbl);
-        if (filterTahun) filterTahun.addEventListener('change', filterPjbl);
-
-        if (resetButton) {
-            resetButton.addEventListener('click', function () {
-                searchInput.value = '';
-                filterTanggal.value = '';
-                filterTahun.value = '';
-                filterPjbl();
-                searchInput.focus();
-            });
-        }
-
-        filterPjbl();
-    });
-</script>
+            filterPjbl();
+        });
+    </script>
 @endpush

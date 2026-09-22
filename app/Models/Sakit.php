@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use app\Models\Siswa;
+use App\Models\Siswa;
 
 class Sakit extends Model
 {

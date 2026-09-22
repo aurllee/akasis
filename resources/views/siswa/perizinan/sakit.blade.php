@@ -5,9 +5,10 @@
 @push('styles')
     <style>
         body {
-            font-family: 'poppins', sans-serif;
-            color: 
+            font-family: 'Poppins', sans-serif;
+            color: #1f2937;
         }
+
         .sick-leave-page {
             width: 100%;
         }
@@ -21,20 +22,21 @@
         }
 
         .sick-leave-header h1 {
-            color: 
+            color: #1e293b;
             font-size: 25px;
             font-weight: 500;
             margin-bottom: .35rem;
         }
 
         .sick-leave-card {
-            border: 0;
-            border-top: 4px solid 
+            border: 1px solid #e5e7eb;
+            border-top: 4px solid #2449a4;
+            border-radius: 12px;
         }
 
         .sick-leave-table th {
-            background: 
-            color: 
+            background: #eff6ff;
+            color: #1e40af;
             font-size: .82rem;
             white-space: nowrap;
         }
@@ -49,7 +51,7 @@
             border-radius: 10px;
             padding: 7px;
             font-weight: 500;
-            
+
         }
 
         @media (max-width: 575px) {
@@ -117,15 +119,15 @@
                                     </td>
                                     <td>
                                         <div class="status">
-                                        @if ($item->status === 'menunggu_walikelas')
-                                            <span class="badge bg-warning text-dark">Menunggu Wali Kelas</span>
-                                        @elseif ($item->status === 'disetujui_walikelas')
-                                            <span class="badge bg-success">Disetujui</span>
-                                        @elseif ($item->status === 'ditolak_walikelas')
-                                            <span class="badge bg-danger">Ditolak</span>
-                                        @else
-                                            <span class="badge bg-secondary">{{ $item->status }}</span>
-                                        @endif
+                                            @if ($item->status === 'menunggu_walikelas')
+                                                <span class="badge bg-warning text-dark">Menunggu Wali Kelas</span>
+                                            @elseif ($item->status === 'disetujui_walikelas')
+                                                <span class="badge bg-success">Disetujui</span>
+                                            @elseif ($item->status === 'ditolak_walikelas')
+                                                <span class="badge bg-danger">Ditolak</span>
+                                            @else
+                                                <span class="badge bg-secondary">{{ $item->status }}</span>
+                                            @endif
                                         </div>
                                     </td>
                                     <td>

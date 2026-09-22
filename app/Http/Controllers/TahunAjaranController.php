@@ -9,7 +9,7 @@ class TahunAjaranController extends Controller
 {
     public function index()
     {
-        $tahunAjaran = TahunAjaran::all();
+        $tahunAjaran = TahunAjaran::latest('id')->paginate(2);
         return view('admin.master-data.tahun-ajaran.index', compact('tahunAjaran'));
     }
 

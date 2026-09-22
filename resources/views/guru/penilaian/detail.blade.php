@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: 
+            color: #1f2937;
         }
 
         .page-wrap {
@@ -14,8 +14,8 @@
         }
 
         .page-card {
-            background: 
-            border: 1px solid 
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
             padding: 24px;
@@ -31,12 +31,12 @@
 
         .page-subtitle {
             margin: 0 0 20px;
-            color: 
+            color: #64748b;
         }
 
         .card {
-            background: 
-            border: 1px solid 
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
             overflow: hidden;
@@ -52,7 +52,7 @@
 
         .card-footer {
             padding: 14px 20px;
-            border-top: 1px solid 
+            border-top: 1px solid #e2e8f0;
         }
 
         .d-flex {
@@ -88,7 +88,7 @@
         }
 
         .text-muted {
-            color: 
+            color: #64748b;
         }
 
         .text-start {
@@ -131,19 +131,19 @@
 
         .btn-primary,
         .btn-action.btn-primary {
-            background: 
-            color: 
+            background: #2449a4;
+            color: #ffffff;
         }
 
         .btn-secondary {
-            background: 
-            color: 
+            background: #64748b;
+            color: #ffffff;
         }
 
         .btn-outline-secondary {
-            border-color: 
-            color: 
-            background: 
+            border-color: #cbd5e1;
+            color: #475569;
+            background: #ffffff;
         }
 
         .filter-form {
@@ -164,7 +164,7 @@
         .filter-form select {
             min-width: 180px;
             padding: 9px;
-            border: 1px solid 
+            border: 1px solid #cbd5e1;
             border-radius: 6px;
             font-size: 13px;
         }
@@ -187,20 +187,20 @@
         .table th,
         .table td {
             padding: 10px 12px;
-            border: 1px solid 
+            border: 1px solid #e2e8f0;
             vertical-align: middle;
         }
 
         .table th {
-            background: 
-            color: 
+            background: #eff6ff;
+            color: #1e40af;
         }
 
         .form-control {
             box-sizing: border-box;
             width: 100%;
             padding: 8px;
-            border: 1px solid 
+            border: 1px solid #cbd5e1;
             border-radius: 4px;
         }
 
@@ -228,15 +228,15 @@
         .pagination a,
         .pagination span {
             padding: 6px 10px;
-            border: 1px solid 
+            border: 1px solid #cbd5e1;
             border-radius: 4px;
             text-decoration: none;
-            color: 
+            color: #475569;
         }
 
         .pagination .active span {
-            background: 
-            color: 
+            background: #2449a4;
+            color: #ffffff;
         }
 
         @media (max-width: 768px) {

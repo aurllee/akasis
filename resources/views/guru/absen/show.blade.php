@@ -2,15 +2,51 @@
 
 @section('content')
 
-@push('styles')
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            color: 
-            background: 
-        }
-    </style>
-@endpush
+    @push('styles')
+        <style>
+            body {
+                font-family: 'Poppins', sans-serif;
+                color: #1f2937;
+                background: #f4f7fb;
+            }
+
+            .container>.card {
+                border: 1px solid #e5e7eb;
+                border-radius: 14px;
+            }
+
+            .container>.card .card-body {
+                padding: 24px;
+            }
+
+            .attendance-code {
+                background: #eff6ff;
+                border: 1px solid #bfdbfe;
+                border-radius: 12px;
+            }
+
+            .attendance-code h1 {
+                letter-spacing: 0.12em;
+            }
+
+            .table thead th {
+                background: #eff6ff;
+                color: #1e40af;
+                white-space: nowrap;
+            }
+
+            @media (max-width: 576px) {
+                .container {
+                    padding-left: 16px !important;
+                    padding-right: 16px !important;
+                }
+
+                .container>.card .card-body {
+                    padding: 18px;
+                }
+            }
+        </style>
+    @endpush
 
     <div class="container py-4">
 
@@ -19,7 +55,7 @@
 
                 <h4 class="mb-3">Absensi Siswa</h4>
 
-                
+
                 <div class="mb-4">
                     <p class="mb-1">
                         <strong>Mata Pelajaran:</strong>
@@ -44,26 +80,10 @@
                 </div>
 
 
-                
-                @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
 
-
-                
-                @if(session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
-
-                
                 @if($sesi)
 
-                    <div class="text-center my-4 p-3 bg-light rounded">
+                    <div class="attendance-code text-center my-4 p-3">
                         <p class="mb-2">
                             <strong>Kode Absensi</strong>
                         </p>
@@ -77,7 +97,7 @@
                         </p>
                     </div>
 
-                    
+
                     <h5 class="mt-4 mb-3">Data Absensi Siswa</h5>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
@@ -92,18 +112,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($sesi->absensi ?? [] as $absen)
+                                @forelse($dataAbsensi ?? [] as $absen)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $absen->siswa?->nis ?? '-' }}</td>
                                         <td>{{ $absen->siswa?->nama ?? 'N/A' }}</td>
                                         <td>
                                             <span class="badge 
-                                                            @if($absen->status == 'hadir') bg-success
-                                                            @elseif($absen->status == 'izin') bg-warning text-dark
-                                                            @elseif($absen->status == 'sakit') bg-info
-                                                            @else bg-danger
-                                                            @endif">
+                                                                                    @if($absen->status == 'hadir') bg-success
+                                                                                    @elseif($absen->status == 'izin') bg-warning text-dark
+                                                                                    @elseif($absen->status == 'sakit') bg-info
+                                                                                    @elseif($absen->status == 'dispen') bg-primary
+                                                                                    @else bg-danger
+                                                                                    @endif">
                                                 {{ ucfirst($absen->status) ?? 'Belum Absen' }}
                                             </span>
                                         </td>
@@ -123,7 +144,7 @@
 
                 @else
 
-                    
+
                     <form action="{{ route('absensi.buka', $jadwal->id) }}" method="POST">
                         @csrf
 

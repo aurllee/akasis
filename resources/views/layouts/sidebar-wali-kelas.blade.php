@@ -32,11 +32,6 @@
         
         <div class="menu-title">Wali Kelas</div>
 
-        <a href="{{ route('wali-kelas.index') }}">
-            <i class="bi bi-person-workspace" aria-hidden="true"></i>
-            <span>Kelas Saya</span>
-        </a>
-
         <a href="{{ $waliKelasPertama ? route('wali-kelas.siswa', $waliKelasPertama->kelas_id) : '#' }}">
             <i class="bi bi-people" aria-hidden="true"></i>
             <span>Data Siswa</span>
@@ -44,17 +39,12 @@
 
          <a href="{{ route('wali-kelas.sakit.index') }}">
             <i class="bi bi-calendar-x" aria-hidden="true"></i>
-            <span>Izin Tidak Masuk Siswa</span>
+            <span>Izin Tidak Masuk</span>
         </a>
 
-        <a href="{{ route('wali-kelas.izin-keluar.index') }}">
-            <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
-            <span>Izin Keluar Siswa</span>
-        </a>
-
-        <a href="{{ route('wali-kelas.izin-pulang.index') }}">
-            <i class="bi bi-box-arrow-in-left" aria-hidden="true"></i>
-            <span>Izin Pulang Siswa</span>
+        <a href="{{ route('wali-kelas.sakit.index') }}">
+            <i class="bi bi-calendar-x" aria-hidden="true"></i>
+            <span>Absensi siswa</span>
         </a>
 
 
@@ -78,12 +68,12 @@
 
         <div class="menu-title">Guru Mata Pelajaran</div>
 
-        <a href="{{ route('wali-kelas.kelas-mengajar') }}">
+        <a href="{{ route('guru.penilaian.index') }}">
             <i class="bi bi-clipboard2-check" aria-hidden="true"></i>
             <span>Nilai Harian</span>
         </a>
 
-        <a href="{{ route('wali-kelas.penilaian-pjbl.index') }}">
+        <a href="{{ route('guru.penilaian-pjbl.index') }}">
             <i class="bi bi-kanban" aria-hidden="true"></i>
             <span>Penilaian PjBL</span>
         </a>

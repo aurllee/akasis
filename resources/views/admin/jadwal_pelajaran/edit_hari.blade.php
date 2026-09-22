@@ -43,7 +43,6 @@
             font-weight: 600;
         }
 
-        /* Dynamic Row Mapel */
         .academic-section-title {
             font-size: 15px;
             font-weight: 600;
@@ -98,7 +97,6 @@
             background: #fee2e2;
         }
 
-        /* Action Buttons */
         .academic-actions {
             display: flex;
             align-items: center;

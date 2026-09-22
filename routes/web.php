@@ -12,7 +12,6 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\Admin\SpmbController;
 use App\Http\Controllers\JadwalpelajaranController;
 use App\Http\Controllers\Siswa\JadwalPelajaranController as SiswaJadwalPelajaranController;
-use App\Http\Controllers\Siswa\NilaiController as SiswaNilaiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru\PenilaianController;
 use App\Http\Controllers\WaliKelasController;
@@ -129,36 +128,17 @@ Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(func
     Route::get('/dashboard', [WaliKelasController::class, 'dashboard'])->name('dashboard');
     Route::get('/', [WaliKelasController::class, 'index'])->name('index');
     Route::get('/siswa/{kelas}', [WaliKelasController::class, 'siswa'])->name('siswa');
-    Route::get('/nilai/{siswa}', [WaliKelasController::class, 'nilai'])->name('nilai');
-    Route::get('/rapor/{siswa}', [WaliKelasController::class, 'rapor'])->name('rapor');
+
 });
 
 Route::get('/wali-kelas/kelas-mengajar', [WaliKelasController::class, 'kelasMengajar'])
     ->name('wali-kelas.kelas-mengajar');
 
-Route::get(
-    '/wali-kelas/input-nilai/{jadwal}',
-    [WaliKelasController::class, 'inputNilai']
-)->name('wali-kelas.input-nilai');
-
-Route::post(
-    '/wali-kelas/input-nilai/{jadwal}',
-    [WaliKelasController::class, 'simpanNilai']
-)->name('wali-kelas.simpan-nilai');
 
 Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(function () {
-    Route::get('/izin-keluar', [WaliKelasController::class, 'izinKeluar'])->name('izin-keluar.index');
-    Route::patch('/izin-keluar/{id}/verifikasi', [WaliKelasController::class, 'verifikasiIzinKeluar'])->name('izin-keluar.verifikasi');
-    Route::get('/izin-pulang', [WaliKelasController::class, 'izinPulang'])->name('izin-pulang.index');
-    Route::patch('/izin-pulang/{id}/verifikasi', [WaliKelasController::class, 'verifikasiIzinPulang'])->name('izin-pulang.verifikasi');
     Route::get('/izin-tidak-masuk', [WaliKelasSakitController::class, 'index'])->name('sakit.index');
     Route::patch('/izin-tidak-masuk/{sakit}/setujui', [WaliKelasSakitController::class, 'setujui'])->name('sakit.setujui');
     Route::patch('/izin-tidak-masuk/{sakit}/tolak', [WaliKelasSakitController::class, 'tolak'])->name('sakit.tolak');
-    Route::get('/penilaian-pjbl', [WaliKelasPenilaianPjblController::class, 'index'])->name('penilaian-pjbl.index');
-    Route::get('/penilaian-pjbl/{pjbl}/nilai', [WaliKelasPenilaianPjblController::class, 'nilai'])->name('penilaian-pjbl.nilai');
-    Route::post('/penilaian-pjbl/{pjbl}/nilai', [WaliKelasPenilaianPjblController::class, 'simpan'])->name('penilaian-pjbl.simpan');
-    Route::get('/penilaian-pjbl/riwayat', [WaliKelasPenilaianPjblController::class, 'riwayat'])->name('penilaian-pjbl.riwayat');
-    Route::get('/penilaian-pjbl/riwayat/{penguji}/detail', [WaliKelasPenilaianPjblController::class, 'riwayatDetail'])->name('penilaian-pjbl.riwayat.detail');
 });
 
 
@@ -210,7 +190,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
-    
+
 
     Route::get('/penilaian/mapel', [
         \App\Http\Controllers\Admin\PenilaianMapelController::class,
@@ -257,8 +237,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         'destroy'
     ])->name('penilaian.mapel.destroy');
 
-    
-    
+
+
     Route::get(
         '/penilaian/pjbl',
         [
@@ -268,7 +248,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.index');
 
 
-    
+
     Route::get(
         '/penilaian/pjbl/kelas/{kelasId}',
         [
@@ -278,7 +258,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.kelas');
 
 
-    
+
     Route::get(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}',
         [
@@ -288,7 +268,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.penilaian');
 
 
-    
+
     Route::get(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}/create',
         [
@@ -308,7 +288,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.waktu.update');
 
 
-    
+
     Route::post(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}',
         [
@@ -318,7 +298,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.store');
 
 
-    
+
     Route::get(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}/{id}/edit',
         [
@@ -328,7 +308,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.edit');
 
 
-    
+
     Route::put(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}/{id}',
         [
@@ -338,7 +318,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.update');
 
 
-    
+
     Route::delete(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}/{id}',
         [
@@ -347,7 +327,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         ]
     )->name('penilaian.pjbl.destroy');
 
-    
+
 
     Route::get(
         '/absensi',
@@ -360,7 +340,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('absensi.show');
 
 
-    
+
 
     Route::get(
         '/sakit',
@@ -373,7 +353,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('sakit.show');
 
 
-    
+
 
     Route::get(
         '/izin-keluar',
@@ -386,7 +366,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('izin-keluar.show');
 
 
-    
+
 
     Route::get(
         '/izin-pulang',
@@ -399,7 +379,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('izin-pulang.show');
 
 
-    
+
 
     Route::get(
         '/dispen',
@@ -500,7 +480,7 @@ Route::middleware(['auth'])->group(function () {
         [GuruPenilaianPjblController::class, 'simpan']
     )->name('guru.penilaian-pjbl.simpan');
 
-    
+
     Route::get(
         '/guru/absen',
         [SesiAbsensiController::class, 'index']
@@ -525,7 +505,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/siswa/jadwal', [SiswaJadwalPelajaranController::class, 'index'])
         ->name('siswa.jadwal.index');
 
-    Route::get('/siswa/nilai', [SiswaNilaiController::class, 'index'])
+    Route::get('/siswa/jadwal/export/excel', [JadwalpelajaranController::class, 'exportExcel'])
+        ->name('siswa.jadwal.export_excel');
+
+    Route::get('/siswa/jadwal/export/pdf', [JadwalpelajaranController::class, 'exportPdf'])
+        ->name('siswa.jadwal.export_pdf');
+
+    Route::get('/siswa/nilai', [\App\Http\Controllers\Siswa\NilaiController::class, 'index'])
         ->name('siswa.nilai.index');
 });
 
@@ -538,7 +524,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->prefix('siswa')->name('siswa.')->group(function () {
 
-    
+
     Route::get('/perizinan/sakit', [PerizinanController::class, 'sakit'])
         ->name('perizinan.sakit');
 

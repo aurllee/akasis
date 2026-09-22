@@ -70,6 +70,11 @@ class JadwalPelajaranController extends Controller
             ->orderBy('hari')
             ->orderBy('id');
 
+        if (auth()->user()?->role_id == 3) {
+            $kelasId = auth()->user()->siswa?->siswaKelas?->first()?->kelas_id;
+            $jadwalQuery->where('kelas_id', $kelasId ?? 0)->where('is_published', 1);
+        }
+
         if ($selectedJurusan) {
             $jadwalQuery->whereHas('kelas', function ($query) use ($selectedJurusan) {
                 $query->where('jurusan_id', $selectedJurusan);
@@ -159,6 +164,11 @@ class JadwalPelajaranController extends Controller
         $jadwalQuery = Jadwal_pelajaran::with(['kelas.jurusan', 'guru', 'mataPelajaran', 'ruangan'])
             ->orderBy('kelas_id')
             ->orderBy('id');
+
+        if (auth()->user()?->role_id == 3) {
+            $kelasId = auth()->user()->siswa?->siswaKelas?->first()?->kelas_id;
+            $jadwalQuery->where('kelas_id', $kelasId ?? 0)->where('is_published', 1);
+        }
 
         if ($selectedJurusan) {
             $jadwalQuery->whereHas('kelas', function ($query) use ($selectedJurusan) {

@@ -145,6 +145,60 @@
             text-align: center !important;
         }
 
+        .room-pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .room-pagination nav {
+            display: flex;
+        }
+
+        .room-pagination ul.pagination {
+            align-items: center;
+            display: flex;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .room-pagination .page-item {
+            margin: 0;
+        }
+
+        .room-pagination .page-link {
+            align-items: center;
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            color: #475569;
+            display: flex;
+            font-size: 13px;
+            height: 34px;
+            justify-content: center;
+            min-width: 34px;
+            padding: 0 10px;
+        }
+
+        .room-pagination .page-link:hover {
+            background: #eff6ff;
+            border-color: #93c5fd;
+            color: #1d4ed8;
+        }
+
+        .room-pagination .page-item.active .page-link {
+            background: #2449a4;
+            border-color: #2449a4;
+            color: #fff;
+        }
+
+        .room-pagination .page-item.disabled .page-link {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+            color: #94a3b8;
+        }
+
         @media (max-width: 768px) {
             .academic-panel {
                 padding: 18px;
@@ -185,7 +239,7 @@
                     <tbody>
                         @forelse($kelases as $kelas)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $kelases->firstItem() + $loop->index }}</td>
                                 <td><span class="academic-status">{{ $kelas->tingkat }}</span></td>
                                 <td>
                                     <span class="academic-code">{{ optional($kelas->jurusan)->kode_jurusan ?? '-' }}</span> - 
@@ -214,7 +268,11 @@
                     </tbody>
                 </table>
             </div>
+            <div class="room-pagination">
+                {{ $kelases->links('pagination::bootstrap-5') }}
+            </div>
         </div>
+    </div>
     </div>
 
 @endsection

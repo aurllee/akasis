@@ -51,15 +51,6 @@
             text-decoration: none;
         }
 
-        .academic-alert {
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
-            border-radius: 8px;
-            color: #047857;
-            margin-bottom: 18px;
-            padding: 11px 14px;
-        }
-
         .academic-table-wrapper {
             overflow-x: auto;
         }
@@ -158,6 +149,60 @@
             text-align: center !important;
         }
 
+        .room-pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .room-pagination nav {
+            display: flex;
+        }
+
+        .room-pagination ul.pagination {
+            align-items: center;
+            display: flex;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .room-pagination .page-item {
+            margin: 0;
+        }
+
+        .room-pagination .page-link {
+            align-items: center;
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            color: #475569;
+            display: flex;
+            font-size: 13px;
+            height: 34px;
+            justify-content: center;
+            min-width: 34px;
+            padding: 0 10px;
+        }
+
+        .room-pagination .page-link:hover {
+            background: #eff6ff;
+            border-color: #93c5fd;
+            color: #1d4ed8;
+        }
+
+        .room-pagination .page-item.active .page-link {
+            background: #2449a4;
+            border-color: #2449a4;
+            color: #fff;
+        }
+
+        .room-pagination .page-item.disabled .page-link {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+            color: #94a3b8;
+        }
+
         @media (max-width: 768px) {
             .academic-panel {
                 padding: 18px;
@@ -183,9 +228,6 @@
                 </a>
             </div>
 
-            @if(session('success'))
-                <div class="academic-alert">{{ session('success') }}</div>
-            @endif
 
             <div class="academic-table-wrapper">
                 <table class="academic-table">
@@ -201,7 +243,7 @@
                     <tbody>
                         @forelse($tahunAjaran as $tahun)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $tahunAjaran->firstItem() + $loop->index }}</td>
                                 <td class="academic-code">{{ $tahun->tahun_ajaran }}</td>
                                 <td>{{ $tahun->semester }}</td>
                                 <td><span
@@ -227,6 +269,7 @@
                     </tbody>
                 </table>
             </div>
+            <div class="room-pagination">{{ $tahunAjaran->links('pagination::bootstrap-5') }}</div>
         </div>
     </div>
 

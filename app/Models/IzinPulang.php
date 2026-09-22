@@ -28,7 +28,7 @@ class IzinPulang extends Model
     public function siswa()
     {
         return $this->belongsTo(
-            DataSiswa::class,
+            Siswa::class,
             'siswa_id'
         );
     }

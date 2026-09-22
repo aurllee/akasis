@@ -9,8 +9,8 @@
         }
 
         .page-card {
-            background: 
-            border: 1px solid 
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
             padding: 24px;
@@ -25,12 +25,12 @@
 
         .page-subtitle {
             margin: 0 0 22px;
-            color: 
+            color: #64748b;
         }
 
         .info-card {
-            background: 
-            border: 1px solid 
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 18px 20px;
             margin-bottom: 18px;
@@ -38,12 +38,12 @@
 
         .info-card p {
             margin: 8px 0;
-            color: 
+            color: #475569;
         }
 
         .student-card {
-            background: 
-            border: 1px solid 
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 18px 20px;
             margin-bottom: 14px;
@@ -69,15 +69,15 @@
         .nilai-input {
             width: 100px;
             padding: 9px 10px;
-            border: 1px solid 
+            border: 1px solid #cbd5e1;
             border-radius: 8px;
         }
 
         .btn-primary {
             display: inline-block;
             padding: 10px 16px;
-            background: 
-            color: 
+            background: #2449a4;
+            color: #ffffff;
             border-radius: 8px;
             text-decoration: none;
             border: none;
@@ -89,9 +89,9 @@
             padding: 10px 16px;
             border-radius: 8px;
             text-decoration: none;
-            border: 1px solid 
-            color: 
-            background: 
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            background: #ffffff;
             margin-left: 8px;
         }
 
@@ -118,7 +118,8 @@
                 <p><strong>PjBL:</strong> {{ ucwords(str_replace('_', ' ', $pjbl->periode)) }}</p>
                 <p><strong>Guru Penguji:</strong> {{ $guru->nama }}</p>
                 <p><strong>Jenis Penguji:</strong>
-                    {{ $penguji?->jenis_peguji ? ucwords(str_replace('_', ' ', $penguji->jenis_peguji)) : '-' }}</p>
+                    {{ $penguji?->jenis_peguji ? ucwords(str_replace('_', ' ', $penguji->jenis_peguji)) : '-' }}
+                </p>
             </div>
 
             <form action="{{ route('guru.penilaian-pjbl.simpan', $pjbl->id) }}" method="POST">

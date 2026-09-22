@@ -78,7 +78,7 @@
             color: #ffffff;
         }
 
-        /* Filter Section */
+
         .filter-section {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -112,7 +112,6 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        /* Sub-Card Sections */
         .sub-card {
             border: 1px solid #e2e8f0;
             border-radius: 8px;
@@ -136,6 +135,7 @@
             align-items: center;
             gap: 8px;
         }
+
         .academic-table {
             width: 100%;
             border-collapse: separate;
@@ -161,6 +161,7 @@
         .academic-table tr:hover td {
             background-color: #f8fafc;
         }
+
         .badge-blue {
             background-color: rgba(37, 99, 235, 0.1);
             color: #2563eb;
@@ -179,176 +180,177 @@
 @endpush
 
 @section('content')
-<div class="academic-container">
-    <a href="{{ route('admin.penilaian.pjbl.kelas', $kelas->id) }}" class="btn-back-link">
-        <i class="bi bi-arrow-left"></i> Kembali ke List PJBL
-    </a>
+    <div class="academic-container">
+        <a href="{{ route('admin.penilaian.pjbl.kelas', $kelas->id) }}" class="btn-back-link">
+            <i class="bi bi-arrow-left"></i> Kembali ke List PJBL
+        </a>
 
-    <div class="academic-card">
+        <div class="academic-card">
 
-        <div class="academic-header">
-            <div>
-                <h1>Penilaian PJBL</h1>
-                <p>
-                    {{ $kelas->tingkat }} {{ $kelas->nama_kelas }}
-                    <span class="mx-1">—</span>
-                    {{ $pjbl->nama_periode ?? 'PJBL' }}
-                    <span class="mx-1">—</span>
-                    {{ $pjbl->tanggal ? \Carbon\Carbon::parse($pjbl->tanggal)->format('d/m/Y') : '-' }}
-                </p>
-            </div>
-            <a href="{{ route('admin.penilaian.pjbl.create', ['kelasId' => $kelas->id, 'pjblId' => $pjbl->id]) }}" class="btn-action-primary">
-             Tambah Penilaian
-            </a>
-        </div>
-
-        <div class="sub-card">
-            <div class="sub-card-header">
+            <div class="academic-header">
                 <div>
-                    <div class="sub-card-title">
-                        <i class="bi bi-people-fill text-primary"></i> Penguji PJBL
-                    </div>
-                    <small class="text-muted">Penguji yang memberikan penilaian pada PJBL ini</small>
+                    <h1>Penilaian PJBL</h1>
+                    <p>
+                        {{ $kelas->tingkat }} {{ $kelas->nama_kelas }}
+                        <span class="mx-1">—</span>
+                        {{ $pjbl->nama_periode ?? 'PJBL' }}
+                        <span class="mx-1">—</span>
+                        {{ $pjbl->tanggal ? \Carbon\Carbon::parse($pjbl->tanggal)->format('d/m/Y') : '-' }}
+                    </p>
                 </div>
-                <span class="badge-blue">{{ $penguji->count() }} Penguji</span>
+                <a href="{{ route('admin.penilaian.pjbl.create', ['kelasId' => $kelas->id, 'pjblId' => $pjbl->id]) }}"
+                    class="btn-action-primary">
+                    Tambah Penilaian
+                </a>
             </div>
 
-            <div class="table-responsive">
-                <table class="academic-table align-middle">
-                    <thead>
-                        <tr>
-                            <th width="60">No</th>
-                            <th>Nama Penguji</th>
-                            <th>NIP</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($penguji as $p)
+            <div class="sub-card">
+                <div class="sub-card-header">
+                    <div>
+                        <div class="sub-card-title">
+                            <i class="bi bi-people-fill text-primary"></i> Penguji PJBL
+                        </div>
+                        <small class="text-muted">Penguji yang memberikan penilaian pada PJBL ini</small>
+                    </div>
+                    <span class="badge-blue">{{ $penguji->count() }} Penguji</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="academic-table align-middle">
+                        <thead>
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td class="fw-semibold">{{ $p->guru?->nama ?? '-' }}</td>
-                                <td>{{ $p->guru?->nip ?? '-' }}</td>
+                                <th width="60">No</th>
+                                <th>Nama Penguji</th>
+                                <th>NIP</th>
                             </tr>
-                        @empty
+                        </thead>
+                        <tbody>
+                            @forelse($penguji as $p)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td class="fw-semibold">{{ $p->guru?->nama ?? '-' }}</td>
+                                    <td>{{ $p->guru?->nip ?? '-' }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-3">
+                                        Belum ada data penguji PJBL.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-10 filter-field">
+                        <label for="liveSearchSiswa">Cari Siswa</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0">
+                                <i class="bi bi-search text-muted"></i>
+                            </span>
+                            <input type="text" id="liveSearchSiswa" class="border-start-0 ps-0"
+                                placeholder="Cari nama, NIS, atau NISN..." autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" id="resetSearch" class="btn btn-outline-secondary w-100 py-2"
+                            style="font-size: 13px; font-weight: 600;">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sub-card">
+                <div class="sub-card-header">
+                    <div>
+                        <div class="sub-card-title">
+                            <i class="bi bi-clipboard-data text-primary"></i> Data Penilaian
+                        </div>
+                        <small class="text-muted">Nilai berdasarkan masing-masing penguji PJBL</small>
+                    </div>
+                    <span class="badge-blue">{{ $penilaianPerSiswa->count() }} Siswa</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="academic-table align-middle">
+                        <thead>
                             <tr>
-                                <td colspan="3" class="text-center text-muted py-3">
-                                    Belum ada data penguji PJBL.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        {{-- FILTER SEARCH SISWA --}}
-        <div class="filter-section">
-            <div class="row g-3 align-items-end">
-                <div class="col-md-10 filter-field">
-                    <label for="liveSearchSiswa">Cari Siswa</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-white border-end-0">
-                            <i class="bi bi-search text-muted"></i>
-                        </span>
-                        <input type="text" id="liveSearchSiswa" class="border-start-0 ps-0"
-                            placeholder="Cari nama, NIS, atau NISN..." autocomplete="off">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" id="resetSearch" class="btn btn-outline-secondary w-100 py-2" style="font-size: 13px; font-weight: 600;">
-                        <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        {{-- DATA PENILAIAN PER SISWA --}}
-        <div class="sub-card">
-            <div class="sub-card-header">
-                <div>
-                    <div class="sub-card-title">
-                        <i class="bi bi-clipboard-data text-primary"></i> Data Penilaian
-                    </div>
-                    <small class="text-muted">Nilai berdasarkan masing-masing penguji PJBL</small>
-                </div>
-                <span class="badge-blue">{{ $penilaianPerSiswa->count() }} Siswa</span>
-            </div>
-
-            <div class="table-responsive">
-                <table class="academic-table align-middle">
-                    <thead>
-                        <tr>
-                            <th width="50">No</th>
-                            <th style="min-width: 200px;">Siswa</th>
-                            @foreach($penguji as $p)
-                                <th class="text-center" style="min-width: 110px;">
-                                    <div class="fw-semibold">Guru {{ $loop->iteration }}</div>
-                                    <small class="text-muted" style="font-size: 11px;">Nilai</small>
-                                </th>
-                            @endforeach
-                            <th class="text-center" style="min-width: 100px;">Total Nilai</th>
-                            <th width="140" class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($penilaianPerSiswa as $siswaId => $nilaiSiswa)
-                            @php
-                                $siswa = $nilaiSiswa->first()->siswa;
-                                $totalNilai = 0;
-                            @endphp
-                            <tr class="siswa-row" data-search="{{ strtolower(($siswa?->nama ?? '') . ' ' . ($siswa?->nis ?? '') . ' ' . ($siswa?->nisn ?? '')) }}">
-                                <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    <div class="fw-semibold">{{ $siswa?->nama ?? '-' }}</div>
-                                    <small class="text-muted">NIS: {{ $siswa?->nis ?? '-' }}</small>
-                                </td>
-
+                                <th width="50">No</th>
+                                <th style="min-width: 200px;">Siswa</th>
                                 @foreach($penguji as $p)
-                                    @php
-                                        $nilaiPenguji = $nilaiSiswa->firstWhere('pjbl_penguji_id', $p->id);
-                                        $nilai = $nilaiPenguji?->nilai ?? 0;
-                                        $totalNilai += $nilai;
-                                    @endphp
+                                    <th class="text-center" style="min-width: 110px;">
+                                        <div class="fw-semibold">Guru {{ $loop->iteration }}</div>
+                                        <small class="text-muted" style="font-size: 11px;">Nilai</small>
+                                    </th>
+                                @endforeach
+                                <th class="text-center" style="min-width: 100px;">Total Nilai</th>
+                                <th width="140" class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($penilaianPerSiswa as $siswaId => $nilaiSiswa)
+                                @php
+                                    $siswa = $nilaiSiswa->first()->siswa;
+                                    $totalNilai = 0;
+                                @endphp
+                                <tr class="siswa-row"
+                                    data-search="{{ strtolower(($siswa?->nama ?? '') . ' ' . ($siswa?->nis ?? '') . ' ' . ($siswa?->nisn ?? '')) }}">
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>
+                                        <div class="fw-semibold">{{ $siswa?->nama ?? '-' }}</div>
+                                        <small class="text-muted">NIS: {{ $siswa?->nis ?? '-' }}</small>
+                                    </td>
+
+                                    @foreach($penguji as $p)
+                                        @php
+                                            $nilaiPenguji = $nilaiSiswa->firstWhere('pjbl_penguji_id', $p->id);
+                                            $nilai = $nilaiPenguji?->nilai ?? 0;
+                                            $totalNilai += $nilai;
+                                        @endphp
+                                        <td class="text-center">
+                                            @if($nilaiPenguji)
+                                                <span class="badge-value">{{ $nilai }}</span>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
+                                    @endforeach
+
                                     <td class="text-center">
-                                        @if($nilaiPenguji)
-                                            <span class="badge-value">{{ $nilai }}</span>
-                                        @else
-                                            <span class="text-muted">-</span>
+                                        <span class="badge bg-success fs-6">
+                                            {{ $totalNilai }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        @php
+                                            $nilaiPertama = $nilaiSiswa->first();
+                                        @endphp
+                                        @if($nilaiPertama)
+                                            <a href="{{ route('admin.penilaian.pjbl.edit', ['kelasId' => $kelas->id, 'pjblId' => $pjbl->id, 'id' => $nilaiPertama->id]) }}"
+                                                class="btn btn-sm btn-outline-warning" title="Edit">
+                                                <i class="bi bi-pencil me-1"></i> Edit
+                                            </a>
                                         @endif
                                     </td>
-                                @endforeach
-
-                                <td class="text-center">
-                                    <span class="badge bg-success fs-6">
-                                        {{ $totalNilai }}
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    @php
-                                        $nilaiPertama = $nilaiSiswa->first();
-                                    @endphp
-                                    @if($nilaiPertama)
-                                        <a href="{{ route('admin.penilaian.pjbl.edit', ['kelasId' => $kelas->id, 'pjblId' => $pjbl->id, 'id' => $nilaiPertama->id]) }}"
-                                           class="btn btn-sm btn-outline-warning" title="Edit">
-                                            <i class="bi bi-pencil me-1"></i> Edit
-                                        </a>
-                                    @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="{{ 4 + $penguji->count() }}" class="text-center text-muted py-4">
-                                    Belum ada data penilaian PJBL untuk siswa.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="{{ 4 + $penguji->count() }}" class="text-center text-muted py-4">
+                                        Belum ada data penilaian PJBL untuk siswa.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
 @endsection
 
 @push('scripts')

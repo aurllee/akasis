@@ -12,12 +12,12 @@ class SiswaController extends Controller
     {
         $siswa = Siswa::all();
 
-        return view('admin.siswa.index', compact('siswa'));
+        return view('admin.master-data.siswa.index', compact('siswa'));
     }
 
     public function create()
     {
-        return view('admin.siswa.create');
+        return view('admin.master-data.siswa.create');
     }
 
     public function store(Request $request)
@@ -28,9 +28,10 @@ class SiswaController extends Controller
             'nama' => 'required|max:255',
             'jk' => 'required|in:Perempuan,Laki-laki',
             'tempat_lahir' => 'required|max:100',
-            'tgl_lahir' => 'required|date',
+            'tanggal_lahir' => 'required|date',
             'agama' => 'required',
             'alamat' => 'required',
+            'nama_orang_tua' => 'required|max:255',
             'no_hp' => 'nullable|max:20',
             'email' => 'nullable|email|max:255',
         ]);
@@ -46,7 +47,7 @@ class SiswaController extends Controller
     {
         $siswa = Siswa::findOrFail($id);
 
-        return view('admin.siswa.edit', compact('siswa'));
+        return view('admin.master-data.siswa.edit', compact('siswa'));
     }
 
     public function update(Request $request, $id)
@@ -59,9 +60,10 @@ class SiswaController extends Controller
             'nama' => 'required|max:255',
             'jk' => 'required|in:Perempuan,Laki-laki',
             'tempat_lahir' => 'required|max:100',
-            'tgl_lahir' => 'required|date',
+            'tanggal_lahir' => 'required|date',
             'agama' => 'required',
             'alamat' => 'required',
+            'nama_orang_tua' => 'required|max:255',
             'no_hp' => 'nullable|max:20',
             'email' => 'nullable|email|max:255',
         ]);

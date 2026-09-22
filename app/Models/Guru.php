@@ -9,11 +9,12 @@ class Guru extends Model
 {
     use HasFactory;
 
-    
+
     protected $table = 'dataguru';
 
-    
+
     protected $fillable = [
+        'kode_guru',
         'nip',
         'nama',
         'jk',
@@ -38,46 +39,46 @@ class Guru extends Model
         return $this->belongsTo(MataPelajaran::class, 'mata_pelajaran_id');
     }
 
-    
+
     public $timestamps = false;
 
     public function pjblPenguji()
-{
-    return $this->hasMany(
-        PjblPenguji::class,
-        'guru_id'
-    );
-}
+    {
+        return $this->hasMany(
+            PjblPenguji::class,
+            'guru_id'
+        );
+    }
 
-public function sakitSebagaiWali()
-{
-    return $this->hasMany(
-        Sakit::class,
-        'walikelas_id'
-    );
-}
+    public function sakitSebagaiWali()
+    {
+        return $this->hasMany(
+            Sakit::class,
+            'walikelas_id'
+        );
+    }
 
-public function sakitGuru()
-{
-    return $this->hasMany(
-        SakitGuru::class,
-        'guru_id'
-    );
-}
+    public function sakitGuru()
+    {
+        return $this->hasMany(
+            SakitGuru::class,
+            'guru_id'
+        );
+    }
 
-public function izinKeluar()
-{
-    return $this->hasMany(
-        IzinKeluar::class,
-        'guru_mapel_id'
-    );
-}
+    public function izinKeluar()
+    {
+        return $this->hasMany(
+            IzinKeluar::class,
+            'guru_mapel_id'
+        );
+    }
 
-public function izinPulang()
-{
-    return $this->hasMany(
-        IzinPulang::class,
-        'guru_mapel_id'
-    );
-}
+    public function izinPulang()
+    {
+        return $this->hasMany(
+            IzinPulang::class,
+            'guru_mapel_id'
+        );
+    }
 }
