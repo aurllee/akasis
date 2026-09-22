@@ -113,7 +113,7 @@
         </div>
 
 
-        <form action="{{ route('pembagian-kelas.update', $pembagian->id) }}" method="POST">
+        <form action="{{ route('pembagian_kelas.update', $pembagian->id) }}" method="POST">
 
             @csrf
             @method('PUT')
@@ -151,7 +151,7 @@
                 Simpan Perubahan
             </button>
 
-            <a href="{{ route('pembagian-kelas.index') }}" class="btn btn-kembali">
+            <a href="{{ route('pembagian_kelas.index') }}" class="btn btn-kembali">
                 Kembali
             </a>
 
