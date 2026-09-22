@@ -30,6 +30,7 @@ use App\Http\Controllers\Siswa\PerizinanController;
 use App\Http\Controllers\Siswa\DispenController as SiswaDispenController;
 use App\Http\Controllers\Walikelas\SakitController as WaliKelasSakitController;
 use App\Http\Controllers\WaliKelas\PenilaianPjblController as WaliKelasPenilaianPjblController;
+use App\Http\Controllers\Walikelas\AbsenController as WaliKelasAbsenController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
@@ -128,7 +129,8 @@ Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(func
     Route::get('/dashboard', [WaliKelasController::class, 'dashboard'])->name('dashboard');
     Route::get('/', [WaliKelasController::class, 'index'])->name('index');
     Route::get('/siswa/{kelas}', [WaliKelasController::class, 'siswa'])->name('siswa');
-
+    Route::get('/nilai/{siswa}', [WaliKelasController::class, 'nilai'])->name('nilai');
+    Route::get('/absen', [WaliKelasAbsenController::class, 'index'])->name('absen.index');
 });
 
 Route::get('/wali-kelas/kelas-mengajar', [WaliKelasController::class, 'kelasMengajar'])
@@ -140,7 +142,6 @@ Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(func
     Route::patch('/izin-tidak-masuk/{sakit}/setujui', [WaliKelasSakitController::class, 'setujui'])->name('sakit.setujui');
     Route::patch('/izin-tidak-masuk/{sakit}/tolak', [WaliKelasSakitController::class, 'tolak'])->name('sakit.tolak');
 });
-
 
 Route::prefix('admin')->group(function () {
     Route::get('/spmb/calon-siswa', [SpmbController::class, 'index'])->name('admin.spmb.index');

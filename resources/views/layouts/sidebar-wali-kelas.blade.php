@@ -15,7 +15,7 @@
         }
         @endphp
 
-        
+
         <div class="menu-title">Menu Utama</div>
 
         <a href="{{ route('wali-kelas.dashboard') }}">
@@ -29,7 +29,7 @@
             <span>Ganti Password</span>
         </a>
 
-        
+
         <div class="menu-title">Wali Kelas</div>
 
         <a href="{{ $waliKelasPertama ? route('wali-kelas.siswa', $waliKelasPertama->kelas_id) : '#' }}">
@@ -37,18 +37,18 @@
             <span>Data Siswa</span>
         </a>
 
-         <a href="{{ route('wali-kelas.sakit.index') }}">
+        <a href="{{ route('wali-kelas.sakit.index') }}">
             <i class="bi bi-calendar-x" aria-hidden="true"></i>
             <span>Izin Tidak Masuk</span>
         </a>
 
-        <a href="{{ route('wali-kelas.sakit.index') }}">
-            <i class="bi bi-calendar-x" aria-hidden="true"></i>
+        <a href="{{ route('wali-kelas.absen.index') }}">
+            <i class="bi bi-calendar-check" aria-hidden="true"></i>
             <span>Absensi siswa</span>
         </a>
 
 
-        
+
         @php
         $jadwalSaya = collect();
 
@@ -83,7 +83,7 @@
     </nav>
 
 
-    
+
     <form action="{{ route('logout') }}" method="POST" class="logout-form">
         @csrf
 
