@@ -18,10 +18,6 @@ class Siswa extends Model
         'tempat_lahir',
         'tanggal_lahir',
         'jk',
-<<<<<<< HEAD
-        'tanggal_lahir',
-=======
->>>>>>> 13078cc6130988940230854ae444797e7a712303
         'agama',
         'nik',
         'no_kk',
@@ -63,21 +59,12 @@ class Siswa extends Model
         return $this->hasMany(PembagianKelas::class);
     }
     public function absensi()
-<<<<<<< HEAD
-{
-    return $this->hasMany(
-        Absensi::class,
-        'siswa_id'
-    );
-}
-=======
     {
         return $this->hasMany(
             Absensi::class,
             'siswa_id'
         );
     }
->>>>>>> 13078cc6130988940230854ae444797e7a712303
 
     public function sakit()
     {

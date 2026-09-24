@@ -37,7 +37,6 @@ class GuruController extends Controller
 
     [$guru, $passwordAwal] = DB::transaction(function () use ($data) {
 
-<<<<<<< HEAD
         do {
             $kodeGuru = 'GR' . strtoupper(Str::random(8));
         } while (Guru::where('kode_guru', $kodeGuru)->exists());
@@ -45,21 +44,6 @@ class GuruController extends Controller
         $data['kode_guru'] = $kodeGuru;
 
         $guru = Guru::create($data);
-=======
-
-            $guru = Guru::create($data);
-
-
-            $passwordAwal = Str::random(8);
-
-
-            User::create([
-                'username' => $guru->nip,
-                'password' => Hash::make($passwordAwal),
-                'role_id' => 2,
-                'guru_id' => $guru->id,
-            ]);
->>>>>>> 13078cc6130988940230854ae444797e7a712303
 
         $passwordAwal = Str::random(8);
 

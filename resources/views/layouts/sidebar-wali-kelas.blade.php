@@ -78,6 +78,10 @@
             <span>Penilaian PjBL</span>
         </a>
 
+        <a href="{{ route('absensi.index') }}">
+            <i class="bi bi-journal-text" aria-hidden="true"></i>
+            <span>Absensi</span>
+
         @endif
 
     </nav>

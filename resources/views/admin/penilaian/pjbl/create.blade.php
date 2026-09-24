@@ -182,7 +182,6 @@
             width: 100%;
         }
     }
-</style>
 
         .form-group-custom .form-control:focus,
         .form-group-custom .form-select:focus {

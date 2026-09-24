@@ -15,7 +15,6 @@
         <div class="menu-title">Informasi</div>
         <a href="{{ route('siswa.nilai.index') }}"><i class="bi bi-bar-chart" aria-hidden="true"></i>Nilai</a>
         <a href="{{ route('siswa.jadwal.index') }}"><i class="bi bi-calendar3" aria-hidden="true"></i>Jadwal</a>
-        <a href="{{ route('siswa.absensi.index') }}"><i class="bi bi-check2-square" aria-hidden="true"></i>Absensi</a>
 
         <div class="menu-title">Perizinan</div>
         <a href="{{ route('siswa.absensi.index') }}"
