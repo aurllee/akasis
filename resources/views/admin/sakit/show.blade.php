@@ -568,7 +568,7 @@
 
                         <tbody>
 
-                        @forelse($sakit->guru as $item)
+                        @forelse(collect($sakit->guru) as $item)
 
                             @php
                                 $statusGuru = $item->status ?? 'pending';

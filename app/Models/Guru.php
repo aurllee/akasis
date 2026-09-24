@@ -26,6 +26,7 @@ class Guru extends Model
         'jabatan',
         'tmt',
         'mata_pelajaran_id',
+        'kode_guru',
     ];
 
     protected $casts = [

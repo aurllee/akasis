@@ -30,34 +30,37 @@ class GuruController extends Controller
 
     
     public function store(Request $request)
-    {
-        $data = $request->validate($this->guruRules());
+{
+    $data = $request->validate($this->guruRules());
 
-        [$guru, $passwordAwal] = DB::transaction(function () use ($data) {
+    [$guru, $passwordAwal] = DB::transaction(function () use ($data) {
 
-            
-            $guru = Guru::create($data);
+        do {
+            $kodeGuru = 'GR' . strtoupper(Str::random(8));
+        } while (Guru::where('kode_guru', $kodeGuru)->exists());
 
-            
-            $passwordAwal = Str::random(8);
+        $data['kode_guru'] = $kodeGuru;
 
-            
-            User::create([
-                'username' => $guru->nip,
-                'password' => Hash::make($passwordAwal),
-                'role_id' => 2,
-                'guru_id' => $guru->id,
-            ]);
+        $guru = Guru::create($data);
 
-            return [$guru, $passwordAwal];
-        });
+        $passwordAwal = Str::random(8);
 
-        return redirect()
-            ->route('guru.index')
-            ->with('success', 'Data guru berhasil ditambahkan.')
-            ->with('username', $guru->nip)
-            ->with('password_awal', $passwordAwal);
-    }
+        User::create([
+            'username' => $guru->nip,
+            'password' => Hash::make($passwordAwal),
+            'role_id' => 2,
+            'guru_id' => $guru->id,
+        ]);
+
+        return [$guru, $passwordAwal];
+    });
+
+    return redirect()
+        ->route('guru.index')
+        ->with('success', 'Data guru berhasil ditambahkan.')
+        ->with('username', $guru->nip)
+        ->with('password_awal', $passwordAwal);
+}
 
     
     public function show(string $id)

@@ -274,6 +274,18 @@
                 >
             </div>
 
+            <div class="mb-3">
+    <label for="nama_orang_tua" class="form-label">Nama Orang Tua</label>
+    <input
+        type="text"
+        name="nama_orang_tua"
+        id="nama_orang_tua"
+        class="form-control"
+        value="{{ old('nama_orang_tua') }}"
+        required
+    >
+</div>
+
             <div class="form-group">
                 <label class="form-label">
                     Agama <span class="required">*</span>

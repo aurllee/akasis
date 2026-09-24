@@ -461,28 +461,30 @@
                 @forelse($sakit as $item)
 
                     @php
-                        $statusWali = $item->status_wali_kelas ?? 'pending';
+    $statusWali = $item->status_walikelas ?? 'pending';
 
-                        $badgeWali = match($statusWali) {
-                            'diterima' => 'status-success',
-                            'ditolak' => 'status-danger',
-                            default => 'status-warning'
-                        };
+    $badgeWali = match($statusWali) {
+        'diterima' => 'status-success',
+        'ditolak' => 'status-danger',
+        default => 'status-warning'
+    };
 
-                        $totalGuru = $item->guru->count();
+    $gurus = collect($item->guru);
 
-                        $diterimaGuru = $item->guru
-                            ->where('status', 'diterima')
-                            ->count();
+    $totalGuru = $gurus->count();
 
-                        $status = $item->status ?? 'pending';
+    $diterimaGuru = $gurus
+        ->where('status', 'diterima')
+        ->count();
 
-                        $badgeStatus = match($status) {
-                            'diterima' => 'status-success',
-                            'ditolak' => 'status-danger',
-                            default => 'status-warning'
-                        };
-                    @endphp
+    $status = $item->status ?? 'pending';
+
+    $badgeStatus = match($status) {
+        'diterima' => 'status-success',
+        'ditolak' => 'status-danger',
+        default => 'status-warning'
+    };
+@endphp
 
                     <tr>
 

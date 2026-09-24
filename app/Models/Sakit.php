@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use app\Models\Siswa;
+use App\Models\Siswa;
 
 class Sakit extends Model
 {
@@ -38,4 +38,9 @@ class Sakit extends Model
     {
         return $this->belongsTo(Guru::class, 'walikelas_id');
     }
+
+    public function guru()
+{
+    return $this->belongsTo(Guru::class, 'guru_id');
+}
 }

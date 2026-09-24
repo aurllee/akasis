@@ -269,12 +269,24 @@
 
                 <input
                     type="date"
-                    name="tgl_lahir"
+                    name="tanggal_lahir"
                     class="form-control"
-                    value="{{ old('tgl_lahir') }}"
+                    value="{{ old('tanggal_lahir') }}"
                     required
                 >
             </div>
+
+            <div class="mb-3">
+    <label for="nama_orang_tua" class="form-label">Nama Orang Tua</label>
+    <input
+        type="text"
+        name="nama_orang_tua"
+        id="nama_orang_tua"
+        class="form-control"
+        value="{{ old('nama_orang_tua') }}"
+        required
+    >
+</div>
 
             <div class="form-group">
                 <label class="form-label">

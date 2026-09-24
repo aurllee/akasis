@@ -18,13 +18,14 @@ class Siswa extends Model
         'tempat_lahir',
         'tanggal_lahir',
         'jk',
-        'tgl_lahir',
+        'tanggal_lahir',
         'agama',
         'nik',
         'no_kk',
         'alamat',
         'no_hp',
         'email',
+        'nama_orang_tua',
     ];
 
     protected $casts = [
@@ -60,7 +61,7 @@ class Siswa extends Model
     public function absensi()
 {
     return $this->hasMany(
-        Absen::class,
+        Absensi::class,
         'siswa_id'
     );
 }

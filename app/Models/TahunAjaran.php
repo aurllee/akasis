@@ -9,17 +9,14 @@ class TahunAjaran extends Model
 {
     use HasFactory;
 
-    
     protected $table = 'tahun_ajaran';
 
-    
     protected $fillable = [
         'tahun_ajaran',
         'semester',
         'status',
     ];
 
-    
     protected $casts = [
         'status' => 'boolean',
     ];

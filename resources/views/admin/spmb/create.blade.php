@@ -5,11 +5,10 @@
 @section('content')
 
 <style>
-
     body {
         font-family: 'Poppins', sans-serif;
     }
-    
+
     .spmb-create-page {
         color: #1e293b;
     }
@@ -115,13 +114,6 @@
         resize: vertical;
     }
 
-    .form-help {
-        display: block;
-        margin-top: 6px;
-        font-size: 12px;
-        color: #94a3b8;
-    }
-
     .file-input {
         padding: 7px 10px;
     }
@@ -224,705 +216,443 @@
 
 <div class="container-fluid py-4 spmb-create-page">
 
-<div class="page-header">
-    <div>
-        <h4 class="page-title">Tambah Calon Siswa</h4>
-        <p class="page-subtitle">
-            Masukkan data calon siswa dan dokumen daftar ulang.
-        </p>
-    </div>
-</div>
-
-@if($errors->any())
-    <div class="alert-custom alert-danger-custom">
-        <div class="alert-title">
-            Terdapat kesalahan:
+    <div class="page-header">
+        <div>
+            <h4 class="page-title">Tambah Calon Siswa</h4>
+            <p class="page-subtitle">
+                Masukkan data calon siswa dan dokumen daftar ulang.
+            </p>
         </div>
-
-        <ul>
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
     </div>
-@endif
 
-<form action="{{ route('admin.spmb.store') }}" method="POST" enctype="multipart/form-data">
-    @csrf
-
-    <div class="form-card">
-        <div class="form-card-header">
-            <h5 class="form-card-title">Data Pribadi</h5>
-        </div>
-
-        <div class="form-card-body">
-            <div class="row g-3">
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                <ul class="mb-0 mt-2">
-
-                    @foreach($errors->all() as $error)
-
-                        <li>{{ $error }}</li>
-
-                    @endforeach
-
-                </ul>
-
+    @if($errors->any())
+        <div class="alert-custom alert-danger-custom">
+            <div class="alert-title">
+                Terdapat kesalahan:
             </div>
 
-        @endif
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
+    <form
+        action="{{ route('admin.spmb.store') }}"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+        @csrf
 
-        <form action="{{ route('admin.spmb.store') }}" method="POST" enctype="multipart/form-data">
-
-            @csrf
-
-
-            
-
-            <div class="card shadow-sm border-0 mb-4">
-
-                <div class="card-header bg-white">
-
-                    <h5 class="mb-0">
-                        Data Pribadi
-                    </h5>
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-                <div class="col-md-6">
-                    <label class="form-label">
-                        Nama Lengkap
-                        <span class="required">*</span>
-                    </label>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
-                    <input
-                        type="text"
-                        name="nama_lengkap"
-                        class="form-control"
-                        value="{{ old('nama_lengkap') }}"
-                        required
-                    >
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">
-                        NIK
-                        <span class="required">*</span>
-                    </label>
-
-                    <input
-                        type="text"
-                        name="nik"
-                        maxlength="16"
-                        class="form-control"
-                        value="{{ old('nik') }}"
-                        required
-                    >
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">
-                        NISN
-                    </label>
-
-                    <input
-                        type="text"
-                        name="nisn"
-                        maxlength="10"
-                        class="form-control"
-                        value="{{ old('nisn') }}"
-                    >
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">
-                        Jenis Kelamin
-                        <span class="required">*</span>
-                    </label>
-
-                    <select name="jenis_kelamin" class="form-select" required>
-                        <option value="">Pilih</option>
-
-                        <option
-                            value="laki-laki"
-                            @selected(old('jenis_kelamin') === 'laki-laki')
-                        >
-                            Laki-laki
-                        </option>
-
-                        <option
-                            value="perempuan"
-                            @selected(old('jenis_kelamin') === 'perempuan')
-                        >
-                            Perempuan
-                        </option>
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">
-                        Tempat Lahir
-                        <span class="required">*</span>
-                    </label>
-
-                    <input
-                        type="text"
-                        name="tempat_lahir"
-                        class="form-control"
-                        value="{{ old('tempat_lahir') }}"
-                        required
-                    >
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">
-                        Tanggal Lahir
-                        <span class="required">*</span>
-                    </label>
-
-                    <input
-                        type="date"
-                        name="tanggal_lahir"
-                        class="form-control"
-                        value="{{ old('tanggal_lahir') }}"
-                        required
-                    >
-                </div>
-
-                <div class="col-12">
-                    <label class="form-label">
-                        Alamat
-                        <span class="required">*</span>
-                    </label>
-
-                    <textarea
-                        name="alamat"
-                        class="form-control"
-                        rows="3"
-                        required
-                    >{{ old('alamat') }}</textarea>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">
-                        Asal Sekolah
-                        <span class="required">*</span>
-                    </label>
-
-                    <input
-                        type="text"
-                        name="asal_sekolah"
-                        class="form-control"
-                        value="{{ old('asal_sekolah') }}"
-                        required
-                    >
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">
-                        Tahun Lulus
-                    </label>
-
-                    <input
-                        type="number"
-                        name="tahun_lulus"
-                        class="form-control"
-                        value="{{ old('tahun_lulus') }}"
-                    >
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">
-                        No. KK
-                        <span class="required">*</span>
-                    </label>
-
-                    <input
-                        type="text"
-                        name="no_kk"
-                        maxlength="16"
-                        class="form-control"
-                        value="{{ old('no_kk') }}"
-                        required
-                    >
-                </div>
-
+        <div class="form-card">
+            <div class="form-card-header">
+                <h5 class="form-card-title">Data Pribadi</h5>
             </div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
+            <div class="form-card-body">
+                <div class="row g-3">
 
-            
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Nama Lengkap
+                            <span class="required">*</span>
+                        </label>
 
-            <div class="card shadow-sm border-0 mb-4">
+                        <input
+                            type="text"
+                            name="nama_lengkap"
+                            class="form-control"
+                            value="{{ old('nama_lengkap') }}"
+                            required
+                        >
+                    </div>
 
-                <div class="card-header bg-white">
+                    <div class="col-md-3">
+                        <label class="form-label">
+                            NIK
+                            <span class="required">*</span>
+                        </label>
 
-                    <h5 class="mb-0">
-                        Data SPMB
-                    </h5>
+                        <input
+                            type="text"
+                            name="nik"
+                            maxlength="16"
+                            class="form-control"
+                            value="{{ old('nik') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">
+                            NISN
+                        </label>
+
+                        <input
+                            type="text"
+                            name="nisn"
+                            maxlength="10"
+                            class="form-control"
+                            value="{{ old('nisn') }}"
+                        >
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">
+                            Jenis Kelamin
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            name="jenis_kelamin"
+                            class="form-select"
+                            required
+                        >
+                            <option value="">Pilih</option>
+
+                            <option
+                                value="laki-laki"
+                                @selected(old('jenis_kelamin') === 'laki-laki')
+                            >
+                                Laki-laki
+                            </option>
+
+                            <option
+                                value="perempuan"
+                                @selected(old('jenis_kelamin') === 'perempuan')
+                            >
+                                Perempuan
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">
+                            Tempat Lahir
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="tempat_lahir"
+                            class="form-control"
+                            value="{{ old('tempat_lahir') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">
+                            Tanggal Lahir
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="date"
+                            name="tanggal_lahir"
+                            class="form-control"
+                            value="{{ old('tanggal_lahir') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">
+                            Alamat
+                            <span class="required">*</span>
+                        </label>
+
+                        <textarea
+                            name="alamat"
+                            class="form-control"
+                            rows="3"
+                            required
+                        >{{ old('alamat') }}</textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Asal Sekolah
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="asal_sekolah"
+                            class="form-control"
+                            value="{{ old('asal_sekolah') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">
+                            Tahun Lulus
+                        </label>
+
+                        <input
+                            type="number"
+                            name="tahun_lulus"
+                            class="form-control"
+                            value="{{ old('tahun_lulus') }}"
+                        >
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">
+                            No. KK
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="no_kk"
+                            maxlength="16"
+                            class="form-control"
+                            value="{{ old('no_kk') }}"
+                            required
+                        >
+                    </div>
 
                 </div>
+            </div>
+        </div>
 
-                <div class="card-body">
+        <div class="form-card">
+            <div class="form-card-header">
+                <h5 class="form-card-title">Data SPMB</h5>
+            </div>
 
-                    <div class="row g-3">
+            <div class="form-card-body">
+                <div class="row g-3">
 
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Jurusan
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            name="jurusan_id"
+                            class="form-select"
+                            required
+                        >
+                            <option value="">Pilih Jurusan</option>
+
+                            @foreach($jurusan as $item)
+                                <option
+                                    value="{{ $item->id }}"
+                                    @selected(old('jurusan_id') == $item->id)
+                                >
+                                    {{ $item->kode_jurusan }} - {{ $item->nama_jurusan }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">
+                            Jalur Pendaftaran
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            name="jalur_pendaftaran"
+                            class="form-select"
+                            required
+                        >
+                            <option value="">Pilih Jalur</option>
+
+                            <option
+                                value="Domisili"
+                                @selected(old('jalur_pendaftaran') === 'Domisili')
+                            >
+                                Domisili
+                            </option>
+
+                            <option
+                                value="Prestasi"
+                                @selected(old('jalur_pendaftaran') === 'Prestasi')
+                            >
+                                Prestasi
+                            </option>
+
+                            <option
+                                value="Afirmasi"
+                                @selected(old('jalur_pendaftaran') === 'Afirmasi')
+                            >
+                                Afirmasi
+                            </option>
+
+                            <option
+                                value="Mutasi"
+                                @selected(old('jalur_pendaftaran') === 'Mutasi')
+                            >
+                                Mutasi
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">
+                            Status Penerimaan
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            name="status_penerimaan"
+                            class="form-select"
+                            required
+                        >
+                            <option
+                                value="diterima"
+                                @selected(old('status_penerimaan', 'diterima') === 'diterima')
+                            >
+                                Diterima
+                            </option>
+
+                            <option
+                                value="tidak_diterima"
+                                @selected(old('status_penerimaan') === 'tidak_diterima')
+                            >
+                                Tidak Diterima
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <div class="form-card-header">
+                <h5 class="form-card-title">Data Orang Tua</h5>
+            </div>
+
+            <div class="form-card-body">
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+                        <label class="form-label">
+                            Nama Ayah
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="nama_ayah"
+                            class="form-control"
+                            value="{{ old('nama_ayah') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">
+                            Nama Ibu
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="nama_ibu"
+                            class="form-control"
+                            value="{{ old('nama_ibu') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">
+                            No. HP Orang Tua
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="no_hp_ortu"
+                            class="form-control"
+                            value="{{ old('no_hp_ortu') }}"
+                            required
+                        >
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <div class="form-card-header">
+                <h5 class="form-card-title">Dokumen Daftar Ulang</h5>
+            </div>
+
+            <div class="form-card-body">
+                <div class="row g-3">
+
+                    @php
+                        $dokumen = [
+                            'skl_ijazah' => 'SKL / Ijazah',
+                            'rapor' => 'Rapor',
+                            'kk' => 'Kartu Keluarga',
+                            'akta_kelahiran' => 'Akta Kelahiran',
+                            'surat_kesehatan' => 'Surat Kesehatan',
+                            'surat_pernyataan_orang_tua' => 'Surat Pernyataan Orang Tua',
+                            'bukti_penerimaan' => 'Bukti Penerimaan Tahap',
+                        ];
+                    @endphp
+
+                    @foreach($dokumen as $key => $label)
                         <div class="col-md-6">
+                            <div class="document-item">
 
-                            <label class="form-label">
-                                Jurusan *
-                            </label>
-
-                            <select name="jurusan_id" class="form-select" required>
-
-                                <option value="">
-                                    Pilih Jurusan
-                                </option>
-
-                                @foreach($jurusan as $item)
-
-                                    <option value="{{ $item->id }}" @selected(old('jurusan_id') == $item->id)>
-
-                                        {{ $item->kode_jurusan }}
-                                        -
-                                        {{ $item->nama_jurusan }}
-
-                                    </option>
-
-                                @endforeach
-
-                            </select>
-
-                        </div>
-
-
-                        <div class="col-md-3">
-
-                            <label class="form-label">
-                                Jalur Pendaftaran *
-                            </label>
-
-                            <select name="jalur_pendaftaran" class="form-select" required>
-
-                                <option value="">
-                                    Pilih Jalur
-                                </option>
-
-                                <option value="Domisili">
-                                    Domisili
-                                </option>
-
-                                <option value="Prestasi">
-                                    Prestasi
-                                </option>
-
-                                <option value="Afirmasi">
-                                    Afirmasi
-                                </option>
-
-                                <option value="Mutasi">
-                                    Mutasi
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <div class="col-md-3">
-
-                            <label class="form-label">
-                                Status Penerimaan *
-                            </label>
-
-                            <select name="status_penerimaan" class="form-select" required>
-
-                                <option value="diterima">
-                                    Diterima
-                                </option>
-
-                                <option value="tidak_diterima">
-                                    Tidak Diterima
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            
-
-            <div class="card shadow-sm border-0 mb-4">
-
-                <div class="card-header bg-white">
-
-                    <h5 class="mb-0">
-                        Data Orang Tua
-                    </h5>
-
-                </div>
-
-                <div class="card-body">
-
-                    <div class="row g-3">
-
-                        <div class="col-md-4">
-
-                            <label class="form-label">
-                                Nama Ayah *
-                            </label>
-
-                            <input type="text" name="nama_ayah" class="form-control" value="{{ old('nama_ayah') }}"
-                                required>
-
-                        </div>
-
-
-                        <div class="col-md-4">
-
-                            <label class="form-label">
-                                Nama Ibu *
-                            </label>
-
-                            <input type="text" name="nama_ibu" class="form-control" value="{{ old('nama_ibu') }}" required>
-
-                        </div>
-
-
-                        <div class="col-md-4">
-
-                            <label class="form-label">
-                                No. HP Orang Tua *
-                            </label>
-
-                            <input type="text" name="no_hp_ortu" class="form-control" value="{{ old('no_hp_ortu') }}"
-                                required>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            
-
-            <div class="card shadow-sm border-0 mb-4">
-
-                <div class="card-header bg-white">
-
-                    <h5 class="mb-0">
-                        Dokumen Daftar Ulang
-                    </h5>
-
-                </div>
-
-                <div class="card-body">
-
-                    <div class="row g-3">
-
-                        @php
-
-                            $dokumen = [
-                                'skl_ijazah' => 'SKL / Ijazah',
-                                'rapor' => 'Rapor',
-                                'kk' => 'Kartu Keluarga',
-                                'akta_kelahiran' => 'Akta Kelahiran',
-                                'surat_kesehatan' => 'Surat Kesehatan',
-                                'surat_pernyataan_orang_tua' => 'Surat Pernyataan Orang Tua',
-                                'bukti_penerimaan' => 'Bukti Penerimaan Tahap',
-                            ];
-
-                        @endphp
-
-
-                        @foreach($dokumen as $key => $label)
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
+                                <label class="document-label">
                                     {{ $label }}
                                 </label>
 
-                                <input type="file" name="dokumen[{{ $key }}]" class="form-control"
-                                    accept=".pdf,.jpg,.jpeg,.png">
+                                <input
+                                    type="file"
+                                    name="dokumen[{{ $key }}]"
+                                    class="form-control file-input"
+                                    accept=".pdf,.jpg,.jpeg,.png"
+                                >
 
-                                <small class="text-muted">
+                                <small class="document-help">
                                     PDF/JPG/PNG, maksimal 2 MB.
                                 </small>
 
                             </div>
-
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-        </div>
-    </div>
-
-    <div class="form-card">
-        <div class="form-card-header">
-            <h5 class="form-card-title">Data SPMB</h5>
-        </div>
-
-        <div class="form-card-body">
-            <div class="row g-3">
-
-                <div class="col-md-6">
-                    <label class="form-label">
-                        Jurusan
-                        <span class="required">*</span>
-                    </label>
-
-                    <select name="jurusan_id" class="form-select" required>
-                        <option value="">Pilih Jurusan</option>
-
-                        @foreach($jurusan as $item)
-                            <option
-                                value="{{ $item->id }}"
-                                @selected(old('jurusan_id') == $item->id)
-                            >
-                                {{ $item->kode_jurusan }} - {{ $item->nama_jurusan }}
-                            </option>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">
-                        Jalur Pendaftaran
-                        <span class="required">*</span>
-                    </label>
-
-                    <select name="jalur_pendaftaran" class="form-select" required>
-                        <option value="">Pilih Jalur</option>
-
-                        <option
-                            value="Domisili"
-                            @selected(old('jalur_pendaftaran') === 'Domisili')
-                        >
-                            Domisili
-                        </option>
-
-                        <option
-                            value="Prestasi"
-                            @selected(old('jalur_pendaftaran') === 'Prestasi')
-                        >
-                            Prestasi
-                        </option>
-
-                        <option
-                            value="Afirmasi"
-                            @selected(old('jalur_pendaftaran') === 'Afirmasi')
-                        >
-                            Afirmasi
-                        </option>
-
-                        <option
-                            value="Mutasi"
-                            @selected(old('jalur_pendaftaran') === 'Mutasi')
-                        >
-                            Mutasi
-                        </option>
-                    </select>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">
-                        Status Penerimaan
-                        <span class="required">*</span>
-                    </label>
-
-                    <select name="status_penerimaan" class="form-select" required>
-                        <option
-                            value="diterima"
-                            @selected(old('status_penerimaan', 'diterima') === 'diterima')
-                        >
-                            Diterima
-                        </option>
-
-                        <option
-                            value="tidak_diterima"
-                            @selected(old('status_penerimaan') === 'tidak_diterima')
-                        >
-                            Tidak Diterima
-                        </option>
-                    </select>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="form-card">
-        <div class="form-card-header">
-            <h5 class="form-card-title">Data Orang Tua</h5>
-        </div>
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            
-=======
-        <div class="form-card-body">
-            <div class="row g-3">
->>>>>>> Stashed changes
-=======
-        <div class="form-card-body">
-            <div class="row g-3">
->>>>>>> Stashed changes
-=======
-        <div class="form-card-body">
-            <div class="row g-3">
->>>>>>> Stashed changes
-
-                <div class="col-md-4">
-                    <label class="form-label">
-                        Nama Ayah
-                        <span class="required">*</span>
-                    </label>
-
-                    <input
-                        type="text"
-                        name="nama_ayah"
-                        class="form-control"
-                        value="{{ old('nama_ayah') }}"
-                        required
-                    >
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">
-                        Nama Ibu
-                        <span class="required">*</span>
-                    </label>
-
-                    <input
-                        type="text"
-                        name="nama_ibu"
-                        class="form-control"
-                        value="{{ old('nama_ibu') }}"
-                        required
-                    >
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">
-                        No. HP Orang Tua
-                        <span class="required">*</span>
-                    </label>
-
-                    <input
-                        type="text"
-                        name="no_hp_ortu"
-                        class="form-control"
-                        value="{{ old('no_hp_ortu') }}"
-                        required
-                    >
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="form-card">
-        <div class="form-card-header">
-            <h5 class="form-card-title">Dokumen Daftar Ulang</h5>
-        </div>
-
-        <div class="form-card-body">
-            <div class="row g-3">
-
-                @php
-                    $dokumen = [
-                        'skl_ijazah' => 'SKL / Ijazah',
-                        'rapor' => 'Rapor',
-                        'kk' => 'Kartu Keluarga',
-                        'akta_kelahiran' => 'Akta Kelahiran',
-                        'surat_kesehatan' => 'Surat Kesehatan',
-                        'surat_pernyataan_orang_tua' => 'Surat Pernyataan Orang Tua',
-                        'bukti_penerimaan' => 'Bukti Penerimaan Tahap',
-                    ];
-                @endphp
-
-                @foreach($dokumen as $key => $label)
-                    <div class="col-md-6">
-                        <div class="document-item">
-
-                            <label class="document-label">
-                                {{ $label }}
-                            </label>
-
-                            <input
-                                type="file"
-                                name="dokumen[{{ $key }}]"
-                                class="form-control file-input"
-                                accept=".pdf,.jpg,.jpeg,.png"
-                            >
-
-                            <small class="document-help">
-                                PDF/JPG/PNG, maksimal 2 MB.
-                            </small>
-
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
 
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="form-card form-actions-card">
-        <div class="form-card-body">
-            <div class="form-actions">
+        <div class="form-card form-actions-card">
+            <div class="form-card-body">
+                <div class="form-actions">
 
-                <a
-                    href="{{ route('admin.spmb.index') }}"
-                    class="btn-cancel"
-                >
-                    Batal
-                </a>
+                    <a
+                        href="{{ route('admin.spmb.index') }}"
+                        class="btn-cancel"
+                    >
+                        Batal
+                    </a>
 
-                <button type="submit" class="btn-save">
-                    Simpan Calon Siswa
-                </button>
+                    <button
+                        type="submit"
+                        class="btn-save"
+                    >
+                        Simpan Calon Siswa
+                    </button>
 
+                </div>
             </div>
         </div>
-    </div>
 
-</form>
+    </form>
 
 </div>
 

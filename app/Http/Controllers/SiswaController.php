@@ -31,13 +31,14 @@ class SiswaController extends Controller
             'nama' => 'required|max:255',
             'jk' => 'required|in:Perempuan,Laki-laki',
             'tempat_lahir' => 'required|max:100',
-            'tgl_lahir' => 'required|date',
+            'tanggal_lahir' => 'required|date',
             'agama' => 'required|in:Islam,Kristen,Katolik,Budha,Hindu,Konghucu',
             'nik' => 'nullable|max:20',
             'no_kk' => 'nullable|max:20',
             'alamat' => 'required',
             'no_hp' => 'nullable|max:20',
             'email' => 'nullable|email|max:255',
+            'nama_orang_tua' => 'required|max:255',
             'password' => Hash::make($request->nis),
         ]);
 
@@ -69,13 +70,14 @@ class SiswaController extends Controller
             'nama' => 'required|max:255',
             'jk' => 'required|in:Perempuan,Laki-laki',
             'tempat_lahir' => 'required|max:100',
-            'tgl_lahir' => 'required|date',
+            'tanggal_lahir' => 'required|date',
             'agama' => 'required|in:Islam,Kristen,Katolik,Budha,Hindu,Konghucu',
             'nik' => 'nullable|max:20',
             'no_kk' => 'nullable|max:20',
             'alamat' => 'required',
             'no_hp' => 'nullable|max:20',
             'email' => 'nullable|email|max:255',
+            'nama_orang_tua' => 'required|max:255',
         ]);
 
         Siswa::findOrFail($id)->update($data);
