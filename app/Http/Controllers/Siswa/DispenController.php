@@ -91,6 +91,19 @@ class DispenController extends Controller
         );
     }
 
+    public function edit($id)
+    {
+        $siswa = $this->siswaLogin();
+
+        $dispen = Dispen::where('siswa_id', $siswa->id)
+            ->findOrFail($id);
+
+        return view(
+            'siswa.dispen.create',
+            compact('dispen', 'siswa')
+        );
+    }
+
 
 
 
@@ -181,6 +194,37 @@ class DispenController extends Controller
                 'success',
                 'Pengajuan dispensasi berhasil disimpan.'
             );
+    }
+
+    public function update(Request $request, $id)
+    {
+        $siswa = $this->siswaLogin();
+
+        $dispen = Dispen::where('siswa_id', $siswa->id)
+            ->findOrFail($id);
+
+        $data = $request->validate([
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'kegiatan' => 'required|string|max:255',
+            'alasan' => 'required|string|max:1000',
+            'surat' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+        ]);
+
+        if ($request->hasFile('surat')) {
+            if ($dispen->surat) {
+                Storage::disk('public')->delete($dispen->surat);
+            }
+
+            $data['surat'] = $request->file('surat')
+                ->store('dispen', 'public');
+        }
+
+        $dispen->update($data);
+
+        return redirect()
+            ->route('siswa.dispen.index')
+            ->with('success', 'Pengajuan dispensasi berhasil diperbarui.');
     }
 
 

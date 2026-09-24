@@ -4,29 +4,38 @@
 
 @push('styles')
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #1f2937;
+        }
+
         .dispen-detail-page {
             color: #1f2937;
         }
 
         .dispen-detail-page .card {
             border: 1px solid #e5e7eb !important;
-            border-radius: 14px;
+            border-top: 4px solid #2449a4 !important;
+            border-radius: 12px;
         }
 
         .dispen-detail-page .detail-reason {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            color: #334155;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            color: #1e3a8a;
             line-height: 1.6;
         }
 
         .dispen-detail-page .status-icon {
             align-items: center;
+            box-sizing: border-box;
             display: inline-flex;
+            border-radius: 50%;
             justify-content: center;
-            width: 72px;
             height: 72px;
+            padding: 0;
+            width: 72px;
         }
     </style>
 @endpush
@@ -35,29 +44,27 @@
 
     <div class="container-fluid py-4 dispen-detail-page">
 
-        <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center gap-3 mb-4">
 
-            <a href="{{ route('siswa.dispen.index') }}" class="text-decoration-none text-muted">
+            <div>
+                <h3 class="fw-bold mt-3 mb-1">
 
-                <i class="bi bi-arrow-left me-1"></i>
+                    Detail Dispensasi
 
-                Kembali ke Dispensasi
+                </h3>
+
+
+                <p class="text-muted mb-0">
+
+                    Informasi pengajuan dispensasi kamu.
+
+                </p>
+            </div>
+
+            <a href="{{ route('siswa.dispen.index') }}" class="btn btn-secondary flex-shrink-0">
+                Kembali
 
             </a>
-
-
-            <h3 class="fw-bold mt-3 mb-1">
-
-                Detail Dispensasi
-
-            </h3>
-
-
-            <p class="text-muted mb-0">
-
-                Informasi pengajuan dispensasi kamu.
-
-            </p>
 
         </div>
 
@@ -173,7 +180,7 @@
                                 @if($dispen->surat)
 
                                     <a href="{{ asset('storage/' . $dispen->surat) }}" target="_blank"
-                                        class="btn btn-outline-success">
+                                        class="btn btn-outline-primary">
 
                                         <i class="bi bi-file-earmark-text me-1"></i>
 
@@ -217,13 +224,13 @@
 
                             @if($dispen->status === 'menunggu')
 
-                                <div class="rounded-circle
-                                                       bg-warning
-                                                       bg-opacity-10
-                                                       text-warning
-                                                       d-inline-flex
-                                                       p-4
-                                                       mb-3">
+                                <div class="status-icon rounded-circle
+                                                                               bg-warning
+                                                                               bg-opacity-10
+                                                                               text-warning
+                                                                               d-inline-flex
+                                                                               p-4
+                                                                               mb-3">
 
                                     <i class="bi bi-clock-history fs-2"></i>
 
@@ -243,13 +250,13 @@
 
                             @elseif($dispen->status === 'disetujui')
 
-                                <div class="rounded-circle
-                                                       bg-success
-                                                       bg-opacity-10
-                                                       text-success
-                                                       d-inline-flex
-                                                       p-4
-                                                       mb-3">
+                                <div class="status-icon rounded-circle
+                                                                               bg-success
+                                                                               bg-opacity-10
+                                                                               text-success
+                                                                               d-inline-flex
+                                                                               p-4
+                                                                               mb-3">
 
                                     <i class="bi bi-check-circle fs-2"></i>
 
@@ -268,13 +275,13 @@
 
                             @elseif($dispen->status === 'ditolak')
 
-                                <div class="rounded-circle
-                                                       bg-danger
-                                                       bg-opacity-10
-                                                       text-danger
-                                                       d-inline-flex
-                                                       p-4
-                                                       mb-3">
+                                <div class="status-icon rounded-circle
+                                                                               bg-danger
+                                                                               bg-opacity-10
+                                                                               text-danger
+                                                                               d-inline-flex
+                                                                               p-4
+                                                                               mb-3">
 
                                     <i class="bi bi-x-circle fs-2"></i>
 
@@ -328,12 +335,12 @@
 
                         @endif
 
+
                     </div>
 
                 </div>
 
             </div>
-
         </div>
 
     </div>

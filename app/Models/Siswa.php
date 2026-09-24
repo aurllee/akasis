@@ -18,6 +18,7 @@ class Siswa extends Model
         'tempat_lahir',
         'tanggal_lahir',
         'jk',
+        'tanggal_lahir',
         'agama',
         'nik',
         'no_kk',
@@ -59,12 +60,12 @@ class Siswa extends Model
         return $this->hasMany(PembagianKelas::class);
     }
     public function absensi()
-    {
-        return $this->hasMany(
-            Absensi::class,
-            'siswa_id'
-        );
-    }
+{
+    return $this->hasMany(
+        Absensi::class,
+        'siswa_id'
+    );
+}
 
     public function sakit()
     {

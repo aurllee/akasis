@@ -79,8 +79,6 @@
                     </p>
                 </div>
 
-
-
                 @if($sesi)
 
                     <div class="attendance-code text-center my-4 p-3">

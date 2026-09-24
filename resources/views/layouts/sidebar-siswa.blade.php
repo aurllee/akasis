@@ -21,7 +21,7 @@
             class="{{ request()->routeIs('siswa.absensi.*') ? 'active' : '' }}">
             <i class="bi bi-calendar-check" aria-hidden="true"></i><span>Absensi</span>
         </a>
-        <a href="{{ route('siswa.perizinan.sakit') }}"
+        <a href="{{ route('siswa.perizinan.index') }}"
             class="{{ request()->routeIs('siswa.perizinan.*') ? 'active' : '' }}">
             <i class="bi bi-heart-pulse" aria-hidden="true"></i><span>Izin</span>
         </a>

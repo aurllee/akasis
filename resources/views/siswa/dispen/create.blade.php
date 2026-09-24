@@ -11,12 +11,14 @@
             }
 
             h3 {
+                color: #1e293b;
                 font-size: 25px;
             }
 
             .card {
                 border: 1px solid #e5e7eb !important;
-                border-radius: 14px;
+                border-top: 4px solid #2449a4 !important;
+                border-radius: 12px;
             }
 
             .form-control {
@@ -36,7 +38,7 @@
         <div class="mb-4">
             <h3 class="fw-500 mt-3 mb-3">
 
-                Ajukan Dispensasi
+                {{ isset($dispen) ? 'Edit Dispensasi' : 'Ajukan Dispensasi' }}
 
             </h3>
 
@@ -56,9 +58,15 @@
 
             <div class="card-body p-4">
 
-                <form action="{{ route('siswa.dispen.store') }}" method="POST" enctype="multipart/form-data">
+                <form
+                    action="{{ isset($dispen) ? route('siswa.dispen.update', $dispen->id) : route('siswa.dispen.store') }}"
+                    method="POST" enctype="multipart/form-data">
 
                     @csrf
+
+                    @isset($dispen)
+                        @method('PUT')
+                    @endisset
 
                     <div class="mb-4">
 
@@ -118,7 +126,8 @@
 
                                 <input type="date" name="tanggal_mulai" id="tanggal_mulai"
                                     class="form-control @error('tanggal_mulai') is-invalid @enderror"
-                                    value="{{ old('tanggal_mulai') }}" required>
+                                    value="{{ old('tanggal_mulai', isset($dispen) ? $dispen->tanggal_mulai->format('Y-m-d') : '') }}"
+                                    required>
 
                                 @error('tanggal_mulai')
 
@@ -140,7 +149,8 @@
 
                                 <input type="date" name="tanggal_selesai" id="tanggal_selesai"
                                     class="form-control @error('tanggal_selesai') is-invalid @enderror"
-                                    value="{{ old('tanggal_selesai') }}" required>
+                                    value="{{ old('tanggal_selesai', isset($dispen) ? $dispen->tanggal_selesai->format('Y-m-d') : '') }}"
+                                    required>
 
                                 @error('tanggal_selesai')
 
@@ -166,7 +176,8 @@
                         </label>
 
                         <input type="text" name="kegiatan" id="kegiatan"
-                            class="form-control @error('kegiatan') is-invalid @enderror" value="{{ old('kegiatan') }}"
+                            class="form-control @error('kegiatan') is-invalid @enderror"
+                            value="{{ old('kegiatan', $dispen->kegiatan ?? '') }}"
                             placeholder="Contoh: Lomba atau kegiatan sekolah" required>
 
                         @error('kegiatan')
@@ -187,7 +198,8 @@
 
                         <textarea name="alasan" id="alasan" rows="5"
                             class="form-control @error('alasan') is-invalid @enderror"
-                            placeholder="Jelaskan alasan pengajuan dispensasi..." required>{{ old('alasan') }}</textarea>
+                            placeholder="Jelaskan alasan pengajuan dispensasi..."
+                            required>{{ old('alasan', $dispen->alasan ?? '') }}</textarea>
 
 
                         @error('alasan')
@@ -207,12 +219,29 @@
 
                         <label for="surat" class="form-label fw-semibold">
                             Surat Dispensasi dari Kesiswaan
-                            <span class="text-danger">*</span>
+                            @unless(isset($dispen))
+                                <span class="text-danger">*</span>
+                            @endunless
                         </label>
 
 
+                        @isset($dispen)
+                            @if($dispen->surat)
+                                <div class="mb-2">
+                                    <a href="{{ asset('storage/' . $dispen->surat) }}" target="_blank"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-file-earmark-text me-1"></i>
+                                        Lihat Surat Saat Ini
+                                    </a>
+                                </div>
+                                <div class="form-text mb-2">
+                                    Tidak perlu upload ulang jika tidak ingin mengganti surat.
+                                </div>
+                            @endif
+                        @endisset
+
                         <input type="file" name="surat" id="surat" class="form-control @error('surat') is-invalid @enderror"
-                            accept=".pdf,.jpg,.jpeg,.png" required>
+                            accept=".pdf,.jpg,.jpeg,.png" {{ isset($dispen) ? '' : 'required' }}>
 
 
                         <div class="form-text">
@@ -243,11 +272,9 @@
                         </a>
 
 
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-primary">
 
-                            <i class="bi bi-send me-1"></i>
-
-                            Ajukan Dispensasi
+                            {{ isset($dispen) ? 'Simpan Perubahan' : 'Ajukan Dispensasi' }}
 
                         </button>
 

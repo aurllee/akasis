@@ -129,35 +129,34 @@
             <p class="page-subtitle">Selamat datang, {{ $guru->nama ?? 'Guru' }}</p>
         </div>
         <div class="page-card mb-3">
-            <div class="info-grid" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+            <div class="info-grid">
                 <div class="info-item">
-                    <span class="info-label">NIP</span>
-                    <span class="info-value">{{ $guru->nip ?? 'NIP tidak tersedia' }}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Jenis Kelamin</span>
-                    <span class="info-value">{{ $guru->jk ?? 'Jenis kelamin tidak tersedia' }}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Mata Pelajaran</span>
-                    <span class="info-value">{{ $guru->mataPelajaran?->nama_mapel ?? 'Mapel tidak tersedia' }}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Wali Kelas</span>
-                    <span class="info-value">
-                        @if($waliKelas->isNotEmpty())
-                            @foreach($waliKelas as $wk)
-                                {{ $wk->kelas?->tingkat }}
-                                {{ $wk->kelas?->nama_kelas }}
-                                {{ $wk->kelas?->jurusan?->kode_jurusan ?? '' }}{{ !$loop->last ? ', ' : '' }}
-                            @endforeach
-                        @else
-                            <span style="color: #94a3b8; font-weight: 400;">Bukan Wali Kelas</span>
-                        @endif
-                    </span>
-                </div>
-            </div>
-        </div>
+                    <div class="info-grid" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+    <div class="info-item">
+        <span class="info-label">NIP</span>
+        <span class="info-value">{{ $guru->nip ?? 'NIP tidak tersedia' }}</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">Jenis Kelamin</span>
+        <span class="info-value">{{ $guru->jk ?? 'Jenis kelamin tidak tersedia' }}</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">Mata Pelajaran</span>
+        <span class="info-value">{{ $guru->mataPelajaran?->nama_mapel ?? 'Mapel tidak tersedia' }}</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">Wali Kelas</span>
+        <span class="info-value">
+            @if($waliKelas->isNotEmpty())
+                @foreach($waliKelas as $wk)
+                    {{ $wk->kelas?->nama_kelas }} {{ $wk->kelas?->jurusan?->nama_jurusan ?? '' }}{{ !$loop->last ? ', ' : '' }}
+                @endforeach
+            @else
+                <span style="color: #94a3b8; font-weight: 400;">Bukan Wali Kelas</span>
+            @endif
+        </span>
+    </div>
+</div>
 
         <div class="page-card schedule-card">
             <h2 class="mb-3">Jadwal Mengajar</h2>

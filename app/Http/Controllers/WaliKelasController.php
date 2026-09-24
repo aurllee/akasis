@@ -13,45 +13,45 @@ use Illuminate\Http\Request;
 class WaliKelasController extends Controller
 {
     public function dashboard()
-    {
-        $guruId = auth()->user()->guru_id;
+{
+    $guruId = auth()->user()->guru_id;
 
-        $guru = auth()->user()->guru;
+    $guru = auth()->user()->guru;
 
-        $jadwal = Jadwal_pelajaran::with([
-            'kelas.jurusan',
-            'mapel',
-            'ruangan',
-        ])
-            ->where('guru_id', $guruId)
-            ->where('is_published', true)
-            ->orderBy('hari')
-            ->orderBy('jam_mulai')
-            ->get();
+    $jadwal = Jadwal_pelajaran::with([
+        'kelas.jurusan',
+        'mapel',
+        'ruangan',
+    ])
+        ->where('guru_id', $guruId)
+        ->where('is_published', true)
+        ->orderBy('hari')
+        ->orderBy('jam_mulai')
+        ->get();
 
-        $waliKelas = WaliKelas::with([
-            'kelas.jurusan',
-            'kelas.tahunAjaran'
-        ])
-            ->where('guru_id', $guruId)
-            ->get();
+    $waliKelas = WaliKelas::with([
+        'kelas.jurusan',
+        'kelas.tahunAjaran'
+    ])
+        ->where('guru_id', $guruId)
+        ->get();
 
-        $kelasWali = $waliKelas->first()?->kelas;
+    $kelasWali = $waliKelas->first()?->kelas;
 
-        $jadwalMengajar = Jadwal_pelajaran::with([
-            'kelas.jurusan',
-            'mataPelajaran'
-        ])
-            ->where('guru_id', $guruId)
-            ->get();
+    $jadwalMengajar = Jadwal_pelajaran::with([
+        'kelas.jurusan',
+        'mataPelajaran'
+    ])
+        ->where('guru_id', $guruId)
+        ->get();
 
-        return view('wali-kelas.dashboard', compact(
-            'guru',
-            'jadwal',
-            'waliKelas',
-            'jadwalMengajar'
-        ));
-    }
+    return view('wali-kelas.dashboard', compact(
+        'guru',
+        'jadwal',
+        'waliKelas',
+        'jadwalMengajar'
+    ));
+}
 
     public function index()
     {

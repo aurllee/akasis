@@ -66,8 +66,6 @@
 
             <div>
 
-                <h1>Dispensasi</h1>
-
                 <p class="text-muted mb-0">
                     Kelola pengajuan dispensasi kamu.
                 </p>
@@ -204,7 +202,7 @@
                                                                     @if($item->surat)
 
                                                                         <a href="{{ asset('storage/' . $item->surat) }}" target="_blank"
-                                                                            class="btn btn-sm btn-outline-success" title="Lihat Surat">
+                                                                            class="btn btn-sm btn-outline-primary" title="Lihat Surat">
 
                                                                             <i class="bi bi-file-earmark-text me-1"></i>
 
@@ -228,10 +226,17 @@
 
                                                                 <td class="text-center">
 
+                                                                    <a href="{{ route('siswa.dispen.edit', $item->id) }}"
+                                                                        class="btn btn-sm btn-outline-warning" title="Edit">
+
+                                                                        <i class="bi bi-pencil"></i>
+
+                                                                    </a>
+
                                                                     <a href="{{ route(
                                         'siswa.dispen.show',
                                         $item->id
-                                    ) }}" class="btn btn-sm btn-outline-success" title="Lihat Detail">
+                                    ) }}" class="btn btn-sm btn-outline-primary" title="Lihat Detail">
 
                                                                         <i class="bi bi-eye"></i>
 
@@ -275,12 +280,12 @@
                     @if($dispensasi->hasPages())
 
                         <div class="d-flex
-                                                       justify-content-between
-                                                       align-items-center
-                                                       flex-wrap
-                                                       gap-3
-                                                       p-4
-                                                       border-top">
+                                                                       justify-content-between
+                                                                       align-items-center
+                                                                       flex-wrap
+                                                                       gap-3
+                                                                       p-4
+                                                                       border-top">
 
                             <div class="text-muted small">
 
