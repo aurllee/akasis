@@ -42,4 +42,27 @@ class WaliKelasDashboardTest extends TestCase
         $this->assertStringContainsString('Bahasa Indonesia', $html);
         $this->assertStringContainsString('Wali Kelas', $html);
     }
+
+    public function test_wali_kelas_izin_tidak_masuk_view_uses_consistent_academic_ui(): void
+    {
+        $html = view('wali-kelas.sakit.index', [
+            'data' => collect(),
+        ])->render();
+
+        $this->assertStringContainsString('Izin Tidak Masuk Siswa', $html);
+        $this->assertStringContainsString('data-card-header', $html);
+        $this->assertStringContainsString('status-badge', $html);
+        $this->assertStringContainsString('Belum ada pengajuan izin tidak masuk siswa.', $html);
+    }
+
+    public function test_wali_kelas_izin_tidak_masuk_has_search_and_status_filter_controls(): void
+    {
+        $html = view('wali-kelas.sakit.index', [
+            'data' => collect(),
+        ])->render();
+
+        $this->assertStringContainsString('name="search"', $html);
+        $this->assertStringContainsString('name="status"', $html);
+        $this->assertStringContainsString('Cari Siswa', $html);
+    }
 }

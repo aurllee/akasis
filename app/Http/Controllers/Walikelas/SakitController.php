@@ -9,13 +9,37 @@ use Illuminate\Support\Facades\Auth;
 
 class SakitController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $guruId = Auth::user()->guru_id;
 
-        $data = Sakit::with('siswa')
-            ->where('walikelas_id', $guruId)
-            ->where('status_walikelas', 'menunggu')
+        $query = Sakit::with('siswa')
+            ->where('walikelas_id', $guruId);
+
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+
+            $query->whereHas('siswa', function ($q) use ($search) {
+                $q->where(function ($subQuery) use ($search) {
+                    $subQuery->where('nama', 'like', "%{$search}%")
+                        ->orWhere('nis', 'like', "%{$search}%")
+                        ->orWhere('nisn', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        if ($request->filled('status')) {
+            $status = $request->status;
+
+            $query->where('status_walikelas', match ($status) {
+                'menunggu' => 'menunggu',
+                'disetujui' => 'disetujui',
+                'ditolak' => 'ditolak',
+                default => null,
+            });
+        }
+
+        $data = $query
             ->latest()
             ->get();
 
