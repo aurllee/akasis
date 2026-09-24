@@ -6,8 +6,8 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: 
-            background: 
+            color: #1f2937;
+            background: #f4f7fb;
         }
 
         .page-wrap {
@@ -15,8 +15,8 @@
         }
 
         .page-card {
-            background: 
-            border: 1px solid 
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
             padding: 24px;
@@ -30,15 +30,15 @@
 
         .page-subtitle {
             margin: 0 0 22px;
-            color: 
+            color: #64748b;
         }
 
         .pjbl-card {
-            border: 1px solid 
+            border: 1px solid #e2e8f0;
             padding: 18px 20px;
             border-radius: 12px;
             margin-bottom: 16px;
-            background: 
+            background: #f8fafc;
         }
 
         .pjbl-card h3 {
@@ -48,7 +48,7 @@
 
         .pjbl-meta {
             margin: 6px 0;
-            color: 
+            color: #64748b;
         }
 
         .btn-nilai {
@@ -56,15 +56,15 @@
             margin-top: 12px;
             padding: 9px 14px;
             border-radius: 8px;
-            background: 
-            color: 
+            background: #2449a4;
+            color: #ffffff;
             text-decoration: none;
             font-weight: 500;
         }
 
         .btn-nilai:hover {
-            color: 
-            background: 
+            color: #ffffff;
+            background: #1e3a8a;
         }
 
         @media (max-width: 768px) {
@@ -83,15 +83,15 @@
     <div class="page-wrap">
         <div class="page-card">
             <div class="d-flex justify-content-between align-items-center mb-2">
-            <h2 class="page-title">Penilaian PjBL</h2>
+                <h2 class="page-title">Penilaian PjBL</h2>
 
-            <a href="{{ route('guru.penilaian-pjbl.riwayat') }}" class="btn-nilai fs-12">
-                <i class="bi bi-clock-history me-1"></i>
-                Riwayat Penilaian
-            </a>
-</div>
+                <a href="{{ route('guru.penilaian-pjbl.riwayat') }}" class="btn-nilai fs-12">
+                    <i class="bi bi-clock-history me-1"></i>
+                    Riwayat Penilaian
+                </a>
+            </div>
 
- <p class="page-subtitle">Guru: {{ $guru->nama ?? '-' }}</p>
+            <p class="page-subtitle">Guru: {{ $guru->nama ?? '-' }}</p>
             @forelse ($pjblPenguji as $item)
                 <div class="pjbl-card">
                     <h3>{{ $item->pjbl->periode ? ucwords(str_replace('_', ' ', $item->pjbl->periode)) : '-' }}</h3>

@@ -8,8 +8,6 @@ use App\Models\SiswaKelas;
 use App\Models\WaliKelas;
 use App\Models\Jadwal_pelajaran;
 use App\Models\PenilaianMapel;
-use App\Models\IzinKeluar;
-use App\Models\IzinPulang;
 use Illuminate\Http\Request;
 
 class WaliKelasController extends Controller
@@ -20,12 +18,25 @@ class WaliKelasController extends Controller
 
         $guru = auth()->user()->guru;
 
+        $jadwal = Jadwal_pelajaran::with([
+            'kelas.jurusan',
+            'mapel',
+            'ruangan',
+        ])
+            ->where('guru_id', $guruId)
+            ->where('is_published', true)
+            ->orderBy('hari')
+            ->orderBy('jam_mulai')
+            ->get();
+
         $waliKelas = WaliKelas::with([
             'kelas.jurusan',
             'kelas.tahunAjaran'
         ])
             ->where('guru_id', $guruId)
             ->get();
+
+        $kelasWali = $waliKelas->first()?->kelas;
 
         $jadwalMengajar = Jadwal_pelajaran::with([
             'kelas.jurusan',
@@ -36,6 +47,7 @@ class WaliKelasController extends Controller
 
         return view('wali-kelas.dashboard', compact(
             'guru',
+            'jadwal',
             'waliKelas',
             'jadwalMengajar'
         ));
@@ -45,7 +57,7 @@ class WaliKelasController extends Controller
     {
         $guruId = auth()->user()->guru_id;
 
-        
+
         $waliKelas = WaliKelas::with([
             'kelas.jurusan',
             'kelas.tahunAjaran'
@@ -53,7 +65,7 @@ class WaliKelasController extends Controller
             ->where('guru_id', $guruId)
             ->get();
 
-        
+
         $jadwalMengajar = Jadwal_pelajaran::with([
             'kelas',
             'mataPelajaran'
@@ -74,7 +86,7 @@ class WaliKelasController extends Controller
     {
         $guruId = auth()->user()->guru_id;
 
-        
+
         $waliKelas = WaliKelas::where('guru_id', $guruId)
             ->where('kelas_id', $kelas->id)
             ->firstOrFail();
@@ -97,7 +109,11 @@ class WaliKelasController extends Controller
 
     public function nilai(Siswa $siswa)
     {
-        return view('wali-kelas.nilai', compact('siswa'));
+        $nilaiList = PenilaianMapel::with(['jadwalPelajaran.mataPelajaran'])
+            ->where('siswa_id', $siswa->id)
+            ->get();
+
+        return view('wali-kelas.nilai', compact('siswa', 'nilaiList'));
     }
 
     public function rapor(Siswa $siswa)
@@ -118,7 +134,7 @@ class WaliKelasController extends Controller
             ->orderBy('jam_mulai')
             ->get();
 
-        
+
         $jpBerjalan = [];
 
         foreach ($jadwalMengajar as $jadwal) {
@@ -148,7 +164,7 @@ class WaliKelasController extends Controller
     {
         $guruId = auth()->user()->guru_id;
 
-        
+
         if ($jadwal->guru_id != $guruId) {
             abort(403);
         }
@@ -158,7 +174,7 @@ class WaliKelasController extends Controller
             'mataPelajaran'
         ]);
 
-        
+
 
         $jadwalSebelumnya = Jadwal_pelajaran::where('guru_id', $guruId)
             ->where('kelas_id', $jadwal->kelas_id)
@@ -178,13 +194,9 @@ class WaliKelasController extends Controller
         $jadwal->jp_selesai =
             $jpBerjalan + (int) $jadwal->jumlah_jp - 1;
 
-        
-
         $siswa = SiswaKelas::with('siswa')
             ->where('kelas_id', $jadwal->kelas_id)
             ->get();
-
-        
 
         $nilai = PenilaianMapel::where(
             'jadwal_pelajaran_id',
@@ -207,12 +219,9 @@ class WaliKelasController extends Controller
     ) {
         $guruId = auth()->user()->guru_id;
 
-        
         if ($jadwal->guru_id != $guruId) {
             abort(403);
         }
-
-        
 
         $request->validate([
             'nilai' => ['required', 'array'],
@@ -224,16 +233,16 @@ class WaliKelasController extends Controller
             ],
         ]);
 
-        
+
 
         foreach ($request->nilai as $siswaId => $nilaiSiswa) {
 
-            
+
             if ($nilaiSiswa === null || $nilaiSiswa === '') {
                 continue;
             }
 
-            
+
             $siswaValid = SiswaKelas::where('kelas_id', $jadwal->kelas_id)
                 ->where('siswa_id', $siswaId)
                 ->exists();
@@ -242,7 +251,7 @@ class WaliKelasController extends Controller
                 continue;
             }
 
-            
+
 
             PenilaianMapel::updateOrCreate(
                 [
@@ -256,7 +265,7 @@ class WaliKelasController extends Controller
             );
         }
 
-        
+
 
         return redirect()
             ->route(
@@ -273,61 +282,5 @@ class WaliKelasController extends Controller
     {
         return Jadwal_pelajaran::where('guru_id', auth()->user()->guru_id)
             ->pluck('kelas_id')->unique()->values();
-    }
-
-    public function izinKeluar()
-    {
-        $izinKeluar = IzinKeluar::with('siswa')
-            ->whereHas('siswa.siswaKelas', fn ($query) => $query->whereIn('kelas_id', $this->kelasYangDiajar()))
-            ->latest('id')->paginate(20)->withQueryString();
-
-        return view('wali-kelas.izin-keluar.index', compact('izinKeluar'));
-    }
-
-    public function verifikasiIzinKeluar(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'status_wali_kelas' => 'required|in:diterima,ditolak',
-            'catatan_wali_kelas' => 'nullable|string|max:1000',
-        ]);
-
-        $izin = IzinKeluar::whereKey($id)
-            ->whereHas('siswa.siswaKelas', fn ($query) => $query->whereIn('kelas_id', $this->kelasYangDiajar()))
-            ->firstOrFail();
-        $izin->update([
-            'status_wali_kelas' => $validated['status_wali_kelas'],
-            'waktu_verifikasi_wali_kelas' => now(),
-            'catatan_wali_kelas' => $validated['catatan_wali_kelas'] ?? null,
-        ]);
-
-        return back()->with('success', 'Izin keluar berhasil diverifikasi.');
-    }
-
-    public function izinPulang()
-    {
-        $izinPulang = IzinPulang::with('siswa')
-            ->whereHas('siswa.siswaKelas', fn ($query) => $query->whereIn('kelas_id', $this->kelasYangDiajar()))
-            ->latest('id')->paginate(20)->withQueryString();
-
-        return view('wali-kelas.izin-pulang.index', compact('izinPulang'));
-    }
-
-    public function verifikasiIzinPulang(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'status_wali_kelas' => 'required|in:diterima,ditolak',
-            'catatan_wali_kelas' => 'nullable|string|max:1000',
-        ]);
-
-        $izin = IzinPulang::whereKey($id)
-            ->whereHas('siswa.siswaKelas', fn ($query) => $query->whereIn('kelas_id', $this->kelasYangDiajar()))
-            ->firstOrFail();
-        $izin->update([
-            'status_wali_kelas' => $validated['status_wali_kelas'],
-            'waktu_verifikasi_wali_kelas' => now(),
-            'catatan_wali_kelas' => $validated['catatan_wali_kelas'] ?? null,
-        ]);
-
-        return back()->with('success', 'Izin pulang berhasil diverifikasi.');
     }
 }

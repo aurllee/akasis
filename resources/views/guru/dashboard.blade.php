@@ -7,8 +7,8 @@
     <style>
         body {
             margin: 0;
-            background: 
-            color: 
+            background: #f4f7fb;
+            color: #1f2937;
             font-family: 'Poppins', sans-serif;
         }
 
@@ -19,17 +19,17 @@
         }
 
         .page-card {
-            background: 
-            border: 1px solid 
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
             border-radius: 14px;
             box-shadow: 0 8px 24px rgba(30, 64, 102, 0.06);
             padding: 24px;
         }
 
         .welcome-card {
-            background: linear-gradient(135deg, 
+            background: linear-gradient(135deg, #2449a4 0%, #3c73fe 100%);
             border: 0;
-            color: 
+            color: #ffffff;
             overflow: hidden;
             position: relative;
         }
@@ -41,27 +41,27 @@
         }
 
         .info-item {
-            background: 
-            border: 1px solid 
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 10px;
             padding: 14px 16px;
         }
 
         .info-label {
-            color: 
+            color: #64748b;
             display: block;
             font-size: 12px;
             margin-bottom: 5px;
         }
 
         .info-value {
-            color: 
+            color: #1e293b;
             font-size: 14px;
             font-weight: 600;
         }
 
         .schedule-card h2 {
-            color: 
+            color: #1e293b;
             font-size: 19px;
             font-weight: 600;
         }
@@ -72,9 +72,9 @@
         }
 
         .schedule-table thead th {
-            background: 
-            border-bottom: 2px solid 
-            color: 
+            background: #eff6ff;
+            border-bottom: 2px solid #bfdbfe;
+            color: #1e40af;
             font-size: 12px;
             letter-spacing: 0.02em;
             text-transform: uppercase;
@@ -82,18 +82,18 @@
         }
 
         .schedule-table tbody td {
-            color: 
+            color: #334155;
             font-size: 14px;
             padding-bottom: 14px;
             padding-top: 14px;
         }
 
         .schedule-table tbody tr:hover {
-            background: 
+            background: #f8fafc;
         }
 
         .empty-schedule {
-            color: 
+            color: #64748b;
             padding: 28px !important;
             text-align: center;
         }
@@ -102,12 +102,12 @@
             margin: 0 0 8px;
             font-size: 25px;
             font-weight: 500;
-            color: 
+            color: #ffffff;
         }
 
         .page-subtitle {
             margin: 0 0 22px;
-            color: 
+            color: rgba(255, 255, 255, 0.82);
         }
 
         @media (max-width: 768px) {

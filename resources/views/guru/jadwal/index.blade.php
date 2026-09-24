@@ -6,17 +6,17 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: 
-            background: 
+            color: #1f2937;
+            background: #f4f7fb;
         }
-        
+
         .page-wrap {
             width: 100%;
         }
 
         .page-card {
-            background: 
-            border: 1px solid 
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
             padding: 24px;
@@ -31,12 +31,12 @@
 
         .page-subtitle {
             margin: 0 0 20px;
-            color: 
+            color: #64748b;
         }
 
         .table th {
-            background: 
-            color: 
+            background: #eff6ff;
+            color: #1e40af;
             font-size: 0.82rem;
             vertical-align: middle;
         }
@@ -48,8 +48,9 @@
         .empty-state {
             padding: 20px;
             border-radius: 10px;
-            background: 
-            color: 
+            background: #f8fafc;
+            color: #64748b;
+            text-align: center;
         }
     </style>
 @endpush

@@ -5,19 +5,27 @@
 @push('styles')
     <style>
         body {
-            font-family: 'poppins', sans-serif;
-            color: 
+            font-family: 'Poppins', sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
         }
 
         .schedule-page {
             width: 100%;
         }
 
-        .container {
+        .schedule-page>.card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb !important;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(30, 64, 102, 0.06) !important;
+        }
+
+        .schedule-table-wrap {
             background-color: white;
             padding: 24px;
-            border: 1px solid 
-            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
             overflow-x: auto;
             margin-top: 25px;
         }
@@ -30,14 +38,15 @@
             margin-bottom: 20px;
         }
 
-        h1 {
+        .schedule-page h1 {
             margin: 0 0 5px;
+            color: #172554;
             font-weight: 500;
             font-size: 25px;
         }
 
-        .header p {
-            color: 
+        .schedule-page .header p {
+            color: #64748b;
             margin: 0;
         }
 
@@ -50,16 +59,26 @@
         .download-button {
             display: inline-block;
             margin-left: 6px;
-            border-radius: 4px;
+            border-radius: 7px;
             padding: 8px 12px;
-            background: 
+            background: #2449a4;
             color: white;
             font-size: 13px;
             text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .download-button:hover {
+            background: #1e3a8a;
+            color: #ffffff;
         }
 
         .download-pdf {
-            background: 
+            background: #dc2626;
+        }
+
+        .download-pdf:hover {
+            background: #b91c1c;
         }
 
         table {
@@ -71,20 +90,20 @@
 
         th,
         td {
-            border: 1px solid 
+            border: 1px solid #e2e8f0;
             padding: 8px;
             vertical-align: top;
             box-sizing: border-box;
         }
 
         th {
-            background-color: 
+            background-color: #eff6ff;
             text-align: center;
         }
 
         .identity {
             width: 95px;
-            background-color: 
+            background-color: #f8fafc;
             padding: 0;
             text-align: center;
             vertical-align: middle;
@@ -92,7 +111,7 @@
 
         .row-labels {
             width: 55px;
-            background-color: 
+            background-color: #f8fafc;
             padding: 0;
             text-align: center;
             vertical-align: middle;
@@ -103,7 +122,7 @@
             min-height: 24px;
             padding: 4px 6px;
             box-sizing: border-box;
-            border-top: 1px solid 
+            border-top: 1px solid #e2e8f0;
             text-align: center;
         }
 
@@ -116,7 +135,7 @@
             min-height: 30px;
             align-items: center;
             justify-content: center;
-            border-top: 1px solid 
+            border-top: 1px solid #e2e8f0;
             font-size: 11px;
         }
 
@@ -134,7 +153,7 @@
             display: block;
             margin: -8px -8px 8px;
             padding: 4px;
-            border-bottom: 1px solid 
+            border-bottom: 1px solid #cbd5e1;
             box-sizing: border-box;
             width: calc(100% + 16px);
         }
@@ -151,12 +170,12 @@
         .jp-numbers {
             margin-top: 8px;
             padding-top: 4px;
-            border-top: 1px solid 
+            border-top: 1px solid #e2e8f0;
         }
 
         .jp-number {
-            border-right: 1px solid 
-            color: 
+            border-right: 1px solid #e2e8f0;
+            color: #64748b;
             font-size: 10px;
             font-weight: normal;
             text-align: center;
@@ -176,14 +195,14 @@
         }
 
         .schedule-row+.schedule-row {
-            border-top: 1px solid 
+            border-top: 1px solid #e2e8f0;
         }
 
         .schedule-value {
             min-width: 0;
             overflow: hidden;
             padding: 4px 2px;
-            border-right: 1px solid 
+            border-right: 1px solid #e2e8f0;
             text-align: center;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -206,7 +225,7 @@
         }
 
         @media (max-width: 600px) {
-            .container {
+            .schedule-table-wrap {
                 padding: 15px;
             }
 
@@ -230,13 +249,16 @@
 
             <div class="toolbar">
                 <div>
-                    <a href="{{ route('admin.jadwal_pelajaran.export_excel') }}" class="download-button">Download Excel</a>
-                    <a href="{{ route('admin.jadwal_pelajaran.export_pdf') }}" class="download-button download-pdf">Download
-                        PDF</a>
+                    <a href="{{ route('siswa.jadwal.export_excel') }}" class="download-button">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i>Download Excel
+                    </a>
+                    <a href="{{ route('siswa.jadwal.export_pdf') }}" class="download-button download-pdf">
+                        <i class="bi bi-file-earmark-pdf me-1"></i>Download PDF
+                    </a>
                 </div>
             </div>
 
-            <main class="container">
+            <div class="schedule-table-wrap">
                 <table>
                     <thead>
                         <tr>
@@ -287,7 +309,7 @@
                                             ->values();
                                         $jumlahJpHari = $jumlahJpPerHari[$namaHari] ?? 10;
 
-                                        
+
                                         $posisiJadwal = [];
                                         $jpPosisi = 1;
 
@@ -317,7 +339,7 @@
 
                                     <div class="schedule-list">
 
-                                        
+
                                         <div class="schedule-row"
                                             style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
                                             @forelse ($posisiJadwal as $data)
@@ -326,9 +348,10 @@
                                                 @endphp
 
                                                 <div class="schedule-value mapel" style="
-                                                                    background-color: {{ optional($item->mapel)->warna ?? '#d3d3d3' }};
-                                                                    grid-column: {{ $data['mulai'] }} / span {{ $data['jumlah'] }};
-                                                                " title="{{ optional($item->mapel)->nama_mapel ?? '-' }}">
+                                                                                            background-color: {{ optional($item->mapel)->warna ?? '#d3d3d3' }};
+                                                                                            grid-column: {{ $data['mulai'] }} / span {{ $data['jumlah'] }};
+                                                                                        "
+                                                    title="{{ optional($item->mapel)->nama_mapel ?? '-' }}">
                                                     {{ optional($item->mapel)->kode_mapel ?? '-' }}
                                                 </div>
                                             @empty
@@ -338,7 +361,7 @@
                                             @endforelse
                                         </div>
 
-                                        
+
                                         <div class="schedule-row"
                                             style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
                                             @forelse ($posisiJadwal as $data)
@@ -347,8 +370,9 @@
                                                 @endphp
 
                                                 <div class="schedule-value" style="
-                                                                    grid-column: {{ $data['mulai'] }} / span {{ $data['jumlah'] }};
-                                                                " title="{{ optional($item->guru)->nama ?? '-' }}">
+                                                                                            grid-column: {{ $data['mulai'] }} / span {{ $data['jumlah'] }};
+                                                                                        "
+                                                    title="{{ optional($item->guru)->nama ?? '-' }}">
                                                     {{ optional($item->guru)->kode_guru ?? '-' }}
                                                 </div>
                                             @empty
@@ -358,7 +382,7 @@
                                             @endforelse
                                         </div>
 
-                                        
+
                                         <div class="schedule-row"
                                             style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
                                             @forelse ($posisiJadwal as $data)
@@ -367,8 +391,9 @@
                                                 @endphp
 
                                                 <div class="schedule-value" style="
-                                                                    grid-column: {{ $data['mulai'] }} / span {{ $data['jumlah'] }};
-                                                                " title="{{ optional($item->ruangan)->nama_ruang ?? '-' }}">
+                                                                                            grid-column: {{ $data['mulai'] }} / span {{ $data['jumlah'] }};
+                                                                                        "
+                                                    title="{{ optional($item->ruangan)->nama_ruang ?? '-' }}">
                                                     {{ optional($item->ruangan)->kode_ruang ?? '-' }}
                                                 </div>
                                             @empty
@@ -384,7 +409,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </main>
+            </div>
         </div>
     </div>
 @endsection

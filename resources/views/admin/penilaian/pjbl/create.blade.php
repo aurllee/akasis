@@ -136,13 +136,101 @@
             flex-direction: column-reverse;
         }
 
-        .form-actions a,
-        .form-actions button {
+        .academic-header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 4px 0;
+        }
+
+        .academic-header p {
+            font-size: 13px;
+            color: #64748b;
+            margin: 0;
+        }
+
+        .btn-back-link {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            transition: color 0.2s;
+        }
+
+        .btn-back-link:hover {
+            color: #2563eb;
+        }
+
+        .form-group-custom {
+            margin-bottom: 18px;
+        }
+
+        .form-group-custom label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .form-group-custom .form-control,
+        .form-group-custom .form-select {
             width: 100%;
         }
     }
 </style>
 
+        .form-group-custom .form-control:focus,
+        .form-group-custom .form-select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-action-primary {
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-action-primary:hover {
+            background: #1d4ed8;
+            color: #ffffff;
+        }
+
+        .btn-action-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            padding: 9px 18px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-action-secondary:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+    </style>
 @endpush
 
 @section('content')

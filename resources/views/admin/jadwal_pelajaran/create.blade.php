@@ -4,7 +4,6 @@
 
 @push('styles')
     <style>
-        /* Card Panel */
         .academic-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -33,7 +32,6 @@
             margin: 0;
         }
 
-        /* Form Grid */
         .academic-grid-2 {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -72,7 +70,6 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        /* Sub Section */
         .academic-section-title {
             font-size: 15px;
             font-weight: 600;
@@ -82,7 +79,6 @@
             border-bottom: 1px solid #e2e8f0;
         }
 
-        /* Dynamic Row Mapel */
         .mapel-row {
             display: grid;
             grid-template-columns: 2fr 2fr 1.5fr 1fr auto;
@@ -128,7 +124,6 @@
             background: #eff6ff;
         }
 
-        /* Action Buttons */
         .academic-actions {
             display: flex;
             align-items: center;

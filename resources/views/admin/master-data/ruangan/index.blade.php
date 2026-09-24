@@ -37,7 +37,7 @@
         }
 
         .room-add {
-            background: #2449a4;
+            background: #2563eb;
             border-radius: 8px;
             color: #fff;
             font-size: 14px;
@@ -49,15 +49,6 @@
             background: #2449a4;
             color: #fff;
             text-decoration: none;
-        }
-
-        .room-alert {
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
-            border-radius: 8px;
-            color: #047857;
-            margin-bottom: 18px;
-            padding: 11px 14px;
         }
 
         .room-table-wrapper {
@@ -233,10 +224,6 @@
                 <a class="room-add text-decoration-none" href="{{ route('ruangan.create') }}"> Tambah Ruangan
                 </a>
             </div>
-
-            @if(session('success'))
-                <div class="room-alert">{{ session('success') }}</div>
-            @endif
 
             <div class="room-table-wrapper">
                 <table class="room-table">

@@ -30,7 +30,7 @@ class SesiAbsensi extends Model
     public function absensi()
     {
         return $this->hasMany(
-            Absen::class,
+            Absensi::class,
             'sesi_absensi_id'
         );
     }

@@ -10,7 +10,7 @@ class NilaiController extends Controller
 {
     public function index()
     {
-        $siswa = auth()->user()?->siswa;
+        $siswa = auth()->user()->siswa;
 
         if (!$siswa) {
             abort(403, 'Akun Anda belum terhubung dengan data siswa.');

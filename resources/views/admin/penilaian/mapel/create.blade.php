@@ -51,7 +51,6 @@
             color: #2563eb;
         }
 
-        /* Form Controls Styling */
         .form-group-custom {
             margin-bottom: 18px;
         }
@@ -83,7 +82,6 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
-        /* Buttons Biru #2563eb */
         .btn-action-primary {
             background-color: #2563eb;
             color: #ffffff;
@@ -133,19 +131,16 @@
     <div class="academic-container">
         <div class="academic-card">
 
-            {{-- BACK LINK --}}
             <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}"
                 class="btn-back-link">
                 <i class="bi bi-arrow-left"></i> Kembali ke Penilaian
             </a>
 
-            {{-- HEADER --}}
             <div class="academic-header">
                 <h1>Tambah Penilaian</h1>
                 <p>{{ $kelas->tingkat }} {{ $kelas->nama_kelas }} — {{ $mataPelajaran->nama_mapel }}</p>
             </div>
 
-            {{-- ERROR VALIDATION ALERT --}}
             @if($errors->any())
                 <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
                     <div class="fw-bold mb-1">Terjadi kesalahan input:</div>
@@ -157,13 +152,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-
-            {{-- FORM --}}
             <form method="POST"
                 action="{{ route('admin.penilaian.mapel.store', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}">
                 @csrf
 
-                {{-- GURU / JADWAL --}}
                 <div class="form-group-custom">
                     <label for="jadwal_pelajaran_id">Guru / Jadwal <span class="text-danger">*</span></label>
                     <select name="jadwal_pelajaran_id" id="jadwal_pelajaran_id" class="form-select" required>
@@ -179,7 +171,6 @@
                     @enderror
                 </div>
 
-                {{-- SISWA --}}
                 <div class="form-group-custom">
                     <label for="siswa_id">Siswa <span class="text-danger">*</span></label>
                     <select name="siswa_id" id="siswa_id" class="form-select" required>
@@ -195,7 +186,6 @@
                     @enderror
                 </div>
 
-                {{-- JENIS NILAI --}}
                 <div class="form-group-custom">
                     <label for="jenis_nilai">Jenis Nilai <span class="text-danger">*</span></label>
                     <select name="jenis_nilai" id="jenis_nilai" class="form-select" required>
@@ -217,7 +207,6 @@
                     @enderror
                 </div>
 
-                {{-- NILAI --}}
                 <div class="form-group-custom mb-4">
                     <label for="nilai">Nilai <span class="text-danger">*</span></label>
                     <input type="number" name="nilai" id="nilai" class="form-control" min="0" max="100" step="0.01"
@@ -227,7 +216,6 @@
                     @enderror
                 </div>
 
-                {{-- BUTTONS --}}
                 <div class="d-flex gap-2 justify-content-end pt-3 border-top">
                     <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}"
                         class="btn btn-secondary">

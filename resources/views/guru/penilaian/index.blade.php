@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: 
+            color: #1f2937;
         }
 
         .page-wrap {
@@ -14,8 +14,8 @@
         }
 
         .page-card {
-            background: 
-            border: 1px solid 
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
             padding: 24px;
@@ -29,12 +29,12 @@
 
         .page-subtitle {
             margin: 0 0 20px;
-            color: 
+            color: #64748b;
         }
 
         .table th {
-            background: 
-            color: 
+            background: #eff6ff;
+            color: #1e40af;
             font-size: 0.82rem;
             vertical-align: middle;
         }
@@ -53,14 +53,15 @@
         }
 
         .btn-primary {
-            background: 
-            color: 
+            background: #2449a4;
+            color: #ffffff;
+            border-color: #2449a4;
         }
 
         .btn-outline-secondary {
-            border: 1px solid 
-            color: 
-            background: 
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            background: #ffffff;
         }
 
         .btn-primary:hover,
@@ -71,13 +72,14 @@
         .empty-state {
             padding: 20px;
             border-radius: 10px;
-            background: 
-            color: 
+            background: #f8fafc;
+            color: #64748b;
+            text-align: center;
         }
 
         .fs-12 {
-    font-size: 13px;
-}
+            font-size: 13px;
+        }
     </style>
     </style>
 @endpush
@@ -92,7 +94,7 @@
                 <table class="table table-bordered align-middle mb-0">
                     <thead>
                         <tr>
-                            <th width="60" >No</th>
+                            <th width="60">No</th>
                             <th>Mata Pelajaran</th>
                             <th>Kelas</th>
                             <th width="220">Aksi</th>
@@ -109,7 +111,8 @@
                                     {{ $item->kelas?->nama_kelas ?? '' }}
                                 </td>
                                 <td>
-                                    <a href="{{ route('guru.penilaian.create', $item->id) }}" class="btn-action btn-primary fs-12">
+                                    <a href="{{ route('guru.penilaian.create', $item->id) }}"
+                                        class="btn-action btn-primary fs-12">
                                         Input Nilai
                                     </a>
                                     <a href="{{ route('guru.penilaian.detail', $item->id) }}"

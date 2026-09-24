@@ -5,22 +5,22 @@
 @push('styles')
     <style>
         body {
-            background: 
-            color: 
+            background: #f4f7fb;
+            color: #1f2937;
             font-family: 'Poppins', sans-serif;
         }
 
         .student-welcome,
         .student-panel {
-            background: 
-            border: 1px solid 
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
             border-radius: 12px;
             box-shadow: 0 6px 18px rgba(30, 64, 102, 0.05);
         }
 
         .student-welcome {
-            background: linear-gradient(135deg, 
-            color: 
+            background: linear-gradient(135deg, #2449a4 0%, #3c73fe 100%);
+            color: #ffffff;
             padding: 24px;
         }
 
@@ -31,7 +31,7 @@
         }
 
         .student-welcome p {
-            color: 
+            color: rgba(255, 255, 255, 0.82);
             margin: 0;
         }
 
@@ -40,7 +40,7 @@
         }
 
         .student-panel h2 {
-            color: 
+            color: #1e293b;
             font-size: 18px;
             font-weight: 600;
             margin: 0 0 18px;
@@ -53,21 +53,21 @@
         }
 
         .biodata-item {
-            background: 
-            border: 1px solid 
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
             padding: 12px 14px;
         }
 
         .biodata-label {
-            color: 
+            color: #64748b;
             display: block;
             font-size: 12px;
             margin-bottom: 4px;
         }
 
         .biodata-value {
-            color: 
+            color: #1e293b;
             font-size: 14px;
             font-weight: 600;
         }
@@ -77,24 +77,24 @@
         }
 
         .student-table th {
-            background: 
-            color: 
+            background: #eff6ff;
+            color: #1e40af;
             font-size: 12px;
             text-transform: uppercase;
             white-space: nowrap;
         }
 
         .student-table td {
-            color: 
+            color: #334155;
             font-size: 14px;
         }
 
         .student-table tbody tr:hover {
-            background: 
+            background: #f8fafc;
         }
 
         .empty-state {
-            color: 
+            color: #64748b;
             padding: 28px !important;
             text-align: center;
         }

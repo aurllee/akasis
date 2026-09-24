@@ -54,15 +54,7 @@
         color: #ffffff;
     }
 
-    .alert-success {
-        margin-bottom: 20px;
-        padding: 12px 15px;
-        background: #ecfdf5;
-        border: 1px solid #bbf7d0;
-        border-radius: 8px;
-        color: #166534;
-        font-size: 14px;
-    }
+    
 
     .data-card {
         background: #ffffff;
@@ -207,6 +199,60 @@
         margin: 0;
     }
 
+    .room-pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .room-pagination nav {
+            display: flex;
+        }
+
+        .room-pagination ul.pagination {
+            align-items: center;
+            display: flex;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .room-pagination .page-item {
+            margin: 0;
+        }
+
+        .room-pagination .page-link {
+            align-items: center;
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            color: #475569;
+            display: flex;
+            font-size: 13px;
+            height: 34px;
+            justify-content: center;
+            min-width: 34px;
+            padding: 0 10px;
+        }
+
+        .room-pagination .page-link:hover {
+            background: #eff6ff;
+            border-color: #93c5fd;
+            color: #1d4ed8;
+        }
+
+        .room-pagination .page-item.active .page-link {
+            background: #2449a4;
+            border-color: #2449a4;
+            color: #fff;
+        }
+
+        .room-pagination .page-item.disabled .page-link {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+            color: #94a3b8;
+        }
+
     @media (max-width: 768px) {
         .siswa-page {
             padding: 16px;
@@ -246,11 +292,6 @@
     </a>
 </div>
 
-@if(session('success'))
-    <div class="alert-success">
-        {{ session('success') }}
-    </div>
-@endif
 
 <div class="data-card">
 
@@ -273,6 +314,7 @@
                     <th>NIK</th>
                     <th>No. KK</th>
                     <th>Alamat</th>
+                    <th>Nama Orang Tua</th>
                     <th>No. HP</th>
                     <th>Email</th>
                     <th>Aksi</th>
@@ -283,7 +325,7 @@
                 @forelse($siswas as $siswa)
                     <tr>
                         <td class="number-cell">
-                            {{ $loop->iteration }}
+                            {{ $siswas->firstItem() + $loop->index }}
                         </td>
 
                         <td class="nis-cell">
@@ -309,7 +351,7 @@
                         </td>
 
                         <td>
-                            {{ optional($siswa->tgl_lahir)->format('d-m-Y') }}
+                            {{ optional($siswa->tanggal_lahir)->format('d-m-Y') }}
                         </td>
 
                         <td>
@@ -326,6 +368,9 @@
 
                         <td>
                             {{ $siswa->alamat }}
+                        </td>
+                        <td>
+                            {{ $siswa->nama_orang_tua }}
                         </td>
 
                         <td>
@@ -376,7 +421,8 @@
             </tbody>
         </table>
     </div>
-
+    <div class="room-pagination">{{ $siswas->links('pagination::bootstrap-5') }}>
+    </div>
 </div>
 
 </div>

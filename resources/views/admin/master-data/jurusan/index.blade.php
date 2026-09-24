@@ -57,16 +57,6 @@
         gap: 20px;
     }
 
-    .alert-custom {
-        margin-bottom: 20px;
-        padding: 13px 16px;
-        border-radius: 8px;
-        border: 1px solid #bbf7d0;
-        background: #f0fdf4;
-        color: #15803d;
-        font-size: 14px;
-    }
-
     .data-card {
         background: #ffffff;
         border: 1px solid #e8edf5;
@@ -200,6 +190,60 @@
         color: #94a3b8 !important;
     }
 
+    .room-pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        padding: 0 24px 24px;
+    }
+
+        .room-pagination nav {
+            display: flex;
+        }
+
+        .room-pagination ul.pagination {
+            align-items: center;
+            display: flex;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .room-pagination .page-item {
+            margin: 0;
+        }
+
+        .room-pagination .page-link {
+            align-items: center;
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            color: #475569;
+            display: flex;
+            font-size: 13px;
+            height: 34px;
+            justify-content: center;
+            min-width: 34px;
+            padding: 0 10px;
+        }
+
+        .room-pagination .page-link:hover {
+            background: #eff6ff;
+            border-color: #93c5fd;
+            color: #1d4ed8;
+        }
+
+        .room-pagination .page-item.active .page-link {
+            background: #2449a4;
+            border-color: #2449a4;
+            color: #fff;
+        }
+
+        .room-pagination .page-item.disabled .page-link {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+            color: #94a3b8;
+        }
+
     @media (max-width: 768px) {
         .jurusan-page {
             padding: 16px 0;
@@ -245,12 +289,6 @@
         </a>
     </div>
 </div>
-
-@if (session('success'))
-    <div class="alert-custom">
-        {{ session('success') }}
-    </div>
-@endif
 
 <div class="data-card">
 
@@ -322,7 +360,9 @@
             </tbody>
         </table>
     </div>
-
+    <div class="room-pagination">
+        {{ $jurusans->links('pagination::bootstrap-5') }}
+    </div>
 </div>
 
 </div>

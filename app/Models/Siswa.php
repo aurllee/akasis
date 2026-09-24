@@ -18,11 +18,15 @@ class Siswa extends Model
         'tempat_lahir',
         'tanggal_lahir',
         'jk',
+<<<<<<< HEAD
         'tanggal_lahir',
+=======
+>>>>>>> 13078cc6130988940230854ae444797e7a712303
         'agama',
         'nik',
         'no_kk',
         'alamat',
+        'nama_orang_tua',
         'no_hp',
         'email',
         'nama_orang_tua',
@@ -34,7 +38,7 @@ class Siswa extends Model
 
     public $timestamps = false;
 
-    
+
     public static function generateNis()
     {
         $lastSiswa = self::orderBy('nis', 'desc')->first();
@@ -59,44 +63,53 @@ class Siswa extends Model
         return $this->hasMany(PembagianKelas::class);
     }
     public function absensi()
+<<<<<<< HEAD
 {
     return $this->hasMany(
         Absensi::class,
         'siswa_id'
     );
 }
+=======
+    {
+        return $this->hasMany(
+            Absensi::class,
+            'siswa_id'
+        );
+    }
+>>>>>>> 13078cc6130988940230854ae444797e7a712303
 
-public function sakit()
-{
-    return $this->hasMany(
-        Sakit::class,
-        'siswa_id'
-    );
-}
+    public function sakit()
+    {
+        return $this->hasMany(
+            Sakit::class,
+            'siswa_id'
+        );
+    }
 
-public function izinKeluar()
-{
-    return $this->hasMany(
-        IzinKeluar::class,
-        'siswa_id'
-    );
-}
+    public function izinKeluar()
+    {
+        return $this->hasMany(
+            IzinKeluar::class,
+            'siswa_id'
+        );
+    }
 
-public function izinPulang()
-{
-    return $this->hasMany(
-        IzinPulang::class,
-        'siswa_id'
-    );
-}
+    public function izinPulang()
+    {
+        return $this->hasMany(
+            IzinPulang::class,
+            'siswa_id'
+        );
+    }
 
-public function dispen()
-{
-    return $this->hasMany(
-        Dispen::class,
-        'siswa_id'
-    );
-}
+    public function dispen()
+    {
+        return $this->hasMany(
+            Dispen::class,
+            'siswa_id'
+        );
+    }
 
     public function penilaianMapel()
     {

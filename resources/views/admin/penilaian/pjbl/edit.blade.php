@@ -87,7 +87,6 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        /* Buttons */
         .btn-action-primary {
             background: #2563eb;
             color: #ffffff;

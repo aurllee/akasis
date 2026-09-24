@@ -9,9 +9,9 @@
     <style>
         body {
             margin: 0;
-            background: 
-            color: 
-            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         .container {
@@ -20,8 +20,8 @@
         }
 
         .card {
-            background: 
-            border: 1px solid 
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
             padding: 22px;
@@ -52,7 +52,7 @@
         }
 
         .text-muted {
-            color: 
+            color: #64748b;
         }
 
         .btn {
@@ -66,13 +66,13 @@
         }
 
         .btn-primary {
-            background: 
-            color: 
+            background: #2449a4;
+            color: #ffffff;
         }
 
         .btn-secondary {
-            background: 
-            color: 
+            background: #64748b;
+            color: #ffffff;
         }
 
         .table {
@@ -83,27 +83,40 @@
 
         .table th,
         .table td {
-            border: 1px solid 
+            border: 1px solid #e2e8f0;
             padding: 10px 12px;
             text-align: left;
         }
 
         .table th {
-            background: 
+            background: #eff6ff;
+            color: #1e40af;
         }
 
         .form-control {
             box-sizing: border-box;
             width: 100%;
             padding: 8px 10px;
-            border: 1px solid 
+            border: 1px solid #cbd5e1;
             border-radius: 6px;
+        }
+
+        .form-control:focus {
+            border-color: #3c73fe;
+            box-shadow: 0 0 0 3px rgba(60, 115, 254, 0.15);
+            outline: none;
         }
 
         @media (max-width: 768px) {
             .container {
                 margin-left: 210px;
                 padding: 15px;
+            }
+
+            .d-flex {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
             }
         }
     </style>

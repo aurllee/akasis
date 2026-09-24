@@ -2,123 +2,133 @@
 
 @section('title', 'Izin Tidak Masuk Siswa')
 
-@section('content')
-<div class="page-header">
-    <h1>Izin Tidak Masuk Siswa</h1>
-    <p>Daftar pengajuan izin tidak masuk siswa yang perlu verifikasi wali kelas.</p>
-</div>
-
-@if(session('success'))
-<div class="alert alert-success">{{ session('success') }}</div>
-@endif
-
-@if($errors->any())
-<div class="alert alert-danger">
-    <ul class="mb-0 ps-3">
-        @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
-
-<div class="card">
-    <div class="table-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Siswa</th>
-                    <th>Tanggal</th>
-                    <th>Alasan</th>
-                    <th>Dokumen</th>
-                    <th>Status</th>
-                    <th>Verifikasi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($data as $item)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>
-                        <strong>{{ $item->siswa->nama ?? '-' }}</strong><br>
-                        <small>NIS: {{ $item->siswa->nis ?? '-' }}</small>
-                    </td>
-                    <td>{{ $item->tanggal?->format('d-m-Y') ?? '-' }}</td>
-                    <td>{{ $item->alasan ?? '-' }}</td>
-                    <td>
-                        @if($item->dokumen)
-                            <a href="{{ asset('storage/' . $item->dokumen) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-file-earmark-text me-1"></i>Lihat
-                            </a>
-                        @else
-                            <span class="text-muted">Tidak ada</span>
-                        @endif
-                    </td>
-                    <td>{{ ucfirst(str_replace('_', ' ', $item->status_walikelas ?? 'menunggu')) }}</td>
-                    <td>
-                        <form action="{{ route('wali-kelas.sakit.setujui', $item->id) }}" method="POST" class="d-inline-block">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit" class="btn btn-sm btn-success">
-                                <i class="bi bi-check-lg me-1"></i>Setujui
-                            </button>
-                        </form>
-                        <form action="{{ route('wali-kelas.sakit.tolak', $item->id) }}" method="POST" class="d-inline-block mt-2">
-                            @csrf
-                            @method('PATCH')
-                            <input type="text" name="catatan" class="form-control form-control-sm mb-2" placeholder="Catatan penolakan" required>
-                            <button type="submit" class="btn btn-sm btn-danger">
-                                <i class="bi bi-x-lg me-1"></i>Tolak
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="7" class="text-center">Belum ada pengajuan izin tidak masuk siswa.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-</div>
-@endsection
-
 @push('styles')
-<style>
-    .page-header h1 {
-        color: #2449a4;
-        font-weight: 700;
-    }
+    <style>
+        .page-header {
+            margin-bottom: 20px;
+        }
 
-    .page-header+.alert+.card,
-    .page-header+.card {
-        padding: 0 24px 22px;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 14px rgba(15, 23, 42, .06);
-    }
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
 
-    .page-header+.alert+.card table th,
-    .page-header+.card table th {
-        color: #334155;
-        background: #f8fafc;
-        font-size: 12px;
-        text-transform: uppercase;
-    }
+        .page-subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin: 0;
+        }
 
-    .page-header+.alert+.card table tbody tr:hover td,
-    .page-header+.card table tbody tr:hover td {
-        background: #f8fbff;
-    }
+        .card-custom {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            padding: 24px;
+        }
 
-    .page-header p {
-        color: #64748b;
-    }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
 
-    .page-header+.alert+.card,
-    .page-header+.card {
-        overflow: hidden;
-    }
-</style>
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+            background-color: #ffffff;
+        }
+
+        .custom-table thead th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            padding: 14px 16px;
+            border-bottom: 2px solid #e2e8f0;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .custom-table tbody td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+            vertical-align: middle;
+        }
+
+        .custom-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .custom-table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .empty-table {
+            text-align: center;
+            color: #64748b;
+            padding: 28px !important;
+            font-style: italic;
+        }
+    </style>
 @endpush
+
+@section('content')
+    <div class="page-header">
+        <h1 class="page-title">Izin Tidak Masuk Siswa</h1>
+        <p class="page-subtitle">Daftar pengajuan izin tidak masuk siswa yang perlu verifikasi wali kelas.</p>
+    </div>
+
+    <div class="card-custom">
+        <div class="table-responsive">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">NO</th>
+                        <th>SISWA</th>
+                        <th>TANGGAL</th>
+                        <th>ALASAN</th>
+                        <th>DOKUMEN</th>
+                        <th>STATUS</th>
+                        <th style="text-align: center;">VERIFIKASI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{-- Ganti kondisi di bawah sesuai logika data dari controller --}}
+                    @forelse ($izinTidakMasuk ?? [] as $item)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item->siswa->nama ?? '-' }}</td>
+                            <td>{{ $item->tanggal ?? '-' }}</td>
+                            <td>{{ $item->alasan ?? '-' }}</td>
+                            <td>
+                                @if($item->dokumen)
+                                    <a href="{{ asset('storage/'.$item->dokumen) }}" target="_blank" class="btn btn-sm btn-outline-primary">Lihat Dokumen</a>
+                                @else
+                                    -
+                                @endif
+                            </td>
+                            <td>{{ ucfirst($item->status ?? '-') }}</td>
+                            <td style="text-align: center;">
+                                {{-- Tombol Aksi --}}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="empty-table">
+                                Belum ada pengajuan izin tidak masuk siswa.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endsection
