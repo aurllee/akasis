@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\WaliKelas;
 
 use App\Http\Controllers\Controller;
-use App\Models\Sakit;
-use Illuminate\Http\Request;
+use App\Models\Perizinan;use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SakitController extends Controller
@@ -13,7 +12,7 @@ class SakitController extends Controller
     {
         $guruId = Auth::user()->guru_id;
 
-        $query = Sakit::with('siswa')
+        $query = Perizinan::with('siswa')
             ->where('walikelas_id', $guruId);
 
         if ($request->filled('search')) {
@@ -49,7 +48,7 @@ class SakitController extends Controller
         );
     }
 
-    public function setujui(Sakit $sakit)
+    public function setujui( Perizinan $sakit)
     {
         $guruId = Auth::user()->guru_id;
 
@@ -60,7 +59,7 @@ class SakitController extends Controller
 
         $sakit->update([
             'status_walikelas' => 'disetujui',
-            'status' => 'menunggu_guru',
+            'status' => 'disetujui',
             'waktu_verifikasi_walikelas' => now(),
             'catatan_walikelas' => null,
         ]);
@@ -73,7 +72,7 @@ class SakitController extends Controller
 
     public function tolak(
         Request $request,
-        Sakit $sakit
+        Perizinan $sakit
     ) {
         $guruId = Auth::user()->guru_id;
 

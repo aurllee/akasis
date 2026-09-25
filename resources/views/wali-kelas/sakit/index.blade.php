@@ -206,6 +206,28 @@
             gap: 8px;
         }
 
+        .reject-modal .modal-content {
+            border: 1px solid #e2e8f0;
+            border-top: 4px solid #dc2626;
+            border-radius: 12px;
+        }
+
+        .reject-modal .modal-title {
+            color: #0f172a;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .reject-modal .modal-body {
+            color: #475569;
+            font-size: 13px;
+        }
+
+        .reject-modal textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
         .action-btn {
             display: inline-flex;
             align-items: center;
@@ -284,15 +306,8 @@
             <div class="row g-3 align-items-end">
                 <div class="col-md-8">
                     <label for="search" class="form-label-custom">Cari Siswa</label>
-                    <input
-                        type="text"
-                        id="search"
-                        name="search"
-                        class="custom-input"
-                        placeholder="Nama / NIS / NISN..."
-                        value="{{ request('search') }}"
-                        autocomplete="off"
-                    >
+                    <input type="text" id="search" name="search" class="custom-input" placeholder="Nama / NIS / NISN..."
+                        value="{{ request('search') }}" autocomplete="off">
                 </div>
 
                 <div class="col-md-4">
@@ -376,12 +391,11 @@
                                             <button type="submit" class="action-btn btn-success">Setujui</button>
                                         </form>
 
-                                        <form action="{{ route('wali-kelas.sakit.tolak', $item->id) }}" method="POST">
-                                            @csrf
-                                            @method('PATCH')
-                                            <input type="hidden" name="catatan" value="Tidak ada catatan">
-                                            <button type="submit" class="action-btn btn-danger">Tolak</button>
-                                        </form>
+                                        <button type="button" class="action-btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#rejectModal"
+                                            data-action="{{ route('wali-kelas.sakit.tolak', $item->id) }}">
+                                            Tolak
+                                        </button>
                                     </div>
                                 @else
                                     <span class="text-muted">-</span>
@@ -402,4 +416,43 @@
             </table>
         </div>
     </div>
+
+    <div class="modal fade reject-modal" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rejectModalLabel">Alasan Penolakan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <form id="rejectForm" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <div class="modal-body">
+                        <label for="rejectReason" class="form-label fw-semibold">Berikan alasan penolakan</label>
+                        <textarea id="rejectReason" name="catatan" class="custom-input"
+                            placeholder="Tuliskan alasan penolakan..." required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Tolak Pengajuan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            document.getElementById('rejectModal').addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const form = document.getElementById('rejectForm');
+                const reason = document.getElementById('rejectReason');
+
+                form.action = button.dataset.action;
+                reason.value = '';
+                reason.focus();
+            });
+        </script>
+    @endpush
 @endsection

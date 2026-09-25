@@ -1,333 +1,206 @@
 @extends('layouts.app')
 
+@section('title', 'Perizinan')
+
 @section('content')
 
-@push('styles')
-<style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        color: #1f2937;
-    }
+    @push('styles')
+        <style>
+            body {
+                font-family: 'Poppins', sans-serif;
+                background: #f4f7fb;
+                color: #1f2937;
+            }
+            .perizinan-page {
+                width: 100%;
+            }
 
-    .container-fluid > .card {
-        border: 1px solid #e5e7eb !important;
-        border-top: 4px solid #2449a4 !important;
-        border-radius: 12px;
-    }
+            .perizinan-header {
+                align-items: center;
+                display: flex;
+                gap: 1rem;
+                justify-content: space-between;
+                margin-bottom: 1.5rem;
+            }
 
-    .container-fluid > .d-flex h4 {
-        color: #1e293b;
-        font-size: 25px;
-    }
+            .perizinan-header h1 {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-bottom: 0.25rem;
+            }
 
-    .table th {
-        background: #eff6ff;
-        color: #1e40af;
-        font-size: .82rem;
-        white-space: nowrap;
-    }
+            .perizinan-card {
+                border: 1px solid #e5e7eb;
+                border-top: 4px solid #0d6efd;
+                border-radius: 0.75rem;
+            }
 
-    .table td {
-        vertical-align: middle;
-        font-size: .88rem;
-    }
+            .perizinan-table th {
+                background-color: #f8f9fa;
+                color: #495057;
+                font-size: 0.85rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                white-space: nowrap;
+            }
 
-    .jenis-badge {
-        font-size: 0.8rem;
-        padding: 6px 10px;
-        border-radius: 8px;
-    }
+            .perizinan-table td {
+                font-size: 0.875rem;
+                vertical-align: middle;
+            }
 
-    .action-buttons {
-        display: inline-flex;
-        gap: .35rem;
-    }
+            .perizinan-table .reason-cell {
+                max-width: 300px;
+                word-wrap: break-word;
+            }
 
-    .action-buttons .btn {
-        align-items: center;
-        display: inline-flex;
-        height: 34px;
-        justify-content: center;
-        padding: 0;
-        width: 34px;
-    }
+            .action-buttons {
+                display: inline-flex;
+                gap: 0.35rem;
+            }
 
-    @media (max-width: 575px) {
-        .container-fluid > .d-flex {
-            align-items: flex-start !important;
-            flex-direction: column;
-        }
-    }
-</style>
-@endpush
+            .action-buttons .btn {
+                align-items: center;
+                display: inline-flex;
+                height: 32px;
+                justify-content: center;
+                padding: 0;
+                width: 32px;
+                border-radius: 0.375rem;
+            }
 
-<div class="container-fluid">
+            @media (max-width: 575.98px) {
+                .perizinan-header {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+            }
+        </style>
+    @endpush
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="perizinan-page">
 
-        <div>
-            <h4 class="fw-500 mb-1">
-                Perizinan
-            </h4>
+        <div class="perizinan-header">
+            <div>
+                <h1 class="h3 mb-1 text-gray-800">Perizinan</h1>
+                <p class="text-muted mb-0">Riwayat pengajuan perizinan kamu.</p>
+            </div>
 
-            <p class="text-muted mb-0">
-                Riwayat pengajuan perizinan kamu.
-            </p>
+            <a href="{{ route('siswa.perizinan.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i> Ajukan Izin
+            </a>
         </div>
 
-        <a
-            href="{{ route('siswa.perizinan.create') }}"
-            class="btn btn-primary">
+        <div class="card perizinan-card shadow-sm">
+            <div class="card-body p-3 p-md-4">
 
-            <i class="fas fa-plus me-1"></i>
-            Ajukan Izin
+                @if($data->count())
 
-        </a>
-
-    </div>
-
-
-    <div class="card border-0 shadow-sm">
-
-        <div class="card-body">
-
-            @if($data->count())
-
-                <div class="table-responsive">
-
-                    <table class="table table-hover align-middle mb-0">
-
-                        <thead>
-
-                            <tr>
-                                <th>No</th>
-                                <th>Jenis</th>
-                                <th>Tanggal</th>
-                                <th>Waktu</th>
-                                <th>Alasan</th>
-                                <th>Dokumen</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            @foreach($data as $item)
-
+                    <div class="table-responsive">
+                        <table class="table table-hover perizinan-table align-middle mb-0">
+                            <thead>
                                 <tr>
-
-                                    <td class="text-center">
-                                        {{ $loop->iteration }}
-                                    </td>
-                                    <td>
-
-                                        @if($item->jenis === 'sakit')
-
-                                            <span class="badge bg-warning text-dark jenis-badge">
-                                                Sakit
-                                            </span>
-
-                                        @elseif($item->jenis === 'keluar')
-
-                                            <span class="badge bg-info text-dark jenis-badge">
-                                                Keluar
-                                            </span>
-
-                                        @elseif($item->jenis === 'pulang')
-
-                                            <span class="badge bg-secondary jenis-badge">
-                                                Pulang
-                                            </span>
-
-                                        @endif
-
-                                    </td>
-                                    <td>
-                                        {{ $item->tanggal?->format('d M Y') }}
-                                    </td>
-
-
-                                    <td>
-
-                                        @if($item->jenis === 'sakit')
-
-                                            <span class="text-muted">
-                                                -
-                                            </span>
-
-                                        @elseif($item->jenis === 'keluar')
-
-                                            {{ $item->jam_mulai }}
-                                            -
-                                            {{ $item->jam_selesai }}
-
-                                        @elseif($item->jenis === 'pulang')
-
-                                            {{ $item->jam_mulai }}
-                                            -
-                                            <span class="text-muted">
-                                                selesai
-                                            </span>
-
-                                        @endif
-
-                                    </td>
-
-
-                                    <td>
-                                        {{ $item->alasan }}
-                                    </td>
-
-                                    <td>
-
-                                        @if($item->dokumen)
-
-                                            <a
-                                                href="{{ asset('storage/' . $item->dokumen) }}"
-                                                target="_blank"
-                                                class="btn btn-sm btn-outline-secondary">
-
-                                                <i class="fas fa-file-alt me-1"></i>
-                                                Lihat
-
-                                            </a>
-
-                                        @else
-
-                                            <span class="text-muted">
-                                                -
-                                            </span>
-
-                                        @endif
-
-                                    </td>
-                                    <td>
-
-                                        @if($item->jenis === 'sakit')
-
-                                            @if($item->status === 'menunggu')
-
-                                                <span class="badge bg-warning text-dark">
-                                                    Menunggu Wali Kelas
-                                                </span>
-
-                                            @elseif($item->status === 'disetujui')
-
-                                                <span class="badge bg-success">
-                                                    Disetujui
-                                                </span>
-
-                                            @elseif($item->status === 'ditolak')
-
-                                                <span class="badge bg-danger">
-                                                    Ditolak
-                                                </span>
-
-                                            @endif
-
-                                        @else
-                                            <span class="badge bg-success">
-                                                Disetujui
-                                            </span>
-
-                                        @endif
-
-                                    </td>
-
-
-                                    <td class="text-center">
-
-                                        @if(
-                                            $item->jenis === 'sakit' &&
-                                            $item->status === 'menunggu'
-                                        )
-
-                                            <div class="action-buttons">
-
-                                                <a
-                                                    href="{{ route('siswa.perizinan.edit', $item->id) }}"
-                                                    class="btn btn-sm btn-outline-primary"
-                                                    title="Edit">
-
-                                                    <i class="bi bi-pencil"></i>
-
-                                                </a>
-
-
-                                                <form
-                                                    action="{{ route('siswa.perizinan.destroy', $item->id) }}"
-                                                    method="POST"
-                                                    onsubmit="return confirm('Yakin ingin menghapus pengajuan ini?')">
-
-                                                    @csrf
-                                                    @method('DELETE')
-
-                                                    <button
-                                                        type="submit"
-                                                        class="btn btn-sm btn-outline-danger"
-                                                        title="Hapus">
-
-                                                        <i class="bi bi-trash3"></i>
-
-                                                    </button>
-
-                                                </form>
-
-                                            </div>
-
-                                        @else
-
-                                            <span class="text-muted">
-                                                -
-                                            </span>
-
-                                        @endif
-
-                                    </td>
-
+                                    <th class="text-center">No</th>
+                                    <th>Jenis</th>
+                                    <th>Tanggal</th>
+                                    <th>Waktu</th>
+                                    <th>Alasan</th>
+                                    <th class="text-center">Dokumen</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Aksi</th>
                                 </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($data as $item)
+                                    <tr>
+                                        <td class="text-center fw-bold">{{ $loop->iteration }}</td>
+                                        <td>
+                                            @if($item->jenis === 'sakit')
+                                                <span class="badge text-dark">Sakit</span>
+                                            @elseif($item->jenis === 'keluar')
+                                                <span class="badge text-dark">Keluar</span>
+                                            @elseif($item->jenis === 'pulang')
+                                                <span class="badge text-dark">Pulang</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $item->tanggal?->format('d M Y') }}</td>
+                                        <td>
+                                            @if($item->jenis === 'sakit')
+                                                <span class="text-muted">-</span>
+                                            @elseif($item->jenis === 'keluar')
+                                                {{ $item->jam_mulai }} - {{ $item->jam_selesai }}
+                                            @elseif($item->jenis === 'pulang')
+                                                {{ $item->jam_mulai }} - <span class="text-muted">selesai</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="reason-cell">
+                                                {{ \Illuminate\Support\Str::limit($item->alasan, 80) }}
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            @if($item->dokumen)
+                                                <a href="{{ asset('storage/' . $item->dokumen) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                                    <i class="fas fa-file-alt me-1"></i> Lihat
+                                                </a>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            @if($item->jenis === 'sakit')
+                                                @if($item->status === 'menunggu')
+                                                    <span class="badge bg-warning text-dark">Menunggu</span>
+                                                @elseif($item->status === 'disetujui')
+                                                    <span class="badge bg-success">Disetujui</span>
+                                                @elseif($item->status === 'ditolak')
+                                                    <span class="badge bg-danger">Ditolak</span>
+                                                @endif
+                                            @else
+                                                <span class="badge bg-success">Disetujui</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            @if($item->jenis === 'sakit' && $item->status === 'menunggu')
+                                                <div class="action-buttons">
+                                                    <a href="{{ route('siswa.perizinan.edit', $item->id) }}" class="btn btn-sm btn-outline-primary" title="Edit">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                    <form action="{{ route('siswa.perizinan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus pengajuan ini?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus">
+                                                            <i class="bi bi-trash3"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
-                            @endforeach
+                @else
 
-                        </tbody>
+                    <div class="text-center py-5">
+                        <i class="fas fa-file-signature fa-3x text-muted mb-3"></i>
+                        <h5>Belum ada pengajuan perizinan</h5>
+                        <p class="text-muted">Kamu belum memiliki riwayat izin.</p>
+                        <a href="{{ route('siswa.perizinan.create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i> Ajukan Izin
+                        </a>
+                    </div>
 
-                    </table>
+                @endif
 
-                </div>
-
-            @else
-
-                <div class="text-center py-5">
-
-                    <i class="fas fa-file-signature fa-3x text-muted mb-3"></i>
-
-                    <h5>
-                        Belum ada pengajuan perizinan
-                    </h5>
-
-                    <p class="text-muted">
-                        Kamu belum memiliki riwayat izin.
-                    </p>
-
-                    <a
-                        href="{{ route('siswa.perizinan.create') }}"
-                        class="btn btn-primary">
-
-                        <i class="fas fa-plus me-1"></i>
-                        Ajukan Izin
-
-                    </a>
-
-                </div>
-
-            @endif
-
+            </div>
         </div>
 
     </div>
-
-</div>
 
 @endsection

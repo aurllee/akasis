@@ -77,9 +77,9 @@
                     if ($roleId == 1) {
                         $backRoute = route('admin.dashboard');
                     } elseif ($roleId == 2) {
-                        $guruId = auth()->user()->guru_id;
-                        $isWaliKelas = $guruId && \App\Models\WaliKelas::where('guru_id', $guruId)->exists();
-                        $backRoute = $isWaliKelas ? route('wali-kelas.dashboard') : route('guru.dashboard');
+                        $backRoute = route('guru.dashboard');
+                    } elseif ($roleId == 3) {
+                        $backRoute = route('wali-kelas.dashboard');
                     }
                 @endphp
 

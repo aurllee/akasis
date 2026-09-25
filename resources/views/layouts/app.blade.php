@@ -501,19 +501,12 @@
             $currentRole = $currentUser?->role_id;
         @endphp
 
-        @if($currentUser && $currentRole == 3)
+        @if($currentUser && $currentRole == 5)
             @include('layouts.sidebar-siswa')
+        @elseif($currentUser && $currentRole == 3)
+            @include('layouts.sidebar-wali-kelas')
         @elseif($currentUser && $currentRole == 2)
-            @php
-                $guruId = $currentUser->guru_id;
-                $isWaliKelas = $guruId && \App\Models\WaliKelas::where('guru_id', $guruId)->exists();
-            @endphp
-
-            @if($isWaliKelas)
-                @include('layouts.sidebar-wali-kelas')
-            @else
-                @include('layouts.sidebar-guru')
-            @endif
+            @include('layouts.sidebar-guru')
         @elseif($currentUser && $currentRole == 1)
             @include('layouts.sidebar')
         @elseif(request()->is('siswa') || request()->is('siswa/*'))

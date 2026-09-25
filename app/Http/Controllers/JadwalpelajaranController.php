@@ -70,7 +70,7 @@ class JadwalPelajaranController extends Controller
             ->orderBy('hari')
             ->orderBy('id');
 
-        if (auth()->user()?->role_id == 3) {
+        if (auth()->user()?->role_id == 5) {
             $kelasId = auth()->user()->siswa?->siswaKelas?->first()?->kelas_id;
             $jadwalQuery->where('kelas_id', $kelasId ?? 0)->where('is_published', 1);
         }
@@ -165,7 +165,7 @@ class JadwalPelajaranController extends Controller
             ->orderBy('kelas_id')
             ->orderBy('id');
 
-        if (auth()->user()?->role_id == 3) {
+        if (auth()->user()?->role_id == 5) {
             $kelasId = auth()->user()->siswa?->siswaKelas?->first()?->kelas_id;
             $jadwalQuery->where('kelas_id', $kelasId ?? 0)->where('is_published', 1);
         }

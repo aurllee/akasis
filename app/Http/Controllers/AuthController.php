@@ -33,16 +33,14 @@ class AuthController extends Controller
             }
 
             if (auth()->user()->role_id == 2) {
-                $guruId = auth()->user()->guru_id;
-
-                if ($guruId && \App\Models\WaliKelas::where('guru_id', $guruId)->exists()) {
-                    return redirect()->route('wali-kelas.dashboard');
-                }
-
                 return redirect()->route('guru.dashboard');
             }
 
             if (auth()->user()->role_id == 3) {
+                return redirect()->route('wali-kelas.dashboard');
+            }
+
+            if (auth()->user()->role_id == 5) {
                 return redirect()->route('siswa.dashboard');
             }
 
@@ -83,14 +81,14 @@ class AuthController extends Controller
 
         $user = auth()->user();
 
-        
+
         if (!Hash::check($request->current_password, $user->password)) {
             return back()->withErrors([
                 'current_password' => 'Password lama salah.',
             ]);
         }
 
-        
+
         $user = auth()->user();
 
         if (!$user instanceof User) {
