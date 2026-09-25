@@ -11,10 +11,11 @@ class TahunAjaranController extends Controller
 {
     public function index(): View
     {
+        $tahunAjaran = TahunAjaran::query()
+            ->orderByDesc('tahun_ajaran')
+            ->orderByDesc('id')
+            ->paginate(10);
 
-        $tahunAjaran = TahunAjaran::all();
-
-        $tahunAjaran = TahunAjaran::latest('id')->paginate(2);
         return view('admin.master-data.tahun-ajaran.index', compact('tahunAjaran'));
     }
 

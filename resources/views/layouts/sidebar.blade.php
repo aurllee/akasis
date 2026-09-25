@@ -108,26 +108,10 @@
             <span>Absensi</span>
         </a>
 
-        <a href="{{ route('admin.sakit.index') }}" class="{{ request()->routeIs('admin.sakit.*') ? 'active' : '' }}">
-            <i class="bi bi-heart-pulse"></i>
-            <span>Pengajuan Sakit</span>
-        </a>
-
-        <a href="{{ route('admin.izin-keluar.index') }}"
-            class="{{ request()->routeIs('admin.izin-keluar.*') ? 'active' : '' }}">
-            <i class="bi bi-box-arrow-right"></i>
-            <span>Izin Keluar</span>
-        </a>
-
         <a href="{{ route('admin.izin-pulang.index') }}"
             class="{{ request()->routeIs('admin.izin-pulang.*') ? 'active' : '' }}">
             <i class="bi bi-house-door"></i>
-            <span>Izin Pulang</span>
-        </a>
-
-        <a href="{{ route('admin.dispen.index') }}" class="{{ request()->routeIs('admin.dispen.*') ? 'active' : '' }}">
-            <i class="bi bi-file-earmark-text"></i>
-            <span>Dispensasi</span>
+            <span>Pengajuan Izin</span>
         </a>
 
 

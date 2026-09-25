@@ -1,474 +1,428 @@
 @extends('layouts.app')
 
-@section('title', 'Izin Pulang')
+@section('title', 'Perizinan Siswa')
 
 @push('styles')
-<style>
-    body {
-        background-color: #f8fafc;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .academic-container {
-        padding: 24px 16px;
-    }
-
-    .page-header {
-        margin-bottom: 24px;
-    }
-
-    .page-header h3 {
-        margin: 0 0 4px;
-        color: #0f172a;
-        font-size: 22px;
-        font-weight: 700;
-    }
-
-    .page-header p {
-        margin: 0;
-        color: #64748b;
-        font-size: 13px;
-    }
-
-    .filter-card {
-        margin-bottom: 24px;
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    }
-
-    .filter-card .card-body {
-        padding: 22px;
-    }
-
-    .form-label-custom {
-        display: block;
-        margin-bottom: 7px;
-        color: #334155;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    .custom-input,
-    .custom-select {
-        width: 100%;
-        min-height: 42px;
-        padding: 9px 12px;
-        border: 1px solid #cbd5e1;
-        border-radius: 7px;
-        background-color: #ffffff;
-        color: #1e293b;
-        font-size: 13px;
-        outline: none;
-        transition: all 0.2s ease;
-    }
-
-    .custom-input::placeholder {
-        color: #94a3b8;
-    }
-
-    .custom-input:focus,
-    .custom-select:focus {
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-
-    .data-card {
-        overflow: hidden;
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    }
-
-    .data-card-header {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 18px 22px;
-        border-bottom: 1px solid #e2e8f0;
-    }
-
-    .data-card-icon {
-        width: 34px;
-        height: 34px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        background: #eff6ff;
-        color: #2563eb;
-        font-size: 16px;
-    }
-
-    .data-card-title {
-        margin: 0;
-        color: #0f172a;
-        font-size: 15px;
-        font-weight: 700;
-    }
-
-    .table-wrapper {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    .custom-table {
-        width: 100%;
-        min-width: 1050px;
-        margin: 0;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-
-    .custom-table thead th {
-        padding: 13px 16px;
-        background: #f8fafc;
-        border-bottom: 1px solid #e2e8f0;
-        color: #475569;
-        font-size: 12px;
-        font-weight: 700;
-        white-space: nowrap;
-        vertical-align: middle;
-    }
-
-    .custom-table tbody td {
-        padding: 14px 16px;
-        border-bottom: 1px solid #f1f5f9;
-        color: #475569;
-        font-size: 13px;
-        vertical-align: middle;
-    }
-
-    .custom-table tbody tr:last-child td {
-        border-bottom: none;
-    }
-
-    .custom-table tbody tr {
-        transition: background-color 0.2s ease;
-    }
-
-    .custom-table tbody tr:hover {
-        background-color: #f8fafc;
-    }
-
-    .number-cell {
-        width: 60px;
-        color: #64748b;
-        font-weight: 600;
-        text-align: center;
-    }
-
-    .student-name {
-        color: #0f172a;
-        font-weight: 600;
-    }
-
-    .student-nis {
-        display: block;
-        margin-top: 3px;
-        color: #94a3b8;
-        font-size: 11px;
-    }
-
-    .date-cell {
-        color: #475569;
-        white-space: nowrap;
-        font-weight: 500;
-    }
-
-    .time-cell {
-        color: #475569;
-        white-space: nowrap;
-        font-weight: 500;
-    }
-
-    .status-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 78px;
-        padding: 6px 11px;
-        border-radius: 6px;
-        font-size: 11px;
-        font-weight: 600;
-        white-space: nowrap;
-    }
-
-    .status-success {
-        background: #dcfce7;
-        color: #166534;
-    }
-
-    .status-warning {
-        background: #fef3c7;
-        color: #92400e;
-    }
-
-    .status-danger {
-        background: #fee2e2;
-        color: #b91c1c;
-    }
-
-    .status-info {
-        background: #dbeafe;
-        color: #1d4ed8;
-    }
-
-    .status-default {
-        background: #f1f5f9;
-        color: #64748b;
-    }
-
-    .action-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        padding: 7px 12px;
-        border: 1px solid #bfdbfe;
-        border-radius: 6px;
-        background: #eff6ff;
-        color: #2563eb;
-        font-size: 12px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        white-space: nowrap;
-    }
-
-    .action-btn:hover {
-        background: #2563eb;
-        border-color: #2563eb;
-        color: #ffffff;
-    }
-
-    .empty-state {
-        padding: 55px 20px !important;
-        text-align: center;
-    }
-
-    .empty-state-icon {
-        width: 52px;
-        height: 52px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 12px;
-        border-radius: 50%;
-        background: #f1f5f9;
-        color: #94a3b8;
-        font-size: 22px;
-    }
-
-    .empty-state-title {
-        margin-bottom: 4px;
-        color: #475569;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .empty-state-text {
-        margin: 0;
-        color: #94a3b8;
-        font-size: 12px;
-    }
-
-    .pagination-wrapper {
-        padding: 18px 22px;
-        border-top: 1px solid #f1f5f9;
-    }
-
-    .pagination-wrapper .pagination {
-        margin: 0;
-    }
-
-    .pagination-wrapper .page-link {
-        margin: 0 2px;
-        border-color: #e2e8f0;
-        border-radius: 6px;
-        color: #475569;
-        font-size: 12px;
-    }
-
-    .pagination-wrapper .page-item.active .page-link {
-        background-color: #2563eb;
-        border-color: #2563eb;
-        color: #ffffff;
-    }
-
-    .pagination-wrapper .page-link:hover {
-        background-color: #eff6ff;
-        border-color: #bfdbfe;
-        color: #2563eb;
-    }
-
-    #izinPulangContent {
-        transition: opacity 0.2s ease;
-    }
-
-    @media (max-width: 768px) {
-        .academic-container {
-            padding: 18px 10px;
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Poppins', sans-serif;
         }
 
-        .page-header h3 {
-            font-size: 20px;
+        .page-header {
+            margin-bottom: 24px;
         }
 
-        .filter-card .card-body {
-            padding: 16px;
+        .page-title {
+            margin: 0 0 8px;
+            color: #0f172a;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .filter-card {
+            margin-bottom: 24px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .filter-card-body {
+            padding: 22px;
+        }
+
+        .form-label-custom {
+            display: block;
+            margin-bottom: 7px;
+            color: #334155;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .custom-input,
+        .custom-select {
+            width: 100%;
+            min-height: 42px;
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background-color: #ffffff;
+            color: #1e293b;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .custom-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .custom-input:focus,
+        .custom-select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .data-card {
+            overflow: hidden;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
 
         .data-card-header {
-            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 22px;
+            border-bottom: 1px solid #e2e8f0;
         }
 
-        .pagination-wrapper {
-            padding: 15px;
+        .data-card-icon {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 16px;
         }
-    }
-</style>
+
+        .data-card-title {
+            margin: 0;
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .custom-table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 0;
+            background: #ffffff;
+        }
+
+        .custom-table thead th {
+            padding: 13px 16px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .custom-table tbody td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #475569;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .custom-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .custom-table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .number-cell {
+            width: 60px;
+            color: #64748b;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .student-name {
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .student-nis {
+            display: block;
+            margin-top: 4px;
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        .date-cell {
+            white-space: nowrap;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .type-badge,
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 90px;
+            padding: 6px 11px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .type-sakit {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .type-pulang {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .type-keluar {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .type-izin {
+            background: #ccfbf1;
+            color: #0f766e;
+        }
+
+        .type-dispen {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-approved {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .btn-detail {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 7px 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #475569;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-detail:hover {
+            background: #f8fafc;
+            color: #2563eb;
+            border-color: #93c5fd;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #64748b;
+            padding: 32px 16px !important;
+            font-style: italic;
+        }
+
+        .empty-state-icon {
+            display: inline-flex;
+            width: 38px;
+            height: 38px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 18px;
+        }
+    </style>
 @endpush
 
 @section('content')
 
-<div class="academic-container">
-
     <div class="page-header">
-        <h3>Izin Pulang</h3>
-        <p>Monitoring izin pulang siswa.</p>
+        <h1 class="page-title">Perizinan Siswa</h1>
+        <p class="page-subtitle">
+            Monitoring pengajuan sakit, izin pulang, izin keluar, dan dispen siswa.
+        </p>
     </div>
 
-    <div class="filter-card">
+    <form method="GET" action="{{ route('admin.izin-pulang.index') }}" class="filter-card">
+        <div class="filter-card-body">
+            <div class="row g-3 align-items-end">
 
-        <div class="card-body">
-
-            <div class="row g-3">
-
-                <div class="col-md-7">
-
-                    <label
-                        for="searchIzinPulang"
-                        class="form-label-custom"
-                    >
+                <div class="col-md-6">
+                    <label for="search" class="form-label-custom">
                         Cari Siswa
                     </label>
 
-                    <input
-                        type="text"
-                        id="searchIzinPulang"
-                        class="custom-input"
-                        placeholder="Nama / NIS / NISN..."
-                        value="{{ request('search') }}"
-                        autocomplete="off"
-                    >
-
+                    <input type="text" id="search" name="search" class="custom-input" placeholder="Nama / NIS / NISN..."
+                        value="{{ request('search') }}" autocomplete="off">
                 </div>
 
                 <div class="col-md-3">
-
-                    <label
-                        for="statusIzinPulang"
-                        class="form-label-custom"
-                    >
-                        Status Kesiswaan
+                    <label for="jenis" class="form-label-custom">
+                        Jenis
                     </label>
 
-                    <select
-                        id="statusIzinPulang"
-                        class="custom-select"
-                    >
+                    <select id="jenis" name="jenis" class="custom-select">
+                        <option value="">Semua Jenis</option>
 
-                        <option value="">
-                            Semua Status
+                        <option value="sakit" @selected(request('jenis') === 'sakit')>
+                            Sakit
                         </option>
 
-                        <option
-                            value="pending"
-                            @selected(request('status_kesiswaan') === 'pending')
-                        >
+                        <option value="izin" @selected(request('jenis') === 'izin')>
+                            Izin
+                        </option>
+
+                        <option value="pulang" @selected(request('jenis') === 'pulang')>
+                            Izin Pulang
+                        </option>
+
+                        <option value="keluar" @selected(request('jenis') === 'keluar')>
+                            Izin Keluar
+                        </option>
+
+                        <option value="dispen" @selected(request('jenis') === 'dispen')>
+                            Dispen
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="status" class="form-label-custom">
+                        Status
+                    </label>
+
+                    <select id="status" name="status" class="custom-select">
+                        <option value="">Semua Status</option>
+
+                        <option value="menunggu" @selected(request('status') === 'menunggu')>
                             Menunggu
                         </option>
 
-                        <option
-                            value="diterima"
-                            @selected(request('status_kesiswaan') === 'diterima')
-                        >
-                            Diterima
+                        <option value="disetujui" @selected(request('status') === 'disetujui')>
+                            Disetujui
                         </option>
 
-                        <option
-                            value="ditolak"
-                            @selected(request('status_kesiswaan') === 'ditolak')
-                        >
+                        <option value="ditolak" @selected(request('status') === 'ditolak')>
                             Ditolak
                         </option>
-
                     </select>
-
                 </div>
 
             </div>
 
+            <div class="mt-3 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i>
+                    Filter
+                </button>
+
+                <a href="{{ route('admin.izin-pulang.index') }}" class="btn btn-light border">
+                    Reset
+                </a>
+            </div>
+        </div>
+    </form>
+
+    <div class="data-card">
+
+        <div class="data-card-header">
+            <div class="data-card-icon">
+                <i class="bi bi-calendar-check"></i>
+            </div>
+
+            <h5 class="data-card-title">
+                Data Perizinan Siswa
+            </h5>
         </div>
 
-    </div>
+        <div class="table-wrapper">
 
-    <div id="izinPulangContent">
+            <table class="custom-table">
 
-        <div class="data-card">
+                <thead>
+                    <tr>
+                        <th class="text-center">No</th>
+                        <th>Siswa</th>
+                        <th>Jenis</th>
+                        <th>Tanggal</th>
+                        <th>Alasan</th>
+                        <th>Status</th>
+                        <th class="text-center">Aksi</th>
+                    </tr>
+                </thead>
 
-            <div class="data-card-header">
+                <tbody>
 
-                <div class="data-card-icon">
-                    <i class="bi bi-box-arrow-left"></i>
-                </div>
-
-                <h5 class="data-card-title">
-                    Data Izin Pulang
-                </h5>
-
-            </div>
-
-            <div class="table-wrapper">
-
-                <table class="custom-table">
-
-                    <thead>
-
-                        <tr>
-                            <th class="text-center">No</th>
-                            <th>Siswa</th>
-                            <th>Tanggal</th>
-                            <th>Jam Pulang</th>
-                            <th>Kesiswaan</th>
-                            <th>Guru Mapel</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                    @forelse($izinPulang as $item)
+                    @forelse ($izinPulang as $item)
 
                         @php
-                            $statusKesiswaan = $item->status_kesiswaan ?? 'pending';
+                            $jenisValue = strtolower($item->jenis ?? '');
 
-                            $badgeKesiswaan = match($statusKesiswaan) {
-                                'diterima' => 'status-success',
-                                'ditolak' => 'status-danger',
-                                default => 'status-warning'
+                            $jenisText = match ($jenisValue) {
+                                'sakit' => 'Sakit',
+                                'izin' => 'Izin',
+                                'pulang' => 'Izin Pulang',
+                                'keluar' => 'Izin Keluar',
+                                'dispen' => 'Dispen',
+                                default => ucfirst($item->jenis ?? '-'),
                             };
 
-                            $statusGuru = $item->status_guru_mapel ?? 'pending';
+                            $jenisClass = match ($jenisValue) {
+                                'sakit' => 'type-sakit',
+                                'izin' => 'type-izin',
+                                'pulang' => 'type-pulang',
+                                'keluar' => 'type-keluar',
+                                'dispen' => 'type-dispen',
+                                default => '',
+                            };
 
-                            $badgeGuru = match($statusGuru) {
-                                'diterima' => 'status-success',
-                                'ditolak' => 'status-danger',
-                                default => 'status-warning'
+                            $statusValue = strtolower($item->status ?? 'menunggu');
+
+                            $statusText = match ($statusValue) {
+                                'disetujui' => 'Disetujui',
+                                'ditolak' => 'Ditolak',
+                                default => 'Menunggu',
+                            };
+
+                            $statusClass = match ($statusValue) {
+                                'disetujui' => 'status-approved',
+                                'ditolak' => 'status-rejected',
+                                default => 'status-pending',
                             };
                         @endphp
 
@@ -479,7 +433,6 @@
                             </td>
 
                             <td>
-
                                 <div class="student-name">
                                     {{ $item->siswa->nama ?? '-' }}
                                 </div>
@@ -487,54 +440,41 @@
                                 <span class="student-nis">
                                     NIS: {{ $item->siswa->nis ?? '-' }}
                                 </span>
+                            </td>
 
+                            <td>
+                                <span class="type-badge {{ $jenisClass }}">
+                                    {{ $jenisText }}
+                                </span>
                             </td>
 
                             <td class="date-cell">
-                                {{ $item->tanggal?->format('d-m-Y') ?? '-' }}
-                            </td>
-
-                            <td class="time-cell">
-
-                                {{ $item->jam_mulai ?? '-' }}
-
-                                <span class="text-muted mx-1">
-                                    -
-                                </span>
-
-                                {{ $item->jam_selesai ?? '-' }}
-
+                                @if ($item->sumber === 'dispen')
+                                    {{ $item->tanggal_mulai ? \Carbon\Carbon::parse($item->tanggal_mulai)->format('d-m-Y') : '-' }}
+                                    @if ($item->tanggal_selesai && $item->tanggal_selesai != $item->tanggal_mulai)
+                                        - {{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d-m-Y') }}
+                                    @endif
+                                @else
+                                    {{ $item->tanggal ? \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') : '-' }}
+                                @endif
                             </td>
 
                             <td>
-
-                                <span class="status-badge {{ $badgeKesiswaan }}">
-                                    {{ ucfirst($statusKesiswaan) }}
-                                </span>
-
+                                {{ $item->alasan ?? $item->kegiatan ?? '-' }}
                             </td>
 
                             <td>
-
-                                <span class="status-badge {{ $badgeGuru }}">
-                                    {{ ucfirst($statusGuru) }}
+                                <span class="status-badge {{ $statusClass }}">
+                                    {{ $statusText }}
                                 </span>
-
                             </td>
 
                             <td class="text-center">
-
-                                <a
-                                    href="{{ route(
-                                        'admin.izin-pulang.show',
-                                        $item->id
-                                    ) }}"
-                                    class="action-btn"
-                                >
+                                <a href="{{ route('admin.izin-pulang.show', ['id' => $item->id, 'sumber' => $item->sumber]) }}"
+                                    class="btn-detail">
                                     <i class="bi bi-eye"></i>
                                     Detail
                                 </a>
-
                             </td>
 
                         </tr>
@@ -542,211 +482,33 @@
                     @empty
 
                         <tr>
-
-                            <td
-                                colspan="7"
-                                class="empty-state"
-                            >
+                            <td colspan="7" class="empty-state">
 
                                 <div class="empty-state-icon">
                                     <i class="bi bi-inbox"></i>
                                 </div>
 
-                                <div class="empty-state-title">
-                                    Belum ada izin pulang
+                                <div>
+                                    Belum ada data perizinan siswa.
                                 </div>
 
-                                <p class="empty-state-text">
-                                    Data izin pulang belum tersedia atau tidak sesuai dengan filter.
-                                </p>
-
                             </td>
-
                         </tr>
 
                     @endforelse
 
-                    </tbody>
+                </tbody>
 
-                </table>
-
-            </div>
-
-            <div class="pagination-wrapper">
-
-                {{ $izinPulang->links() }}
-
-            </div>
+            </table>
 
         </div>
 
+        @if ($izinPulang->hasPages())
+            <div class="p-3 border-top">
+                {{ $izinPulang->links() }}
+            </div>
+        @endif
+
     </div>
 
-</div>
-
 @endsection
-
-@push('scripts')
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    const searchInput =
-        document.getElementById('searchIzinPulang');
-
-    const statusInput =
-        document.getElementById('statusIzinPulang');
-
-    const content =
-        document.getElementById('izinPulangContent');
-
-    let timer = null;
-
-    function loadData(url = null) {
-
-        if (!url) {
-
-            const params = new URLSearchParams();
-
-            const search =
-                searchInput.value.trim();
-
-            const status =
-                statusInput.value;
-
-            if (search !== '') {
-                params.append(
-                    'search',
-                    search
-                );
-            }
-
-            if (status !== '') {
-                params.append(
-                    'status_kesiswaan',
-                    status
-                );
-            }
-
-            url =
-                "{{ route('admin.izin-pulang.index') }}";
-
-            if (params.toString() !== '') {
-                url +=
-                    '?' +
-                    params.toString();
-            }
-
-        }
-
-        content.style.opacity = '0.5';
-
-        fetch(url, {
-
-            headers: {
-                'X-Requested-With':
-                    'XMLHttpRequest',
-
-                'Accept':
-                    'text/html'
-            }
-
-        })
-        .then(response => {
-
-            if (!response.ok) {
-                throw new Error(
-                    'Gagal mengambil data.'
-                );
-            }
-
-            return response.text();
-
-        })
-        .then(html => {
-
-            const doc =
-                new DOMParser()
-                    .parseFromString(
-                        html,
-                        'text/html'
-                    );
-
-            const newContent =
-                doc.querySelector(
-                    '#izinPulangContent'
-                );
-
-            if (newContent) {
-
-                content.innerHTML =
-                    newContent.innerHTML;
-
-            }
-
-            content.style.opacity = '1';
-
-            window.history.replaceState(
-                {},
-                '',
-                url
-            );
-
-        })
-        .catch(error => {
-
-            console.error(error);
-
-            content.style.opacity = '1';
-
-        });
-
-    }
-
-    searchInput.addEventListener(
-        'input',
-        function () {
-
-            clearTimeout(timer);
-
-            timer = setTimeout(
-                function () {
-                    loadData();
-                },
-                300
-            );
-
-        }
-    );
-
-    statusInput.addEventListener(
-        'change',
-        function () {
-            loadData();
-        }
-    );
-
-    content.addEventListener(
-        'click',
-        function (event) {
-
-            const link =
-                event.target.closest(
-                    '.pagination a'
-                );
-
-            if (!link) {
-                return;
-            }
-
-            event.preventDefault();
-
-            loadData(link.href);
-
-        }
-    );
-
-});
-</script>
-
-@endpush

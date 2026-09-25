@@ -35,4 +35,14 @@ class AbsensiController extends Controller
 
         return view('admin.absensi.index', compact('absensi'));
     }
+
+    public function show($id)
+    {
+        $absensi = Absensi::with([
+            'siswa',
+            'sesi.jadwal',
+        ])->findOrFail($id);
+
+        return view('admin.absensi.show', compact('absensi'));
+    }
 }

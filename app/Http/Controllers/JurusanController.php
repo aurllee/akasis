@@ -9,7 +9,7 @@ class JurusanController extends Controller
 {
     public function index()
     {
-        $jurusans = Jurusan::latest('id')->paginate(5);
+        $jurusans = Jurusan::all();
 
         return view('admin.master-data.jurusan.index', compact('jurusans'));
     }

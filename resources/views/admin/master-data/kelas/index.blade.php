@@ -2,154 +2,265 @@
 
 @section('title', 'Master Kelas')
 
-@push('styles')
+@section('content')
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: #212529;
-            background: #f5f6fa;
         }
 
-        .academic-page {
-            color: #1f2937;
+        .kelas-page {
+            padding: 24px 0;
         }
 
-        .academic-panel {
-            background: #fff;
-            border: 1px solid #e4eaf2;
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(30, 64, 102, 0.05);
-            padding: 24px;
+        .page-header {
+            margin-bottom: 24px;
         }
 
-        .academic-header {
-            align-items: center;
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .academic-title {
-            color: #1e293b;
-            font-size: 24px;
-            font-weight: 600;
+        .page-title {
             margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+            color: #1e293b;
         }
 
-        .academic-add {
-            background: #2449a4;
+        .page-subtitle {
+            margin: 6px 0 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .btn-add {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 9px 18px;
             border-radius: 8px;
-            color: #fff;
+            background: #2563eb;
+            color: #ffffff;
             font-size: 14px;
             font-weight: 600;
-            padding: 10px 14px;
-        }
-
-        .academic-add:hover {
-            background: #2449a4;
-            color: #fff;
             text-decoration: none;
+            transition: 0.2s ease;
         }
 
-        .academic-table-wrapper {
-            overflow-x: auto;
+        .btn-add:hover {
+            background: #1d4ed8;
+            color: #ffffff;
         }
 
-        .academic-table {
-            min-width: 680px;
-            width: 100%;
-            border-collapse: collapse;
+        .page-header-content {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
         }
 
-        .academic-table th,
-        .academic-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
+        .data-card {
+            background: #ffffff;
+            border: 1px solid #e8edf5;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+            overflow: hidden;
         }
 
-        .academic-table th {
-            background: #f1f5fb;
-            color: #475569;
-            font-size: 12px;
-            text-transform: uppercase;
+        .data-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e8edf5;
+        }
+
+        .filter-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-label {
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 600;
             white-space: nowrap;
         }
 
-        .academic-table td {
-            color: #374151;
-            font-size: 14px;
+        .filter-select {
+            min-width: 210px;
+            min-height: 38px;
+            padding: 7px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: #ffffff;
+            color: #334155;
+            font-size: 13px;
         }
 
-        .academic-table tbody tr:hover {
-            background: #f8fbff;
-        }
-
-        .academic-code {
-            color: #2449a4;
+        .filter-button,
+        .reset-button {
+            min-height: 38px;
+            padding: 7px 12px;
+            border-radius: 7px;
+            font-size: 13px;
             font-weight: 600;
+            text-decoration: none;
         }
 
-        .academic-status {
-            font-size: 14px;
+        .filter-button {
+            border: 1px solid #2563eb;
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .reset-button {
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            color: #475569;
+        }
+
+        .data-card-title {
+            margin: 0;
+            font-size: 17px;
             font-weight: 600;
-            padding: 5px 9px;
+            color: #1e293b;
         }
 
-        .academic-status.is-inactive {
-            background: #f1f5f9;
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .kelas-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 680px;
+        }
+
+        .kelas-table th {
+            padding: 13px 18px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e8edf5;
+            color: #475569;
+
+            .data-card-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .filter-form {
+                align-items: stretch;
+                flex-wrap: wrap;
+                width: 100%;
+            }
+
+            .filter-select {
+                flex: 1;
+            }
+
+            font-size: 13px;
+            font-weight: 600;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .kelas-table td {
+            padding: 14px 18px;
+            border-bottom: 1px solid #eef2f7;
+            color: #334155;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .kelas-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .kelas-table tbody tr {
+            transition: 0.2s ease;
+        }
+
+        .kelas-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .number-cell {
+            width: 60px;
             color: #64748b;
+            text-align: center;
         }
 
-        .academic-action {
+        .kode-cell {
+            font-weight: 600;
+            color: #2563eb;
+            white-space: nowrap;
+        }
+
+        .nama-cell {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .action-wrapper {
             display: flex;
+            align-items: center;
             gap: 8px;
             white-space: nowrap;
         }
 
-        .academic-action a,
-        .academic-action button {
-            border: 1px solid transparent;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            padding: 7px 10px;
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 34px;
+            padding: 7px 12px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
             text-decoration: none;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: 0.2s ease;
         }
 
-        .academic-edit {
+        .btn-edit {
             background: #eff6ff;
-            border-color: #93c5fd !important;
+            color: #2563eb;
+            border-color: #dbeafe;
+        }
+
+        .btn-edit:hover {
+            background: #dbeafe;
             color: #1d4ed8;
         }
 
-        .academic-delete {
+        .btn-delete {
             background: #fef2f2;
-            border-color: #fca5a5 !important;
+            color: #dc2626;
+            border-color: #fee2e2;
+        }
+
+        .btn-delete:hover {
+            background: #fee2e2;
             color: #b91c1c;
         }
 
-        .academic-edit:hover {
-            background: #dbeafe;
-            color: #1e40af;
+        .delete-form {
+            margin: 0;
         }
 
-        .academic-delete:hover {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .academic-empty {
-            color: #64748b !important;
-            padding: 28px !important;
-            text-align: center !important;
+        .empty-state {
+            padding: 40px 20px !important;
+            text-align: center;
+            color: #94a3b8 !important;
         }
 
         .room-pagination {
             display: flex;
             justify-content: center;
             margin-top: 20px;
-            margin-bottom: 20px;
+            padding: 0 24px 24px;
         }
 
         .room-pagination nav {
@@ -200,34 +311,78 @@
         }
 
         @media (max-width: 768px) {
-            .academic-panel {
+            .kelas-page {
+                padding: 16px 0;
+            }
+
+            .page-header-content {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .page-title {
+                font-size: 22px;
+            }
+
+            .btn-add {
+                width: 100%;
+            }
+
+            .data-card-header {
                 padding: 18px;
             }
 
-            .academic-header {
-                align-items: flex-start;
-                flex-direction: column;
-                gap: 14px;
+            .kelas-table th,
+            .kelas-table td {
+                padding: 12px 14px;
             }
         }
     </style>
-@endpush
 
-@section('content')
+    <div class="kelas-page">
 
-    <div class="academic-page">
-        <div class="academic-panel">
-            <div class="academic-header">
-                <h1 class="academic-title">Master Kelas</h1>
-                <a class="academic-add text-decoration-none" href="{{ route('kelas.create') }}"> Tambah Kelas
+        <div class="page-header">
+            <div class="page-header-content">
+                <div>
+                    <h1 class="page-title">Master Kelas</h1>
+                    <p class="page-subtitle">
+                        Kelola data kelas sekolah.
+                    </p>
+                </div>
+
+                <a href="{{ route('kelas.create') }}" class="btn-add">
+                    Tambah Kelas
                 </a>
             </div>
+        </div>
 
-            <div class="academic-table-wrapper">
-                <table class="academic-table">
+        <div class="data-card">
+
+            <div class="data-card-header">
+                <h2 class="data-card-title">Data Kelas</h2>
+
+                <form method="GET" action="{{ route('kelas.index') }}" class="filter-form">
+                    <label for="jurusan_id" class="filter-label">Filter Jurusan</label>
+                    <select name="jurusan_id" id="jurusan_id" class="filter-select">
+                        <option value="">Semua Jurusan</option>
+                        @foreach($jurusans as $jurusan)
+                            <option value="{{ $jurusan->id }}" @selected((string) request('jurusan_id') === (string) $jurusan->id)>
+                                {{ $jurusan->kode_jurusan }} - {{ $jurusan->nama_jurusan }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="filter-button">Terapkan</button>
+                    @if(request()->filled('jurusan_id'))
+                        <a href="{{ route('kelas.index') }}" class="reset-button">Reset</a>
+                    @endif
+                </form>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="kelas-table">
                     <thead>
                         <tr>
-                            <th>No</th>
+                            <th class="number-cell">No</th>
                             <th>Tingkat</th>
                             <th>Jurusan</th>
                             <th>Nama Kelas</th>
@@ -236,43 +391,71 @@
                             <th>Aksi</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         @forelse($kelases as $kelas)
                             <tr>
-                                <td>{{ $kelases->firstItem() + $loop->index }}</td>
-                                <td><span class="academic-status">{{ $kelas->tingkat }}</span></td>
+                                <td class="number-cell">
+                                    {{ $kelases->firstItem() + $loop->index }}
+                                </td>
+
                                 <td>
-                                    <span class="academic-code">{{ optional($kelas->jurusan)->kode_jurusan ?? '-' }}</span> - 
+                                    {{ $kelas->tingkat }}
+                                </td>
+
+                                <td>
+                                    <span class="kode-cell">{{ optional($kelas->jurusan)->kode_jurusan ?? '-' }}</span> -
                                     {{ optional($kelas->jurusan)->nama_jurusan ?? '-' }}
                                 </td>
-                                <td><strong>{{ $kelas->nama_kelas }}</strong></td>
-                                <td>{{ optional($kelas->waliKelas)->nama ?? '-' }}</td>
-                                <td>{{ optional($kelas->tahunAjaran)->tahun_ajaran ?? '-' }}</td>
+
+                                <td class="nama-cell">
+                                    {{ $kelas->nama_kelas }}
+                                </td>
+
                                 <td>
-                                    <div class="academic-action">
-                                        <a class="academic-edit" href="{{ route('kelas.edit', $kelas->id) }}">Edit</a>
-                                        <form action="{{ route('kelas.destroy', $kelas->id) }}" method="POST">
+                                    {{ optional($kelas->waliKelas)->nama ?? '-' }}
+                                </td>
+
+                                <td>
+                                    {{ optional($kelas->tahunAjaran)->tahun_ajaran ?? '-' }}
+                                </td>
+
+                                <td>
+                                    <div class="action-wrapper">
+                                        <a href="{{ route('kelas.edit', $kelas->id) }}" class="btn-action btn-edit">
+                                            Edit
+                                        </a>
+
+                                        <form action="{{ route('kelas.destroy', $kelas->id) }}" method="POST"
+                                            class="delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="academic-delete" type="submit"
-                                                onclick="return confirm('Hapus data kelas?')">Hapus</button>
+
+                                            <button type="submit" class="btn-action btn-delete"
+                                                onclick="return confirm('Hapus data kelas?')">
+                                                Hapus
+                                            </button>
                                         </form>
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="academic-empty">Belum ada data kelas.</td>
+                                <td colspan="7" class="empty-state">
+                                    Belum ada data kelas.
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
+
             <div class="room-pagination">
                 {{ $kelases->links('pagination::bootstrap-5') }}
             </div>
+
         </div>
-    </div>
+
     </div>
 
 @endsection

@@ -19,10 +19,7 @@ use App\Http\Controllers\Admin\PenilaianPjblController;
 use App\Http\Controllers\Admin\PenilaianMapelController;
 use App\Http\Controllers\Admin\AbsensiController;
 use App\Http\Controllers\Siswa\AbsensiController as SiswaAbsensiController;
-use App\Http\Controllers\Admin\SakitController;
-use App\Http\Controllers\Admin\IzinKeluarController;
 use App\Http\Controllers\Admin\IzinPulangController;
-use App\Http\Controllers\Admin\DispenController;
 use App\Http\Controllers\Guru\PenilaianPjblController as GuruPenilaianPjblController;
 use App\Http\Controllers\Guru\JadwalController;
 use App\Http\Controllers\Guru\SesiAbsensiController;
@@ -132,10 +129,6 @@ Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(func
     Route::get('/nilai/{siswa}', [WaliKelasController::class, 'nilai'])->name('nilai');
     Route::get('/absen', [WaliKelasAbsenController::class, 'index'])->name('absen.index');
 });
-
-Route::get('/wali-kelas/kelas-mengajar', [WaliKelasController::class, 'kelasMengajar'])
-    ->name('wali-kelas.kelas-mengajar');
-
 
 Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(function () {
     Route::get('/izin-tidak-masuk', [WaliKelasSakitController::class, 'index'])->name('sakit.index');
@@ -358,32 +351,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 
     Route::get(
-        '/sakit',
-        [SakitController::class, 'index']
-    )->name('sakit.index');
-
-    Route::get(
-        '/sakit/{id}',
-        [SakitController::class, 'show']
-    )->name('sakit.show');
-
-
-
-
-    Route::get(
-        '/izin-keluar',
-        [IzinKeluarController::class, 'index']
-    )->name('izin-keluar.index');
-
-    Route::get(
-        '/izin-keluar/{id}',
-        [IzinKeluarController::class, 'show']
-    )->name('izin-keluar.show');
-
-
-
-
-    Route::get(
         '/izin-pulang',
         [IzinPulangController::class, 'index']
     )->name('izin-pulang.index');
@@ -392,19 +359,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         '/izin-pulang/{id}',
         [IzinPulangController::class, 'show']
     )->name('izin-pulang.show');
-
-
-
-
-    Route::get(
-        '/dispen',
-        [DispenController::class, 'index']
-    )->name('dispen.index');
-
-    Route::get(
-        '/dispen/{id}',
-        [DispenController::class, 'show']
-    )->name('dispen.show');
 });
 
 Route::get('/guru/jadwal', [JadwalController::class, 'index'])

@@ -20,6 +20,10 @@ class Absensi extends Model
         'keterangan',
     ];
 
+    protected $casts = [
+        'tanggal' => 'date',
+    ];
+
     public function sesi()
     {
         return $this->belongsTo(SesiAbsensi::class, 'sesi_absensi_id');

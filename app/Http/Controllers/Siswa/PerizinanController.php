@@ -33,7 +33,7 @@ class PerizinanController extends Controller
     {
         $jenis = $request->jenis;
         $rules = [
-            'jenis' => ['required', 'in:sakit,keluar,pulang'],
+            'jenis' => ['required', 'in:sakit,izin,keluar,pulang'],
             'tanggal' => ['required', 'date'],
             'alasan' => ['required', 'string'],
             'dokumen' => [
@@ -48,7 +48,9 @@ class PerizinanController extends Controller
         // VALIDASI BERDASARKAN JENIS
         // =========================
 
-        if ($jenis === 'sakit') {
+        $requiresWaliKelas = in_array($jenis, ['sakit', 'izin'], true);
+
+        if ($requiresWaliKelas) {
 
             $rules['jam_mulai'] = ['nullable'];
             $rules['jam_selesai'] = ['nullable'];
@@ -85,7 +87,7 @@ class PerizinanController extends Controller
 
         $walikelasId = null;
 
-        if ($jenis === 'sakit') {
+        if ($requiresWaliKelas) {
 
             $siswaKelas = SiswaKelas::with('kelas')
                 ->where('siswa_id', $siswa->id)
@@ -119,7 +121,7 @@ class PerizinanController extends Controller
             'jenis' => $jenis,
             'tanggal' => $request->tanggal,
 
-            'jam_mulai' => $jenis === 'sakit'
+            'jam_mulai' => $requiresWaliKelas
                 ? null
                 : $request->jam_mulai,
 
@@ -132,7 +134,7 @@ class PerizinanController extends Controller
 
             // Khusus sakit
             'walikelas_id' => $walikelasId,
-            'status_walikelas' => $jenis === 'sakit'
+            'status_walikelas' => $requiresWaliKelas
                 ? 'menunggu'
                 : null,
 
@@ -142,7 +144,7 @@ class PerizinanController extends Controller
             // Sakit menunggu wali kelas.
             // Keluar & pulang langsung disetujui
             // karena dokumen sudah bertanda tangan offline.
-            'status' => $jenis === 'sakit'
+            'status' => $requiresWaliKelas
                 ? 'menunggu'
                 : 'disetujui',
         ]);
@@ -167,7 +169,7 @@ class PerizinanController extends Controller
         // Keluar dan pulang langsung disetujui,
         // sehingga tidak boleh diubah setelah dikirim.
         if (
-            $perizinan->jenis !== 'sakit' ||
+            !in_array($perizinan->jenis, ['sakit', 'izin'], true) ||
             $perizinan->status !== 'menunggu'
         ) {
             return redirect()
@@ -201,7 +203,7 @@ class PerizinanController extends Controller
         }
 
         $request->validate([
-            'jenis' => ['required', 'in:sakit'],
+            'jenis' => ['required', 'in:sakit,izin'],
             'tanggal' => ['required', 'date'],
             'alasan' => ['required', 'string'],
             'dokumen' => [
@@ -252,7 +254,7 @@ class PerizinanController extends Controller
         // Hanya sakit yang masih menunggu
         // yang boleh dihapus.
         if (
-            $perizinan->jenis !== 'sakit' ||
+            !in_array($perizinan->jenis, ['sakit', 'izin'], true) ||
             $perizinan->status !== 'menunggu'
         ) {
             return redirect()

@@ -11,6 +11,7 @@
                 background: #f4f7fb;
                 color: #1f2937;
             }
+
             .perizinan-page {
                 width: 100%;
             }
@@ -30,6 +31,7 @@
             }
 
             .perizinan-card {
+                overflow: hidden;
                 border: 1px solid #e5e7eb;
                 border-top: 4px solid #0d6efd;
                 border-radius: 0.75rem;
@@ -37,6 +39,7 @@
 
             .perizinan-table th {
                 background-color: #f8f9fa;
+                border-bottom: 2px solid #dee2e6;
                 color: #495057;
                 font-size: 0.85rem;
                 font-weight: 600;
@@ -50,6 +53,10 @@
                 vertical-align: middle;
             }
 
+            .perizinan-table tbody tr:hover {
+                background-color: #f8fafc;
+            }
+
             .perizinan-table .reason-cell {
                 max-width: 300px;
                 word-wrap: break-word;
@@ -57,7 +64,13 @@
 
             .action-buttons {
                 display: inline-flex;
+                align-items: center;
                 gap: 0.35rem;
+            }
+
+            .action-buttons form {
+                display: inline-flex;
+                margin: 0;
             }
 
             .action-buttons .btn {
@@ -74,6 +87,14 @@
                 .perizinan-header {
                     align-items: flex-start;
                     flex-direction: column;
+                }
+
+                .perizinan-header .btn {
+                    width: 100%;
+                }
+
+                .perizinan-table {
+                    min-width: 900px;
                 }
             }
         </style>
@@ -116,22 +137,17 @@
                                     <tr>
                                         <td class="text-center fw-bold">{{ $loop->iteration }}</td>
                                         <td>
-                                            @if($item->jenis === 'sakit')
-                                                <span class="badge text-dark">Sakit</span>
-                                            @elseif($item->jenis === 'keluar')
-                                                <span class="badge text-dark">Keluar</span>
-                                            @elseif($item->jenis === 'pulang')
-                                                <span class="badge text-dark">Pulang</span>
-                                            @endif
+                                            {{ ucfirst($item->jenis) }}
                                         </td>
                                         <td>{{ $item->tanggal?->format('d M Y') }}</td>
                                         <td>
-                                            @if($item->jenis === 'sakit')
+                                            @if(in_array($item->jenis, ['sakit', 'izin'], true))
                                                 <span class="text-muted">-</span>
+
                                             @elseif($item->jenis === 'keluar')
                                                 {{ $item->jam_mulai }} - {{ $item->jam_selesai }}
                                             @elseif($item->jenis === 'pulang')
-                                                {{ $item->jam_mulai }} - <span class="text-muted">selesai</span>
+                                                {{ $item->jam_mulai }} - <span class="text-muted">pulang</span>
                                             @endif
                                         </td>
                                         <td>
@@ -141,7 +157,8 @@
                                         </td>
                                         <td class="text-center">
                                             @if($item->dokumen)
-                                                <a href="{{ asset('storage/' . $item->dokumen) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                                <a href="{{ asset('storage/' . $item->dokumen) }}" target="_blank"
+                                                    class="btn btn-sm btn-outline-secondary">
                                                     <i class="fas fa-file-alt me-1"></i> Lihat
                                                 </a>
                                             @else
@@ -149,7 +166,7 @@
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            @if($item->jenis === 'sakit')
+                                            @if(in_array($item->jenis, ['sakit', 'izin'], true))
                                                 @if($item->status === 'menunggu')
                                                     <span class="badge bg-warning text-dark">Menunggu</span>
                                                 @elseif($item->status === 'disetujui')
@@ -162,12 +179,14 @@
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            @if($item->jenis === 'sakit' && $item->status === 'menunggu')
+                                            @if(in_array($item->jenis, ['sakit', 'izin'], true) && $item->status === 'menunggu')
                                                 <div class="action-buttons">
-                                                    <a href="{{ route('siswa.perizinan.edit', $item->id) }}" class="btn btn-sm btn-outline-primary" title="Edit">
+                                                    <a href="{{ route('siswa.perizinan.edit', $item->id) }}"
+                                                        class="btn btn-sm btn-outline-primary" title="Edit">
                                                         <i class="bi bi-pencil"></i>
                                                     </a>
-                                                    <form action="{{ route('siswa.perizinan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus pengajuan ini?')">
+                                                    <form action="{{ route('siswa.perizinan.destroy', $item->id) }}" method="POST"
+                                                        onsubmit="return confirm('Yakin ingin menghapus pengajuan ini?')">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus">
