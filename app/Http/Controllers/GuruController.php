@@ -43,7 +43,9 @@ class GuruController extends Controller
 
         $data['kode_guru'] = $kodeGuru;
 
-        $guru = Guru::create($data);
+
+            $guru = Guru::create($data);
+
 
         $passwordAwal = Str::random(8);
 

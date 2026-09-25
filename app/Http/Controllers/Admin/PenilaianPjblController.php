@@ -22,7 +22,7 @@ class PenilaianPjblController extends Controller
             ->orderBy('tingkat')
             ->orderBy('jurusan_id')
             ->orderBy('nama_kelas')
-            ->get();
+            ->paginate(10);
 
         $pjbl = Pjbl::query()->first() ?? new Pjbl();
 

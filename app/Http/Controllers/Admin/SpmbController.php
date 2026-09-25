@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class SpmbController extends Controller
 {
@@ -87,42 +88,53 @@ class SpmbController extends Controller
    
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nik' => 'required|digits:16|unique:calon_siswa,nik',
-            'nisn' => 'nullable|digits:10|unique:calon_siswa,nisn',
+        try {
+            $validated = $request->validate([
+                'nik' => 'required|digits:16|unique:calon_siswa,nik',
+                'nisn' => 'nullable|digits:10|unique:calon_siswa,nisn',
 
-            'nama_lengkap' => 'required|string|max:255',
-            'jenis_kelamin' => 'required|in:laki-laki,perempuan',
+                'nama_lengkap' => 'required|string|max:255',
+                'jenis_kelamin' => 'required|in:laki-laki,perempuan',
 
-            'tempat_lahir' => 'required|string|max:100',
-            'tanggal_lahir' => 'required|date',
+                'tempat_lahir' => 'required|string|max:100',
+                'tanggal_lahir' => 'required|date',
 
-            'alamat' => 'required|string',
+                'alamat' => 'required|string',
 
-            'asal_sekolah' => 'required|string|max:255',
-            'tahun_lulus' => 'nullable|integer|min:2000|max:2100',
+                'asal_sekolah' => 'required|string|max:255',
+                'tahun_lulus' => 'nullable|integer|min:2000|max:2100',
 
-            'jurusan_id' => 'required|exists:jurusan,id',
+                'jurusan_id' => 'required|exists:jurusan,id',
 
-            'jalur_pendaftaran' => 'required|string|max:100',
+                'jalur_pendaftaran' => 'required|string|max:100',
 
-            'no_kk' => 'required|digits:16',
+                'no_kk' => 'required|digits:16',
 
-            'nama_ayah' => 'required|string|max:255',
-            'nama_ibu' => 'required|string|max:255',
-            'no_hp_ortu' => 'required|string|max:20',
+                'nama_ayah' => 'required|string|max:255',
+                'nama_ibu' => 'required|string|max:255',
+                'no_hp_ortu' => 'required|string|max:20',
 
-            'status_penerimaan' => 'required|in:diterima,tidak_diterima',
+                'status_penerimaan' => 'required|in:diterima,tidak_diterima',
 
-            'tanggal_daftar_ulang' => 'nullable|date',
+                'tanggal_daftar_ulang' => 'nullable|date',
 
-            'dokumen.*' => [
-                'nullable',
-                'file',
-                'mimes:pdf,jpg,jpeg,png',
-                'max:2048',
-            ],
-        ]);
+                'dokumen.*' => [
+                    'nullable',
+                    'file',
+                    'mimes:pdf,jpg,jpeg,png',
+                    'max:2048',
+                ],
+            ]);
+        } catch (ValidationException $e) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Validasi gagal.',
+                    'errors' => $e->errors(),
+                ], 422);
+            }
+
+            throw $e;
+        }
 
         DB::transaction(function () use ($request, &$validated) {
 
@@ -377,37 +389,41 @@ class SpmbController extends Controller
 
 
  
-    public function verifikasiDokumen(
-        Request $request,
-        $id,
-        $dokumenId
-    ) {
-        $request->validate([
-            'status_verifikasi' => 'required|in:Belum Diverifikasi,Valid,Tidak Valid',
-            'catatan' => 'nullable|string|max:1000',
-        ]);
+    public function verifikasiSemuaDokumen(Request $request, $id)
+{
+    $request->validate([
+        'dokumen' => 'required|array',
+        'dokumen.*.status' => 'required|in:Belum Diverifikasi,Valid,Tidak Valid',
+        'dokumen.*.catatan' => 'nullable|string|max:1000',
+    ]);
 
-        $calonSiswa = CalonSiswa::findOrFail($id);
+    DB::transaction(function () use ($request, $id) {
+        $calonSiswa = CalonSiswa::with('dokumen')->findOrFail($id);
 
-        $dokumen = DokumenCalonSiswa::where(
-            'calon_siswa_id',
-            $calonSiswa->id
-        )->findOrFail($dokumenId);
+        foreach ($request->dokumen as $dokumenId => $data) {
+            $dokumen = DokumenCalonSiswa::where('id', $dokumenId)
+                ->where('calon_siswa_id', $calonSiswa->id)
+                ->first();
 
-        $dokumen->update([
-            'status' => $request->status_verifikasi,
-            'catatan' => $request->catatan,
-            'verifikator_id' => auth()->id(),
-            'tanggal_verifikasi' => now(),
-        ]);
+            if (!$dokumen) {
+                continue;
+            }
 
-        $this->updateStatusDaftarUlang($calonSiswa);
+            $dokumen->update([
+                'status' => $data['status'],
+                'catatan' => $data['catatan'] ?? null,
+                'verifikator_id' => auth()->id(),
+                'tanggal_verifikasi' => now(),
+            ]);
+        }
 
-        return back()->with(
-            'success',
-            'Status dokumen berhasil diperbarui.'
-        );
-    }
+        $this->updateStatusDaftarUlang($calonSiswa->fresh('dokumen'));
+    });
+
+    return redirect()
+        ->route('admin.spmb.show', $id)
+        ->with('success', 'Verifikasi seluruh dokumen berhasil disimpan.');
+}
 
    
     public function verifikasiDaftarUlang($id)

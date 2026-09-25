@@ -16,6 +16,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru\PenilaianController;
 use App\Http\Controllers\WaliKelasController;
 use App\Http\Controllers\Admin\PenilaianPjblController;
+use App\Http\Controllers\Admin\PenilaianMapelController;
 use App\Http\Controllers\Admin\AbsensiController;
 use App\Http\Controllers\Siswa\AbsensiController as SiswaAbsensiController;
 use App\Http\Controllers\Admin\SakitController;
@@ -150,7 +151,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/spmb/calon-siswa/{id}/edit', [SpmbController::class, 'edit'])->name('admin.spmb.edit');
     Route::put('/spmb/calon-siswa/{id}', [SpmbController::class, 'update'])->name('admin.spmb.update');
     Route::delete('/spmb/calon-siswa/{id}', [SpmbController::class, 'destroy'])->name('admin.spmb.destroy');
-    Route::put('/spmb/calon-siswa/{id}/dokumen/{dokumenId}/verifikasi', [SpmbController::class, 'verifikasiDokumen'])->name('admin.spmb.dokumen.verifikasi');
+    Route::put(
+    '/admin/spmb/{id}/dokumen/verifikasi-semua',
+    [SpmbController::class, 'verifikasiSemuaDokumen']
+)->name('admin.spmb.dokumen.verifikasi-semua');
     Route::put('/spmb/calon-siswa/{id}/verifikasi-daftar-ulang', [SpmbController::class, 'verifikasiDaftarUlang'])->name('admin.spmb.daftar-ulang.verifikasi');
 });
 
@@ -197,6 +201,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         'index'
     ])->name('penilaian.mapel.index');
 
+    Route::get(
+        '/penilaian/mapel/{kelasId}/{mapelId}/harian',
+        [PenilaianMapelController::class, 'harian']
+    )->name('penilaian.mapel.harian');
+
+    Route::get(
+        '/penilaian/mapel/{kelasId}/{mapelId}/ujian',
+        [PenilaianMapelController::class, 'ujian']
+    )->name('penilaian.mapel.ujian');
+
     Route::get('/penilaian/mapel/kelas/{kelasId}', [
         \App\Http\Controllers\Admin\PenilaianMapelController::class,
         'kelas'
@@ -211,6 +225,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         \App\Http\Controllers\Admin\PenilaianMapelController::class,
         'mapel'
     ])->name('penilaian.mapel.mapel');
+
 
     Route::get('/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/create', [
         \App\Http\Controllers\Admin\PenilaianMapelController::class,

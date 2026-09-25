@@ -21,7 +21,7 @@ class PenilaianMapelController extends Controller
         ])
             ->orderBy('tingkat')
             ->orderBy('nama_kelas')
-            ->get();
+            ->paginate(10);
 
         return view(
             'admin.penilaian.mapel.index',
@@ -49,59 +49,101 @@ class PenilaianMapelController extends Controller
     }
 
 
-    public function mapel(Request $request, $kelasId, $mapelId)
-    {
-        $kelas = Kelas::with([
-            'jurusan',
-            'tahunAjaran'
-        ])->findOrFail($kelasId);
+    public function mapel($kelasId, $mapelId)
+{
+    $kelas = Kelas::with('jurusan')->findOrFail($kelasId);
 
-        $mataPelajaran = MataPelajaran::findOrFail($mapelId);
+    $mataPelajaran = MataPelajaran::findOrFail($mapelId);
 
-        $query = PenilaianMapel::with([
-            'siswa',
-            'jadwal.guru',
-            'jadwal.mataPelajaran',
-        ])
-            ->whereHas('jadwal', function ($q) use ($kelasId, $mapelId) {
+    return view('admin.penilaian.mapel.mapel', compact(
+        'kelas',
+        'mataPelajaran'
+    ));
+}
 
-                $q->where('kelas_id', $kelasId)
-                    ->where('mata_pelajaran_id', $mapelId);
-            });
+public function harian(Request $request, $kelasId, $mapelId)
+{
+    $kelas = Kelas::with('jurusan')->findOrFail($kelasId);
 
-        if ($request->filled('search')) {
+    $mataPelajaran = MataPelajaran::findOrFail($mapelId);
 
-            $search = $request->search;
+    $query = PenilaianMapel::with('siswa')
+        ->whereHas('jadwal', function ($query) use ($kelasId, $mapelId) {
+            $query->where('kelas_id', $kelasId)
+                ->where('mata_pelajaran_id', $mapelId);
+        })
+        ->where('jenis_nilai', 'harian');
 
-            $query->whereHas('siswa', function ($q) use ($search) {
+    if ($request->filled('search')) {
+        $search = $request->search;
 
-                $q->where('nama', 'like', "%{$search}%")
-                    ->orWhere('nis', 'like', "%{$search}%")
-                    ->orWhere('nisn', 'like', "%{$search}%");
-            });
-        }
+        $query->whereHas('siswa', function ($q) use ($search) {
+            $q->where('nama', 'like', '%' . $search . '%')
+                ->orWhere('nis', 'like', '%' . $search . '%')
+                ->orWhere('nisn', 'like', '%' . $search . '%');
+        });
+    }
 
-        if ($request->filled('jenis_nilai')) {
-
-            $query->where(
-                'jenis_nilai',
-                $request->jenis_nilai
-            );
-        }
-
-        $penilaian = $query
-            ->latest()
-            ->get();
-
-        return view(
-            'admin.penilaian.mapel.mapel',
-            compact(
-                'kelas',
-                'mataPelajaran',
-                'penilaian'
-            )
+    if ($request->filled('tanggal')) {
+        $query->whereDate(
+            'tanggal_penilaian',
+            $request->tanggal
         );
     }
+
+    $penilaian = $query
+        ->latest('tanggal_penilaian')
+        ->latest('id')
+        ->get();
+
+    return view('admin.penilaian.mapel.harian', compact(
+        'kelas',
+        'mataPelajaran',
+        'penilaian'
+    ));
+}
+
+public function ujian(Request $request, $kelasId, $mapelId)
+{
+    $kelas = Kelas::with('jurusan')->findOrFail($kelasId);
+
+    $mataPelajaran = MataPelajaran::findOrFail($mapelId);
+
+    $query = PenilaianMapel::with('siswa')
+        ->whereHas('jadwal', function ($query) use ($kelasId, $mapelId) {
+            $query->where('kelas_id', $kelasId)
+                ->where('mata_pelajaran_id', $mapelId);
+        })
+        ->where('jenis_nilai', 'ujian');
+
+    if ($request->filled('search')) {
+        $search = $request->search;
+
+        $query->whereHas('siswa', function ($q) use ($search) {
+            $q->where('nama', 'like', '%' . $search . '%')
+                ->orWhere('nis', 'like', '%' . $search . '%')
+                ->orWhere('nisn', 'like', '%' . $search . '%');
+        });
+    }
+
+    if ($request->filled('tanggal')) {
+        $query->whereDate(
+            'tanggal_penilaian',
+            $request->tanggal
+        );
+    }
+
+    $penilaian = $query
+        ->latest('tanggal_penilaian')
+        ->latest('id')
+        ->get();
+
+    return view('admin.penilaian.mapel.ujian', compact(
+        'kelas',
+        'mataPelajaran',
+        'penilaian'
+    ));
+}
 
 
     public function nilai(Request $request, $kelasId, $mapelId)

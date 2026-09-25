@@ -171,6 +171,57 @@
             border-radius: 8px;
             grid-column: 1 / -1;
         }
+
+        .pagination {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .pagination .page-item {
+            display: inline-flex;
+        }
+
+        .pagination .page-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 38px;
+            height: 38px;
+            padding: 0 12px;
+            border: 1px solid #dbe2ea;
+            border-radius: 8px;
+            background: #fff;
+            color: #475569;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .pagination .page-link:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            color: #0f172a;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background: #f8fafc;
+            color: #a8adb8;
+            pointer-events: none;
+        }
     </style>
 @endpush
 
@@ -182,10 +233,26 @@
                 <p>Pilih kelas untuk melihat mata pelajaran dan data penilaian.</p>
             </div>
 
-            <div class="academic-field mb-3">
-                <label for="searchKelas">Cari Kelas</label>
-                <input type="text" id="searchKelas" placeholder="Cari tingkat, nama kelas, atau jurusan..."
-                    autocomplete="off">
+            <div class="row g-3 align-items-end mb-3">
+                <div class="col-md-8">
+                    <div class="academic-field">
+                        <label for="searchKelas">Cari Kelas</label>
+                        <input type="text" id="searchKelas" placeholder="Cari tingkat, nama kelas, atau jurusan..."
+                            autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="academic-field">
+                        <label for="filterTingkat">Jenjang</label>
+                        <select id="filterTingkat" class="form-select">
+                            <option value="">Semua Jenjang</option>
+                            @foreach($kelas->pluck('tingkat')->filter()->unique()->sort() as $tingkat)
+                                <option value="{{ $tingkat }}">{{ $tingkat }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div id="kelasContent">
@@ -198,7 +265,7 @@
                             $k->tingkat . ' ' .
                             $k->nama_kelas . ' ' .
                             ($k->jurusan?->nama_jurusan ?? 'Umum')
-                        ) }}">
+                        ) }}" data-tingkat="{{ $k->tingkat }}">
 
 
                                         <a href="{{ route(
@@ -323,242 +390,79 @@
                     @endforelse
                 </div>
             </div>
+
+            @if($kelas->hasPages())
+                <div class="d-flex justify-content-center mt-4">
+                    <div class="w-100">
+                        {{ $kelas->links('pagination::bootstrap-4') }}
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
-
-
-
-
-
 
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const searchInput = document.getElementById('searchKelas');
+                const filterTingkat = document.getElementById('filterTingkat');
                 const kelasItems = document.querySelectorAll('.kelas-item');
                 const kelasList = document.getElementById('kelasList');
 
-                document.addEventListener(
-                    'DOMContentLoaded',
-                    function () {
-
-
-                        const searchInput =
-                            document.getElementById(
-                                'searchKelas'
-                            );
-
-
-                        const kelasItems =
-                            document.querySelectorAll(
-                                '.kelas-item'
-                            );
-
-
-                        const kelasList =
-                            document.getElementById(
-                                'kelasList'
-                            );
-
-
-                        if (
-                            !searchInput ||
-                            !kelasList
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        function filterKelas() {
-
-
-                            const keyword =
-                                searchInput.value
-                                    .toLowerCase()
-                                    .trim();
-
-
-                            let jumlahHasil = 0;
-
-
-                            kelasItems.forEach(
-                                function (item) {
-
-
-                                    const dataSearch =
-                                        item.dataset.search;
-
-
-                                    if (
-                                        dataSearch.includes(
-                                            keyword
-                                        )
-                                    ) {
-
-                                        item.style.display =
-                                            '';
-
-                                        jumlahHasil++;
-
-                                    } else {
-
-                                        item.style.display =
-                                            'none';
-
-                                    }
-
-                                }
-                            );
-
-
-
-
-                            const oldMessage =
-                                document.getElementById(
-                                    'liveSearchEmpty'
-                                );
-
-
-                            if (oldMessage) {
-
-                                oldMessage.remove();
-
-                            }
-
-
-
-
-                            if (
-                                jumlahHasil === 0
-                            ) {
-
-
-                                const empty =
-                                    document.createElement(
-                                        'div'
-                                    );
-
-
-                                empty.id =
-                                    'liveSearchEmpty';
-
-
-                                empty.className =
-                                    'kelas-empty';
-
-
-                                empty.innerHTML = `
-
-                            <div class="card border-0 shadow-sm">
-
-                                <div class="card-body text-center py-5">
-
-                                    <i class="bi bi-search fs-1 text-muted"></i>
-
-                                    <h5 class="mt-3">
-                                        Kelas tidak ditemukan
-                                    </h5>
-
-                                    <p class="text-muted mb-0">
-                                        Tidak ada kelas yang sesuai dengan
-                                        pencarian
-                                        "<strong>${escapeHtml(keyword)}</strong>".
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        `;
-
-
-                                kelasList.appendChild(
-                                    empty
-                                );
-
-                            }
-
-                        }
-
-
-
-
-                        searchInput.addEventListener(
-                            'input',
-                            function () {
-
-                                filterKelas();
-
-                            }
-                        );
-
-
-
-
-                        function escapeHtml(text) {
-
-                            const div =
-                                document.createElement(
-                                    'div'
-                                );
-
-                            div.textContent =
-                                text;
-
-                            return div.innerHTML;
-
-                        }
-
-
-
-
-                        filterKelas();
-
-                    }
-
-            function filterKelas() {
-                        const keyword = searchInput.value.toLowerCase().trim();
-                        let jumlahHasil = 0;
-
-                        kelasItems.forEach(function (item) {
-                            const dataSearch = item.dataset.search;
-                            if (dataSearch.includes(keyword)) {
-                                item.style.display = '';
-                                jumlahHasil++;
-                            } else {
-                                item.style.display = 'none';
-                            }
-                        });
-
-                        const oldMessage = document.getElementById('liveSearchEmpty');
-                        if (oldMessage) {
-                            oldMessage.remove();
-                        }
-
-                        if (jumlahHasil === 0) {
-                            const empty = document.createElement('div');
-                            empty.id = 'liveSearchEmpty';
-                            empty.className = 'kelas-empty-box';
-                            empty.innerHTML = `
-                        <i class="bi bi-search fs-1 text-muted"></i>
-                        <h5 class="mt-2 mb-1">Kelas tidak ditemukan</h5>
-                        <p class="text-muted mb-0 small">
-                            Tidak ada kelas yang sesuai dengan pencarian
-                            "<strong>${escapeHtml(keyword)}</strong>".
-                        </p>
-                    `;
-                            kelasList.appendChild(empty);
-                        }
-                    }
-
-            searchInput.addEventListener('input', filterKelas);
+                if (!searchInput || !kelasList) {
+                    return;
+                }
 
                 function escapeHtml(text) {
                     const div = document.createElement('div');
                     div.textContent = text;
                     return div.innerHTML;
+                }
+
+                function filterKelas() {
+                    const keyword = searchInput.value.toLowerCase().trim();
+                    const tingkat = (filterTingkat ? filterTingkat.value : '').trim().toLowerCase();
+                    let jumlahHasil = 0;
+
+                    kelasItems.forEach(function (item) {
+                        const dataSearch = (item.dataset.search || '').toLowerCase();
+                        const itemTingkat = (item.dataset.tingkat || '').toLowerCase();
+
+                        const cocokKeyword = keyword === '' || dataSearch.includes(keyword);
+                        const cocokTingkat = tingkat === '' || itemTingkat === tingkat;
+
+                        if (cocokKeyword && cocokTingkat) {
+                            item.style.display = '';
+                            jumlahHasil++;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+
+                    const oldMessage = document.getElementById('liveSearchEmpty');
+                    if (oldMessage) {
+                        oldMessage.remove();
+                    }
+
+                    if (jumlahHasil === 0) {
+                        const empty = document.createElement('div');
+                        empty.id = 'liveSearchEmpty';
+                        empty.className = 'kelas-empty-box';
+                        empty.innerHTML = `
+                            <i class="bi bi-search fs-1 text-muted"></i>
+                            <h5 class="mt-2 mb-1">Kelas tidak ditemukan</h5>
+                            <p class="text-muted mb-0 small">
+                                Tidak ada kelas yang sesuai dengan pencarian
+                                "<strong>${escapeHtml(keyword || 'semua data')}</strong>".
+                            </p>
+                        `;
+                        kelasList.appendChild(empty);
+                    }
+                }
+
+                searchInput.addEventListener('input', filterKelas);
+                if (filterTingkat) {
+                    filterTingkat.addEventListener('change', filterKelas);
                 }
 
                 filterKelas();

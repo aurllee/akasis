@@ -169,9 +169,6 @@
                     <div class="col-md-5 filter-field">
                         <label for="searchPjbl">Cari Periode PJBL</label>
                         <div class="input-group">
-                            <span class="input-group-text bg-white border-end-0">
-                                <i class="bi bi-search text-muted"></i>
-                            </span>
                             <input type="text" id="searchPjbl" class="border-start-0 ps-0"
                                 placeholder="Cari Ganjil, Genap, SMT 1, SMT 2..." autocomplete="off">
                         </div>

@@ -368,14 +368,14 @@
 
                             <option
                                 value="laki-laki"
-                                @selected(old('jenis_kelamin', $calonSiswa->jenis_kelamin) === 'laki-laki')
+                                @selected(strtolower((string) old('jenis_kelamin', $calonSiswa->jenis_kelamin)) === 'laki-laki')
                             >
                                 Laki-laki
                             </option>
 
                             <option
                                 value="perempuan"
-                                @selected(old('jenis_kelamin', $calonSiswa->jenis_kelamin) === 'perempuan')
+                                @selected(strtolower((string) old('jenis_kelamin', $calonSiswa->jenis_kelamin)) === 'perempuan')
                             >
                                 Perempuan
                             </option>
@@ -574,28 +574,28 @@
 
                             <option
                                 value="domisili"
-                                @selected(old('jalur_pendaftaran', $calonSiswa->jalur_pendaftaran) === 'domisili')
+                                @selected(strtolower((string) old('jalur_pendaftaran', $calonSiswa->jalur_pendaftaran)) === 'domisili')
                             >
                                 Domisili
                             </option>
 
                             <option
                                 value="afirmasi"
-                                @selected(old('jalur_pendaftaran', $calonSiswa->jalur_pendaftaran) === 'afirmasi')
+                                @selected(strtolower((string) old('jalur_pendaftaran', $calonSiswa->jalur_pendaftaran)) === 'afirmasi')
                             >
                                 Afirmasi
                             </option>
 
                             <option
                                 value="prestasi"
-                                @selected(old('jalur_pendaftaran', $calonSiswa->jalur_pendaftaran) === 'prestasi')
+                                @selected(strtolower((string) old('jalur_pendaftaran', $calonSiswa->jalur_pendaftaran)) === 'prestasi')
                             >
                                 Prestasi
                             </option>
 
                             <option
                                 value="mutasi"
-                                @selected(old('jalur_pendaftaran', $calonSiswa->jalur_pendaftaran) === 'mutasi')
+                                @selected(strtolower((string) old('jalur_pendaftaran', $calonSiswa->jalur_pendaftaran)) === 'mutasi')
                             >
                                 Mutasi
                             </option>
@@ -676,15 +676,15 @@
                         </label>
 
                         <input
-                            type="datetime-local"
+                            type="date"
                             name="tanggal_daftar_ulang"
                             class="form-control"
-                            value="{{ old(
-                                'tanggal_daftar_ulang',
-                                $calonSiswa->tanggal_daftar_ulang
-                                    ? $calonSiswa->tanggal_daftar_ulang->format('Y-m-d\TH:i')
-                                    : ''
-                            ) }}"
+                            value="{{ old('tanggal_daftar_ulang') !== null
+                                ? old('tanggal_daftar_ulang')
+                                : ($calonSiswa->tanggal_daftar_ulang
+                                    ? $calonSiswa->tanggal_daftar_ulang->format('Y-m-d')
+                                    : '')
+                            }}"
                         >
                     </div>
 

@@ -210,25 +210,18 @@
             <p>{{ $kelas->jurusan?->nama_jurusan ?? 'Umum' }} — Pilih mata pelajaran untuk mengelola penilaian</p>
         </div>
         <div class="filter-section">
-            <form method="GET" action="{{ route('admin.penilaian.mapel.kelas', $kelas->id) }}" class="filter-field">
+            <form method="GET" action="{{ route('admin.penilaian.mapel.kelas', $kelas->id) }}" class="filter-field" id="mapelSearchForm">
                 <label for="searchMapel">Cari Mata Pelajaran</label>
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 flex-wrap">
                     <input type="text" name="search" id="searchMapel" value="{{ request('search') }}" placeholder="Cari nama atau kode mata pelajaran..." autocomplete="off">
-                    <button type="submit" class="btn-action-primary">
-                        <i class="bi bi-search"></i> Cari
-                    </button>
-                    @if(request('search'))
-                        <a href="{{ route('admin.penilaian.mapel.kelas', $kelas->id) }}" class="btn-action-secondary">
-                            <i class="bi bi-arrow-counterclockwise"></i> Reset
-                        </a>
-                    @endif
+             
                 </div>
             </form>
         </div>
 
-        <div class="row g-3">
+        <div class="row g-3" id="mapelList">
             @forelse($mataPelajaran as $mapel)
-                <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="col-xl-3 col-lg-4 col-md-6 mapel-item" data-search="{{ strtolower(($mapel->nama_mapel ?? '') . ' ' . ($mapel->kode_mapel ?? '')) }}">
                     <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mapel->id]) }}" class="item-card">
                         
                         <div class="d-flex justify-content-between align-items-start mb-3">
@@ -259,7 +252,7 @@
                     </a>
                 </div>
             @empty
-                <div class="col-12">
+                <div class="col-12" id="mapelEmptyState">
                     <div class="text-center py-5 border rounded bg-light">
                         <i class="bi bi-book fs-1 text-muted"></i>
                         <h5 class="mt-3 text-dark">Belum ada mata pelajaran</h5>
@@ -271,4 +264,68 @@
 
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchMapel');
+        const mapelItems = document.querySelectorAll('.mapel-item');
+        const mapelList = document.getElementById('mapelList');
+        const form = document.getElementById('mapelSearchForm');
+
+        if (!searchInput || !mapelList || mapelItems.length === 0) {
+            return;
+        }
+
+        function escapeHtml(value) {
+            const div = document.createElement('div');
+            div.textContent = value;
+            return div.innerHTML;
+        }
+
+        function updateMapelList() {
+            const keyword = searchInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            mapelItems.forEach(function (item) {
+                const haystack = (item.dataset.search || '').toLowerCase();
+                const matches = !keyword || haystack.includes(keyword);
+
+                item.style.display = matches ? '' : 'none';
+                if (matches) visibleCount++;
+            });
+
+            const existingEmpty = document.getElementById('liveMapelEmpty');
+            if (existingEmpty) {
+                existingEmpty.remove();
+            }
+
+            if (visibleCount === 0) {
+                const empty = document.createElement('div');
+                empty.id = 'liveMapelEmpty';
+                empty.className = 'col-12';
+                empty.innerHTML = `
+                    <div class="text-center py-5 border rounded bg-light">
+                        <i class="bi bi-search fs-1 text-muted"></i>
+                        <h5 class="mt-3 text-dark">Mata pelajaran tidak ditemukan</h5>
+                        <p class="text-muted mb-0">Coba kata kunci lain untuk pencarian mata pelajaran.</p>
+                    </div>
+                `;
+                mapelList.appendChild(empty);
+            }
+        }
+
+        searchInput.addEventListener('input', function () {
+            updateMapelList();
+        });
+
+        if (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                updateMapelList();
+            });
+        }
+
+        updateMapelList();
+    });
+</script>
 @endsection

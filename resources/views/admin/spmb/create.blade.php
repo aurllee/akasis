@@ -225,21 +225,16 @@
         </div>
     </div>
 
-    @if($errors->any())
-        <div class="alert-custom alert-danger-custom">
-            <div class="alert-title">
-                Terdapat kesalahan:
-            </div>
-
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+    <div id="form-error-alert" class="alert-custom alert-danger-custom" style="display: none;">
+        <div class="alert-title">
+            Terdapat kesalahan:
         </div>
-    @endif
+
+        <ul id="form-error-list"></ul>
+    </div>
 
     <form
+        id="spmb-create-form"
         action="{{ route('admin.spmb.store') }}"
         method="POST"
         enctype="multipart/form-data"
@@ -655,5 +650,77 @@
     </form>
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('spmb-create-form');
+        const errorAlert = document.getElementById('form-error-alert');
+        const errorList = document.getElementById('form-error-list');
+
+        if (!form) {
+            return;
+        }
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Menyimpan...';
+            }
+
+            try {
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.redirected) {
+                    window.location.href = response.url;
+                    return;
+                }
+
+                if (!response.ok) {
+                    const payload = await response.json().catch(() => ({}));
+                    const errors = payload.errors || {};
+                    const list = [];
+
+                    Object.values(errors).forEach((messages) => {
+                        if (Array.isArray(messages)) {
+                            messages.forEach((message) => list.push(message));
+                        }
+                    });
+
+                    errorList.innerHTML = list.length
+                        ? list.map((message) => '<li>' + message + '</li>').join('')
+                        : '<li>Terjadi kesalahan saat mengirim data.</li>';
+
+                    errorAlert.style.display = 'block';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+
+                if (response.ok) {
+                    window.location.href = '{{ route('admin.spmb.index') }}';
+                }
+            } catch (error) {
+                errorList.innerHTML = '<li>Terjadi kesalahan jaringan. Silakan coba lagi.</li>';
+                errorAlert.style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } finally {
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Simpan Calon Siswa';
+                }
+            }
+        });
+    });
+</script>
 
 @endsection

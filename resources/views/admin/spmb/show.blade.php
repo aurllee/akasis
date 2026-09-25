@@ -6,306 +6,149 @@
 
 <div class="spmb-detail-page">
 
-    <div class="page-header">
-        <div class="page-title">
-            <h4>Detail Calon Siswa</h4>
-            <p>{{ $calonSiswa->no_pendaftaran }}</p>
-        </div>
-
-        <div class="header-actions">
-            <a
-                href="{{ route('admin.spmb.edit', $calonSiswa->id) }}"
-                class="btn-edit"
-            >
-                Edit
-            </a>
-
-            <a
-                href="{{ route('admin.spmb.index') }}"
-                class="btn-back"
-            >
-                Kembali
-            </a>
-        </div>
+<div class="page-header">
+    <div class="page-title">
+        <h4>Detail Calon Siswa</h4>
+        <p>{{ $calonSiswa->no_pendaftaran }}</p>
     </div>
 
-    @if(session('success'))
-        <div class="alert-custom alert-success-custom">
-            <div class="alert-content">
-                <strong>Berhasil</strong>
-                <span>{{ session('success') }}</span>
-            </div>
+    <div class="header-actions">
+        <a
+            href="{{ route('admin.spmb.edit', $calonSiswa->id) }}"
+            class="btn-edit"
+        >
+            Edit
+        </a>
 
-            <button
-                type="button"
-                class="alert-close"
-                data-bs-dismiss="alert"
-            >
-                ×
-            </button>
-        </div>
-    @endif
+        <a
+            href="{{ route('admin.spmb.index') }}"
+            class="btn-back"
+        >
+            Kembali
+        </a>
+    </div>
+</div>
 
-    @if(session('error'))
-        <div class="alert-custom alert-danger-custom">
-            <div class="alert-content">
-                <strong>Terjadi Kesalahan</strong>
-                <span>{{ session('error') }}</span>
-            </div>
+<div class="row g-4">
 
-            <button
-                type="button"
-                class="alert-close"
-                data-bs-dismiss="alert"
-            >
-                ×
-            </button>
-        </div>
-    @endif
+    <div class="col-lg-8">
 
-    <div class="row g-4">
+        <div class="detail-card">
 
-        <div class="col-lg-8">
-
-            <div class="detail-card">
-
-                <div class="card-header-custom">
-                    <div>
-                        <h5>Data Pribadi</h5>
-                        <span>Informasi lengkap calon siswa</span>
-                    </div>
+            <div class="card-header-custom">
+                <div>
+                    <h5>Data Pribadi</h5>
+                    <span>Informasi lengkap calon siswa</span>
                 </div>
+            </div>
 
-                <div class="card-body-custom">
+            <div class="card-body-custom">
 
-                    <div class="detail-grid">
+                <div class="detail-grid">
 
-                        <div class="detail-item detail-item-wide">
-                            <span class="detail-label">Nama Lengkap</span>
-                            <strong class="detail-value">
-                                {{ $calonSiswa->nama_lengkap }}
-                            </strong>
-                        </div>
+                    <div class="detail-item detail-item-wide">
+                        <span class="detail-label">Nama Lengkap</span>
+                        <strong class="detail-value">
+                            {{ $calonSiswa->nama_lengkap }}
+                        </strong>
+                    </div>
 
-                        <div class="detail-item detail-item-wide">
-                            <span class="detail-label">No. Pendaftaran</span>
-                            <strong class="detail-value registration-number">
-                                {{ $calonSiswa->no_pendaftaran }}
-                            </strong>
-                        </div>
+                    <div class="detail-item detail-item-wide">
+                        <span class="detail-label">No. Pendaftaran</span>
+                        <strong class="detail-value registration-number">
+                            {{ $calonSiswa->no_pendaftaran }}
+                        </strong>
+                    </div>
 
-                        <div class="detail-item">
-                            <span class="detail-label">NIK</span>
-                            <span class="detail-value">
-                                {{ $calonSiswa->nik ?? '-' }}
-                            </span>
-                        </div>
+                    <div class="detail-item">
+                        <span class="detail-label">NIK</span>
+                        <span class="detail-value">
+                            {{ $calonSiswa->nik ?? '-' }}
+                        </span>
+                    </div>
 
-                        <div class="detail-item">
-                            <span class="detail-label">NISN</span>
-                            <span class="detail-value">
-                                {{ $calonSiswa->nisn ?? '-' }}
-                            </span>
-                        </div>
+                    <div class="detail-item">
+                        <span class="detail-label">NISN</span>
+                        <span class="detail-value">
+                            {{ $calonSiswa->nisn ?? '-' }}
+                        </span>
+                    </div>
 
-                        <div class="detail-item">
-                            <span class="detail-label">Jenis Kelamin</span>
-                            <span class="detail-value">
-                                {{
+                    <div class="detail-item">
+                        <span class="detail-label">Jenis Kelamin</span>
+                        <span class="detail-value">
+                            {{
+                                in_array(
+                                    $calonSiswa->jenis_kelamin,
+                                    ['laki-laki', 'Laki-laki', 'L'],
+                                    true
+                                )
+                                ? 'Laki-laki'
+                                : (
                                     in_array(
                                         $calonSiswa->jenis_kelamin,
-                                        ['laki-laki', 'Laki-laki', 'L'],
+                                        ['perempuan', 'Perempuan', 'P'],
                                         true
                                     )
-                                    ? 'Laki-laki'
-                                    : (
-                                        in_array(
-                                            $calonSiswa->jenis_kelamin,
-                                            ['perempuan', 'Perempuan', 'P'],
-                                            true
-                                        )
-                                        ? 'Perempuan'
-                                        : ucfirst((string) $calonSiswa->jenis_kelamin)
-                                    )
-                                }}
-                            </span>
-                        </div>
-
-                        <div class="detail-item">
-                            <span class="detail-label">Tempat, Tanggal Lahir</span>
-                            <span class="detail-value">
-                                {{ $calonSiswa->tempat_lahir ?? '-' }},
-                                {{
-                                    $calonSiswa->tanggal_lahir
-                                    ? $calonSiswa->tanggal_lahir->format('d-m-Y')
-                                    : '-'
-                                }}
-                            </span>
-                        </div>
-
-                        <div class="detail-item detail-item-wide">
-                            <span class="detail-label">Asal Sekolah</span>
-                            <span class="detail-value">
-                                {{ $calonSiswa->asal_sekolah ?? '-' }}
-                            </span>
-                        </div>
-
-                        <div class="detail-item detail-item-full">
-                            <span class="detail-label">Alamat</span>
-                            <span class="detail-value">
-                                {{ $calonSiswa->alamat ?? '-' }}
-                            </span>
-                        </div>
-
-                        <div class="detail-item">
-                            <span class="detail-label">No. KK</span>
-                            <span class="detail-value">
-                                {{ $calonSiswa->no_kk ?? '-' }}
-                            </span>
-                        </div>
-
-                        <div class="detail-item">
-                            <span class="detail-label">Ayah</span>
-                            <span class="detail-value">
-                                {{ $calonSiswa->nama_ayah ?? '-' }}
-                            </span>
-                        </div>
-
-                        <div class="detail-item">
-                            <span class="detail-label">Ibu</span>
-                            <span class="detail-value">
-                                {{ $calonSiswa->nama_ibu ?? '-' }}
-                            </span>
-                        </div>
-
-                        <div class="detail-item">
-                            <span class="detail-label">No. HP Orang Tua</span>
-                            <span class="detail-value">
-                                {{ $calonSiswa->no_hp_ortu ?? '-' }}
-                            </span>
-                        </div>
-
+                                    ? 'Perempuan'
+                                    : ucfirst((string) $calonSiswa->jenis_kelamin)
+                                )
+                            }}
+                        </span>
                     </div>
 
-                </div>
-
-            </div>
-
-            <div class="detail-card">
-
-                <div class="card-header-custom">
-                    <div>
-                        <h5>Data SPMB</h5>
-                        <span>Informasi pendaftaran dan penerimaan</span>
+                    <div class="detail-item">
+                        <span class="detail-label">Tempat, Tanggal Lahir</span>
+                        <span class="detail-value">
+                            {{ $calonSiswa->tempat_lahir ?? '-' }},
+                            {{
+                                $calonSiswa->tanggal_lahir
+                                ? $calonSiswa->tanggal_lahir->format('d-m-Y')
+                                : '-'
+                            }}
+                        </span>
                     </div>
-                </div>
 
-                <div class="card-body-custom">
+                    <div class="detail-item detail-item-wide">
+                        <span class="detail-label">Asal Sekolah</span>
+                        <span class="detail-value">
+                            {{ $calonSiswa->asal_sekolah ?? '-' }}
+                        </span>
+                    </div>
 
-                    <div class="detail-grid">
+                    <div class="detail-item detail-item-full">
+                        <span class="detail-label">Alamat</span>
+                        <span class="detail-value">
+                            {{ $calonSiswa->alamat ?? '-' }}
+                        </span>
+                    </div>
 
-                        <div class="detail-item detail-item-wide">
-                            <span class="detail-label">Jurusan</span>
+                    <div class="detail-item">
+                        <span class="detail-label">No. KK</span>
+                        <span class="detail-value">
+                            {{ $calonSiswa->no_kk ?? '-' }}
+                        </span>
+                    </div>
 
-                            <div class="jurusan-detail">
+                    <div class="detail-item">
+                        <span class="detail-label">Ayah</span>
+                        <span class="detail-value">
+                            {{ $calonSiswa->nama_ayah ?? '-' }}
+                        </span>
+                    </div>
 
-                                @if($calonSiswa->jurusan)
+                    <div class="detail-item">
+                        <span class="detail-label">Ibu</span>
+                        <span class="detail-value">
+                            {{ $calonSiswa->nama_ibu ?? '-' }}
+                        </span>
+                    </div>
 
-                                    <strong class="detail-value">
-                                        {{ $calonSiswa->jurusan->nama_jurusan }}
-                                    </strong>
-
-                                    <span class="jurusan-code">
-                                        {{ $calonSiswa->jurusan->kode_jurusan }}
-                                    </span>
-
-                                @else
-
-                                    <span class="empty-text">
-                                        Jurusan tidak tersedia
-                                    </span>
-
-                                @endif
-
-                            </div>
-                        </div>
-
-                        <div class="detail-item">
-                            <span class="detail-label">Jalur Pendaftaran</span>
-
-                            <span class="detail-value">
-                                {{ $calonSiswa->jalur_pendaftaran ?? '-' }}
-                            </span>
-                        </div>
-
-                        <div class="detail-item">
-                            <span class="detail-label">Penerimaan</span>
-
-                            <div>
-
-                                @if($calonSiswa->status_penerimaan === 'diterima')
-
-                                    <span class="status-badge status-verified">
-                                        Diterima
-                                    </span>
-
-                                @else
-
-                                    <span class="status-badge status-rejected">
-                                        Tidak Diterima
-                                    </span>
-
-                                @endif
-
-                            </div>
-                        </div>
-
-                        <div class="detail-item">
-                            <span class="detail-label">Status Daftar Ulang</span>
-
-                            <div>
-
-                                @if($calonSiswa->status_daftar_ulang === 'terverifikasi')
-
-                                    <span class="status-badge status-verified">
-                                        Terverifikasi
-                                    </span>
-
-                                @elseif($calonSiswa->status_daftar_ulang === 'revisi')
-
-                                    <span class="status-badge status-rejected">
-                                        Revisi
-                                    </span>
-
-                                @elseif($calonSiswa->status_daftar_ulang === 'menunggu_verifikasi')
-
-                                    <span class="status-badge status-waiting">
-                                        Menunggu Verifikasi
-                                    </span>
-
-                                @else
-
-                                    <span class="status-badge status-unregistered">
-                                        Belum Daftar Ulang
-                                    </span>
-
-                                @endif
-
-                            </div>
-                        </div>
-
-                        <div class="detail-item">
-                            <span class="detail-label">Tanggal Daftar Ulang</span>
-
-                            <span class="detail-value">
-                                {{
-                                    $calonSiswa->tanggal_daftar_ulang
-                                    ? $calonSiswa->tanggal_daftar_ulang->format('d-m-Y H:i')
-                                    : '-'
-                                }}
-                            </span>
-                        </div>
-
+                    <div class="detail-item">
+                        <span class="detail-label">No. HP Orang Tua</span>
+                        <span class="detail-value">
+                            {{ $calonSiswa->no_hp_ortu ?? '-' }}
+                        </span>
                     </div>
 
                 </div>
@@ -314,99 +157,120 @@
 
         </div>
 
-        <div class="col-lg-4">
+        <div class="detail-card">
 
-            <div class="detail-card status-card">
-
-                <div class="card-header-custom">
-                    <div>
-                        <h5>Status Daftar Ulang</h5>
-                        <span>Status proses verifikasi</span>
-                    </div>
+            <div class="card-header-custom">
+                <div>
+                    <h5>Data SPMB</h5>
+                    <span>Informasi pendaftaran dan penerimaan</span>
                 </div>
+            </div>
 
-                <div class="card-body-custom">
+            <div class="card-body-custom">
 
-                    @if($calonSiswa->status_daftar_ulang === 'terverifikasi')
+                <div class="detail-grid">
 
-                        <div class="status-message status-message-success">
-                            <strong>Daftar ulang terverifikasi</strong>
-                            <span>
-                                Semua dokumen telah diverifikasi.
-                            </span>
-                        </div>
+                    <div class="detail-item detail-item-wide">
+                        <span class="detail-label">Jurusan</span>
 
-                    @elseif($calonSiswa->status_daftar_ulang === 'revisi')
+                        <div class="jurusan-detail">
 
-                        <div class="status-message status-message-danger">
-                            <strong>Perlu perbaikan</strong>
-                            <span>
-                                Terdapat dokumen yang perlu diperbaiki.
-                            </span>
-                        </div>
+                            @if($calonSiswa->jurusan)
 
-                    @elseif($calonSiswa->status_daftar_ulang === 'menunggu_verifikasi')
+                                <strong class="detail-value">
+                                    {{ $calonSiswa->jurusan->nama_jurusan }}
+                                </strong>
 
-                        <div class="status-message status-message-warning">
-                            <strong>Menunggu verifikasi</strong>
-                            <span>
-                                Dokumen sedang menunggu proses verifikasi.
-                            </span>
-                        </div>
+                                <span class="jurusan-code">
+                                    {{ $calonSiswa->jurusan->kode_jurusan }}
+                                </span>
 
-                    @else
+                            @else
 
-                        <div class="status-message status-message-neutral">
-                            <strong>Belum daftar ulang</strong>
-                            <span>
-                                Calon siswa belum melakukan daftar ulang.
-                            </span>
-                        </div>
+                                <span class="empty-text">
+                                    Jurusan tidak tersedia
+                                </span>
 
-                    @endif
-
-                    @if($calonSiswa->catatan_revisi)
-
-                        <div class="revision-note">
-
-                            <span>Catatan Revisi</span>
-
-                            <p>
-                                {{ $calonSiswa->catatan_revisi }}
-                            </p>
+                            @endif
 
                         </div>
+                    </div>
 
-                    @endif
+                    <div class="detail-item">
+                        <span class="detail-label">Jalur Pendaftaran</span>
 
-                    @if(
-                        $calonSiswa->status_penerimaan === 'diterima' &&
-                        $calonSiswa->status_daftar_ulang !== 'terverifikasi'
-                    )
+                        <span class="detail-value">
+                            {{ $calonSiswa->jalur_pendaftaran ?? '-' }}
+                        </span>
+                    </div>
 
-                        <form
-                            action="{{ route(
-                                'admin.spmb.daftar-ulang.verifikasi',
-                                $calonSiswa->id
-                            ) }}"
-                            method="POST"
-                            class="verification-form"
-                        >
+                    <div class="detail-item">
+                        <span class="detail-label">Penerimaan</span>
 
-                            @csrf
-                            @method('PUT')
+                        <div>
 
-                            <button
-                                type="submit"
-                                class="btn-verify"
-                                onclick="return confirm('Verifikasi daftar ulang siswa ini?')"
-                            >
-                                Verifikasi Daftar Ulang
-                            </button>
+                            @if($calonSiswa->status_penerimaan === 'diterima')
 
-                        </form>
+                                <span class="status-badge status-verified">
+                                    Diterima
+                                </span>
 
-                    @endif
+                            @else
+
+                                <span class="status-badge status-rejected">
+                                    Tidak Diterima
+                                </span>
+
+                            @endif
+
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">Status Daftar Ulang</span>
+
+                        <div>
+
+                            @if($calonSiswa->status_daftar_ulang === 'terverifikasi')
+
+                                <span class="status-badge status-verified">
+                                    Terverifikasi
+                                </span>
+
+                            @elseif($calonSiswa->status_daftar_ulang === 'revisi')
+
+                                <span class="status-badge status-rejected">
+                                    Revisi
+                                </span>
+
+                            @elseif($calonSiswa->status_daftar_ulang === 'menunggu_verifikasi')
+
+                                <span class="status-badge status-waiting">
+                                    Menunggu Verifikasi
+                                </span>
+
+                            @else
+
+                                <span class="status-badge status-unregistered">
+                                    Belum Daftar Ulang
+                                </span>
+
+                            @endif
+
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">Tanggal Daftar Ulang</span>
+
+                        <span class="detail-value">
+                            {{
+                                $calonSiswa->tanggal_daftar_ulang
+                                ? $calonSiswa->tanggal_daftar_ulang->format('d-m-Y')
+                                : '-'
+                            }}
+                        </span>
+                    </div>
 
                 </div>
 
@@ -416,16 +280,127 @@
 
     </div>
 
-    <div class="detail-card documents-card">
+    <div class="col-lg-4">
 
-        <div class="card-header-custom">
-            <div>
-                <h5>Dokumen Daftar Ulang</h5>
-                <span>
-                    Daftar dokumen dan status verifikasi calon siswa
-                </span>
+        <div class="detail-card status-card">
+
+            <div class="card-header-custom">
+                <div>
+                    <h5>Status Daftar Ulang</h5>
+                    <span>Status proses verifikasi</span>
+                </div>
             </div>
+
+            <div class="card-body-custom">
+
+                @if($calonSiswa->status_daftar_ulang === 'terverifikasi')
+
+                    <div class="status-message status-message-success">
+                        <strong>Daftar ulang terverifikasi</strong>
+                        <span>
+                            Semua dokumen telah diverifikasi.
+                        </span>
+                    </div>
+
+                @elseif($calonSiswa->status_daftar_ulang === 'revisi')
+
+                    <div class="status-message status-message-danger">
+                        <strong>Perlu perbaikan</strong>
+                        <span>
+                            Terdapat dokumen yang perlu diperbaiki.
+                        </span>
+                    </div>
+
+                @elseif($calonSiswa->status_daftar_ulang === 'menunggu_verifikasi')
+
+                    <div class="status-message status-message-warning">
+                        <strong>Menunggu verifikasi</strong>
+                        <span>
+                            Dokumen sedang menunggu proses verifikasi.
+                        </span>
+                    </div>
+
+                @else
+
+                    <div class="status-message status-message-neutral">
+                        <strong>Belum daftar ulang</strong>
+                        <span>
+                            Calon siswa belum melakukan daftar ulang.
+                        </span>
+                    </div>
+
+                @endif
+
+                @if($calonSiswa->catatan_revisi)
+
+                    <div class="revision-note">
+
+                        <span>Catatan Revisi</span>
+
+                        <p>
+                            {{ $calonSiswa->catatan_revisi }}
+                        </p>
+
+                    </div>
+
+                @endif
+
+                @if(
+                    $calonSiswa->status_penerimaan === 'diterima' &&
+                    $calonSiswa->status_daftar_ulang !== 'terverifikasi'
+                )
+
+                    <form
+                        action="{{ route(
+                            'admin.spmb.daftar-ulang.verifikasi',
+                            $calonSiswa->id
+                        ) }}"
+                        method="POST"
+                        class="verification-form"
+                    >
+
+                        @csrf
+                        @method('PUT')
+
+                        <button
+                            type="submit"
+                            class="btn-verify"
+                            onclick="return confirm('Verifikasi daftar ulang siswa ini?')"
+                        >
+                            Verifikasi Daftar Ulang
+                        </button>
+
+                    </form>
+
+                @endif
+
+            </div>
+
         </div>
+
+    </div>
+
+</div>
+
+<div class="detail-card documents-card">
+
+    <div class="card-header-custom">
+        <div>
+            <h5>Dokumen Daftar Ulang</h5>
+            <span>
+                Verifikasi seluruh dokumen calon siswa
+            </span>
+        </div>
+    </div>
+
+    <form
+        action="{{ route('admin.spmb.dokumen.verifikasi-semua', $calonSiswa->id) }}"
+        method="POST"
+        id="verificationAllForm"
+    >
+
+        @csrf
+        @method('PUT')
 
         <div class="table-responsive">
 
@@ -449,7 +424,6 @@
                         <th>File</th>
                         <th>Status</th>
                         <th>Catatan</th>
-                        <th width="330">Verifikasi</th>
                     </tr>
                 </thead>
 
@@ -501,41 +475,36 @@
                                         Belum Ada
                                     </span>
 
-                                @elseif($dok->status === 'Valid')
-
-                                    <span class="status-badge status-verified">
-                                        Valid
-                                    </span>
-
-                                @elseif($dok->status === 'Tidak Valid')
-
-                                    <span class="status-badge status-rejected">
-                                        Tidak Valid
-                                    </span>
-
                                 @else
 
-                                    <span class="status-badge status-waiting">
-                                        Belum Diverifikasi
-                                    </span>
+                                    <select
+                                        name="dokumen[{{ $dok->id }}][status]"
+                                        class="verification-select"
+                                        required
+                                    >
 
-                                @endif
+                                        <option
+                                            value="Belum Diverifikasi"
+                                            @selected($dok->status === 'Belum Diverifikasi')
+                                        >
+                                            Belum Diverifikasi
+                                        </option>
 
-                            </td>
+                                        <option
+                                            value="Valid"
+                                            @selected($dok->status === 'Valid')
+                                        >
+                                            Valid
+                                        </option>
 
-                            <td>
+                                        <option
+                                            value="Tidak Valid"
+                                            @selected($dok->status === 'Tidak Valid')
+                                        >
+                                            Tidak Valid
+                                        </option>
 
-                                @if($dok && $dok->catatan)
-
-                                    <span class="note-text">
-                                        {{ $dok->catatan }}
-                                    </span>
-
-                                @else
-
-                                    <span class="empty-text">
-                                        -
-                                    </span>
+                                    </select>
 
                                 @endif
 
@@ -545,69 +514,19 @@
 
                                 @if($dok)
 
-                                    <form
-                                        action="{{ route(
-                                            'admin.spmb.dokumen.verifikasi',
-                                            [
-                                                'id' => $calonSiswa->id,
-                                                'dokumenId' => $dok->id
-                                            ]
-                                        ) }}"
-                                        method="POST"
-                                        class="document-form"
+                                    <input
+                                        type="text"
+                                        name="dokumen[{{ $dok->id }}][catatan]"
+                                        class="verification-input"
+                                        placeholder="Catatan verifikasi"
+                                        value="{{ $dok->catatan }}"
+                                        maxlength="1000"
                                     >
-
-                                        @csrf
-                                        @method('PUT')
-
-                                        <select
-                                            name="status_verifikasi"
-                                            class="verification-select"
-                                            required
-                                        >
-                                            <option
-                                                value="Belum Diverifikasi"
-                                                @selected($dok->status === 'Belum Diverifikasi')
-                                            >
-                                                Belum Diverifikasi
-                                            </option>
-
-                                            <option
-                                                value="Valid"
-                                                @selected($dok->status === 'Valid')
-                                            >
-                                                Valid
-                                            </option>
-
-                                            <option
-                                                value="Tidak Valid"
-                                                @selected($dok->status === 'Tidak Valid')
-                                            >
-                                                Tidak Valid
-                                            </option>
-                                        </select>
-
-                                        <input
-                                            type="text"
-                                            name="catatan"
-                                            class="verification-input"
-                                            placeholder="Catatan"
-                                            value="{{ $dok->catatan }}"
-                                        >
-
-                                        <button
-                                            type="submit"
-                                            class="btn-save"
-                                        >
-                                            Simpan
-                                        </button>
-
-                                    </form>
 
                                 @else
 
                                     <span class="empty-text">
-                                        Menunggu upload
+                                        -
                                     </span>
 
                                 @endif
@@ -624,7 +543,28 @@
 
         </div>
 
-    </div>
+        <div class="verification-all-footer">
+
+            <div class="verification-info">
+                <strong>Verifikasi Dokumen</strong>
+                <span>
+                    Periksa seluruh dokumen sebelum menyimpan hasil verifikasi.
+                </span>
+            </div>
+
+            <button
+                type="submit"
+                class="btn-save-all"
+                onclick="return confirm('Simpan seluruh hasil verifikasi dokumen?')"
+            >
+                Simpan Verifikasi Semua Dokumen
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
 
 </div>
 
@@ -633,6 +573,7 @@
 @push('styles')
 
 <style>
+
     body {
         font-family: 'Poppins', sans-serif;
     }
@@ -1058,15 +999,9 @@
         line-height: 1.5;
     }
 
-    .document-form {
-        display: grid;
-        grid-template-columns: 145px 1fr auto;
-        gap: 6px;
-        align-items: center;
-    }
-
     .verification-select,
     .verification-input {
+        width: 100%;
         height: 34px;
         border: 1px solid #dfe5ed;
         border-radius: 6px;
@@ -1076,6 +1011,14 @@
         padding: 0 9px;
         box-shadow: none;
         outline: none;
+    }
+
+    .verification-select {
+        min-width: 145px;
+    }
+
+    .verification-input {
+        min-width: 220px;
     }
 
     .verification-select:focus,
@@ -1088,25 +1031,74 @@
         color: #a0aabd;
     }
 
-    .btn-save {
-        height: 34px;
-        padding: 0 12px;
+    .verification-all-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 16px 20px;
+        background: #fbfcfe;
+        border-top: 1px solid #edf1f6;
+    }
+
+    .verification-info {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .verification-info strong {
+        color: #334155;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .verification-info span {
+        color: #94a3b8;
+        font-size: 10px;
+    }
+
+    .btn-save-all {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 210px;
+        height: 38px;
+        padding: 0 16px;
         border: 1px solid #2563eb;
-        border-radius: 6px;
+        border-radius: 7px;
         background: #2563eb;
         color: #fff;
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 600;
         cursor: pointer;
         transition: .2s ease;
     }
 
-    .btn-save:hover {
+    .btn-save-all:hover {
         background: #1d4ed8;
         border-color: #1d4ed8;
     }
 
+    .btn-save-all:active {
+        transform: translateY(1px);
+    }
+
+    @media (max-width: 768px) {
+
+        .verification-all-footer {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-save-all {
+            width: 100%;
+        }
+
+    }
+
     @media (max-width: 992px) {
+
         .page-header {
             align-items: flex-start;
         }
@@ -1128,9 +1120,11 @@
         .detail-item:last-child {
             border-bottom: 0;
         }
+
     }
 
     @media (max-width: 768px) {
+
         .spmb-detail-page {
             padding-top: 2px;
         }
@@ -1162,9 +1156,11 @@
             padding-left: 5px;
             padding-right: 5px;
         }
+
     }
 
     @media (max-width: 500px) {
+
         .header-actions {
             flex-direction: column;
         }
@@ -1173,7 +1169,9 @@
         .btn-back {
             width: 100%;
         }
+
     }
+
 </style>
 
 @endpush

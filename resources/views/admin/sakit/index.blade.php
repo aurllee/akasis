@@ -503,9 +503,7 @@
                         </td>
 
                         <td class="date-cell">
-                            {{ $item->tanggal_mulai?->format('d-m-Y') ?? '-' }}
-                            <span class="text-muted">-</span>
-                            {{ $item->tanggal_selesai?->format('d-m-Y') ?? '-' }}
+                            {{ $item->tanggal?->format('d-m-Y') ?? '-' }}
                         </td>
 
                         <td>

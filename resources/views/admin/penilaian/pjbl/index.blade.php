@@ -104,6 +104,7 @@
         .filter-field select,
         .filter-field input {
             width: 100%;
+            min-width: 0;
             padding: 8px 12px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
@@ -118,6 +119,23 @@
         .filter-field input:focus {
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .filter-row {
+            display: flex;
+            align-items: end;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-search {
+            flex: 1 1 0;
+            min-width: 0;
+        }
+
+        .filter-jenjang {
+            flex: 0 0 220px;
+            min-width: 0;
         }
 
         .item-card {
@@ -176,6 +194,57 @@
             color: #2563eb;
             font-weight: 600;
         }
+
+        .pagination {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .pagination .page-item {
+            display: inline-flex;
+        }
+
+        .pagination .page-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 38px;
+            height: 38px;
+            padding: 0 12px;
+            border: 1px solid #dbe2ea;
+            border-radius: 8px;
+            background: #fff;
+            color: #475569;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .pagination .page-link:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            color: #0f172a;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background: #f8fafc;
+            color: #a8adb8;
+            pointer-events: none;
+        }
     </style>
 @endpush
 
@@ -194,18 +263,15 @@
         </div>
 
         <div class="filter-section">
-            <div class="row g-3 align-items-end">
-                <div class="col-md-7 filter-field">
+            <div class="filter-row">
+                <div class="filter-search filter-field">
                     <label for="searchKelas">Cari Kelas</label>
                     <div class="input-group">
-                        <span class="input-group-text bg-white border-end-0">
-                            <i class="bi bi-search text-muted"></i>
-                        </span>
                         <input type="text" id="searchKelas" class="border-start-0 ps-0" placeholder="Cari tingkat, jurusan, atau nama kelas..." autocomplete="off">
                     </div>
                 </div>
 
-                <div class="col-md-3 filter-field">
+                <div class="filter-jenjang filter-field">
                     <label for="filterTingkat">Jenjang</label>
                     <select id="filterTingkat">
                         <option value="">Semua Jenjang</option>
@@ -214,18 +280,12 @@
                         @endforeach
                     </select>
                 </div>
-
-                <div class="col-md-2 filter-field">
-                    <button type="button" id="resetFilter" class="btn-action-secondary w-100 justify-content-center">
-                        <i class="bi bi-arrow-counterclockwise"></i> Reset
-                    </button>
-                </div>
             </div>
         </div>
 
         <div class="mb-3">
             <small class="text-muted">
-                Menampilkan <span id="jumlahKelas" class="fw-semibold text-dark">{{ $kelas->count() }}</span> kelas
+                Menampilkan <span id="jumlahKelas" class="fw-semibold text-dark">{{ $kelas->count() }}</span> dari {{ $kelas->total() }} kelas
             </small>
         </div>
 
@@ -277,6 +337,14 @@
                 </div>
             @endforelse
         </div>
+
+        @if($kelas->hasPages())
+            <div class="d-flex justify-content-center mt-4">
+                <div class="w-100">
+                    {{ $kelas->links('pagination::bootstrap-4') }}
+                </div>
+            </div>
+        @endif
 
         <div id="kelasEmpty" class="card border-0 shadow-sm mt-4" style="display: none;">
             <div class="card-body text-center py-5">
@@ -331,15 +399,6 @@
 
         if (searchInput) searchInput.addEventListener('input', filterKelas);
         if (filterTingkat) filterTingkat.addEventListener('change', filterKelas);
-
-        if (resetButton) {
-            resetButton.addEventListener('click', function () {
-                searchInput.value = '';
-                filterTingkat.value = '';
-                filterKelas();
-                searchInput.focus();
-            });
-        }
 
         filterKelas();
     });

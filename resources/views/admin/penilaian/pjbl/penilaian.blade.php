@@ -176,6 +176,16 @@
             font-weight: 600;
             font-size: 14px;
         }
+
+        .total-nilai-value {
+            display: inline-block;
+            min-width: 52px;
+            padding: 2px 0;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
     </style>
 @endpush
 
@@ -208,7 +218,7 @@
                 <div class="sub-card-header">
                     <div>
                         <div class="sub-card-title">
-                            <i class="bi bi-people-fill text-primary"></i> Penguji PJBL
+                            Penguji PJBL
                         </div>
                         <small class="text-muted">Penguji yang memberikan penilaian pada PJBL ini</small>
                     </div>
@@ -249,7 +259,6 @@
                         <label for="liveSearchSiswa">Cari Siswa</label>
                         <div class="input-group">
                             <span class="input-group-text bg-white border-end-0">
-                                <i class="bi bi-search text-muted"></i>
                             </span>
                             <input type="text" id="liveSearchSiswa" class="border-start-0 ps-0"
                                 placeholder="Cari nama, NIS, atau NISN..." autocomplete="off">
@@ -258,7 +267,7 @@
                     <div class="col-md-2">
                         <button type="button" id="resetSearch" class="btn btn-outline-secondary w-100 py-2"
                             style="font-size: 13px; font-weight: 600;">
-                            <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
+                            Reset
                         </button>
                     </div>
                 </div>
@@ -268,7 +277,7 @@
                 <div class="sub-card-header">
                     <div>
                         <div class="sub-card-title">
-                            <i class="bi bi-clipboard-data text-primary"></i> Data Penilaian
+                            Data Penilaian
                         </div>
                         <small class="text-muted">Nilai berdasarkan masing-masing penguji PJBL</small>
                     </div>
@@ -321,7 +330,7 @@
                                     @endforeach
 
                                     <td class="text-center">
-                                        <span class="badge bg-success fs-6">
+                                        <span class="total-nilai-value">
                                             {{ $totalNilai }}
                                         </span>
                                     </td>
@@ -332,7 +341,7 @@
                                         @if($nilaiPertama)
                                             <a href="{{ route('admin.penilaian.pjbl.edit', ['kelasId' => $kelas->id, 'pjblId' => $pjbl->id, 'id' => $nilaiPertama->id]) }}"
                                                 class="btn btn-sm btn-outline-warning" title="Edit">
-                                                <i class="bi bi-pencil me-1"></i> Edit
+                                                Edit
                                             </a>
                                         @endif
                                     </td>
