@@ -13,45 +13,45 @@ use Illuminate\Http\Request;
 class WaliKelasController extends Controller
 {
     public function dashboard()
-{
-    $guruId = auth()->user()->guru_id;
+    {
+        $guruId = auth()->user()->guru_id;
 
-    $guru = auth()->user()->guru;
+        $guru = auth()->user()->guru;
 
-    $jadwal = Jadwal_pelajaran::with([
-        'kelas.jurusan',
-        'mapel',
-        'ruangan',
-    ])
-        ->where('guru_id', $guruId)
-        ->where('is_published', true)
-        ->orderBy('hari')
-        ->orderBy('jam_mulai')
-        ->get();
+        $jadwal = Jadwal_pelajaran::with([
+            'kelas.jurusan',
+            'mapel',
+            'ruangan',
+        ])
+            ->where('guru_id', $guruId)
+            ->where('is_published', true)
+            ->orderBy('hari')
+            ->orderBy('jam_mulai')
+            ->get();
 
-    $waliKelas = WaliKelas::with([
-        'kelas.jurusan',
-        'kelas.tahunAjaran'
-    ])
-        ->where('guru_id', $guruId)
-        ->get();
+        $waliKelas = WaliKelas::with([
+            'kelas.jurusan',
+            'kelas.tahunAjaran'
+        ])
+            ->where('guru_id', $guruId)
+            ->get();
 
-    $kelasWali = $waliKelas->first()?->kelas;
+        $kelasWali = $waliKelas->first()?->kelas;
 
-    $jadwalMengajar = Jadwal_pelajaran::with([
-        'kelas.jurusan',
-        'mataPelajaran'
-    ])
-        ->where('guru_id', $guruId)
-        ->get();
+        $jadwalMengajar = Jadwal_pelajaran::with([
+            'kelas.jurusan',
+            'mataPelajaran'
+        ])
+            ->where('guru_id', $guruId)
+            ->get();
 
-    return view('wali-kelas.dashboard', compact(
-        'guru',
-        'jadwal',
-        'waliKelas',
-        'jadwalMengajar'
-    ));
-}
+        return view('wali-kelas.dashboard', compact(
+            'guru',
+            'jadwal',
+            'waliKelas',
+            'jadwalMengajar'
+        ));
+    }
 
     public function index()
     {
@@ -202,11 +202,11 @@ class WaliKelasController extends Controller
             'jadwal_pelajaran_id',
             $jadwal->id
         )
-            ->where('jenis_nilai', 'harian')
+            ->latest('id')
             ->get()
             ->keyBy('siswa_id');
 
-        return view('wali-kelas.input-nilai', compact(
+        return view('wali-kelas.nilai.create', compact(
             'jadwal',
             'siswa',
             'nilai'
@@ -224,6 +224,9 @@ class WaliKelasController extends Controller
         }
 
         $request->validate([
+            'jenis_nilai' => ['required', 'in:harian,ujian'],
+            'judul_tugas' => ['required', 'string', 'max:255'],
+            'tanggal_penilaian' => ['required', 'date'],
             'nilai' => ['required', 'array'],
             'nilai.*' => [
                 'nullable',
@@ -257,7 +260,9 @@ class WaliKelasController extends Controller
                 [
                     'jadwal_pelajaran_id' => $jadwal->id,
                     'siswa_id' => $siswaId,
-                    'jenis_nilai' => 'harian',
+                    'jenis_nilai' => $request->jenis_nilai,
+                    'judul_tugas' => $request->judul_tugas,
+                    'tanggal_penilaian' => $request->tanggal_penilaian,
                 ],
                 [
                     'nilai' => $nilaiSiswa,
@@ -265,17 +270,70 @@ class WaliKelasController extends Controller
             );
         }
 
-
-
         return redirect()
-            ->route(
-                'wali-kelas.input-nilai',
-                $jadwal->id
-            )
+            ->route('wali-kelas.detail-nilai', $jadwal->id)
             ->with(
                 'success',
-                'Nilai harian berhasil disimpan.'
+                'Nilai berhasil disimpan.'
             );
+    }
+
+    public function detailNilai(Request $request, Jadwal_pelajaran $jadwal)
+    {
+        $guruId = auth()->user()->guru_id;
+
+        abort_unless($jadwal->guru_id == $guruId, 403);
+
+        $request->validate([
+            'jenis_nilai' => ['nullable', 'in:harian,ujian'],
+        ]);
+
+        $jadwal->load([
+            'kelas.jurusan',
+            'kelas.tahunAjaran',
+            'mataPelajaran',
+        ]);
+
+        $penilaianQuery = PenilaianMapel::with('siswa')
+            ->where('jadwal_pelajaran_id', $jadwal->id)
+            ->orderBy('tanggal_penilaian')
+            ->orderBy('judul_tugas');
+
+        if ($request->filled('jenis_nilai')) {
+            $penilaianQuery->where('jenis_nilai', $request->jenis_nilai);
+        }
+
+        $penilaian = $penilaianQuery->get();
+        $siswa = SiswaKelas::with('siswa')
+            ->where('kelas_id', $jadwal->kelas_id)
+            ->get()
+            ->pluck('siswa')
+            ->filter()
+            ->values();
+
+        $counterJenis = [];
+        $jenisPenilaian = $penilaian
+            ->unique(fn($item) => $item->jenis_nilai . '|' . $item->tanggal_penilaian . '|' . $item->judul_tugas)
+            ->map(function ($item) use (&$counterJenis) {
+                $counterJenis[$item->jenis_nilai] = ($counterJenis[$item->jenis_nilai] ?? 0) + 1;
+
+                return (object) [
+                    'jenis_nilai' => $item->jenis_nilai,
+                    'tanggal_penilaian' => $item->tanggal_penilaian,
+                    'judul_tugas' => $item->judul_tugas,
+                    'penilaian_ke' => $counterJenis[$item->jenis_nilai],
+                ];
+            })
+            ->values();
+
+        return view('wali-kelas.nilai.detail', [
+            'jadwal' => $jadwal,
+            'penilaian' => $penilaian,
+            'siswa' => $siswa,
+            'jenisPenilaian' => $jenisPenilaian,
+            'nilaiSiswa' => $penilaian,
+            'jenisNilai' => $request->jenis_nilai,
+        ]);
     }
 
     private function kelasYangDiajar()

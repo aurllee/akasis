@@ -47,11 +47,6 @@
             <span>Izin Tidak Masuk</span>
         </a>
 
-        <a href="{{ route('wali-kelas.absen.index') }}"
-            class="{{ request()->routeIs('wali-kelas.absen.*') ? 'active' : '' }}">
-            <i class="bi bi-calendar-check" aria-hidden="true"></i>
-            <span>Absensi Siswa</span>
-        </a>
 
         @php
         $jadwalSaya = collect();
@@ -72,8 +67,8 @@
 
         <div class="menu-title">Guru Mata Pelajaran</div>
 
-        <a href="{{ route('guru.penilaian.index') }}"
-            class="{{ request()->routeIs('guru.penilaian.*') ? 'active' : '' }}">
+        <a href="{{ route('wali-kelas.kelas-mengajar') }}"
+            class="{{ request()->routeIs('wali-kelas.kelas-mengajar', 'wali-kelas.input-nilai') ? 'active' : '' }}">
             <i class="bi bi-clipboard2-check" aria-hidden="true"></i>
             <span>Nilai Harian</span>
         </a>

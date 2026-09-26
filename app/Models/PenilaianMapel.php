@@ -22,6 +22,7 @@ class PenilaianMapel extends Model
         'jadwal_pelajaran_id',
         'siswa_id',
         'jenis_nilai',
+        'judul_tugas',
         'nilai',
         'tanggal_penilaian',
     ];

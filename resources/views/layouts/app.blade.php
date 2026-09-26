@@ -486,6 +486,10 @@
     
     @stack('styles')
 
+    @if(request()->is('wali-kelas') || request()->is('wali-kelas/*'))
+        <link rel="stylesheet" href="{{ asset('css/wali-kelas.css') }}">
+    @endif
+
 </head>
 
 
@@ -548,7 +552,7 @@
             
             
 
-            <section class="content">
+            <section class="content {{ request()->is('wali-kelas') || request()->is('wali-kelas/*') ? 'walas-page' : '' }}">
 
 
                 

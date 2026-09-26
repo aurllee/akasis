@@ -29,40 +29,40 @@
 
                 @forelse($jadwalMengajar as $jadwal)
 
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
 
-                        <td>
-                            {{ $jadwal->kelas->tingkat ?? '-' }}
-                            {{ $jadwal->kelas->nama_kelas ?? '-' }}
-                        </td>
+                    <td>
+                        {{ $jadwal->kelas->tingkat ?? '-' }}
+                        {{ $jadwal->kelas->nama_kelas ?? '-' }}
+                    </td>
 
-                        <td>
-                            {{ $jadwal->kelas->jurusan->nama_jurusan ?? '-' }}
-                        </td>
+                    <td>
+                        {{ $jadwal->kelas->jurusan->nama_jurusan ?? '-' }}
+                    </td>
 
-                        <td>
-                            {{ $jadwal->mataPelajaran->nama_mapel ?? '-' }}
-                        </td>
+                    <td>
+                        {{ $jadwal->mataPelajaran->nama_mapel ?? '-' }}
+                    </td>
 
-                        <td>
-                            {{ $jadwal->jp_mulai }}–{{ $jadwal->jp_selesai }}
-                        </td>
+                    <td>
+                        {{ $jadwal->jp_mulai }}–{{ $jadwal->jp_selesai }}
+                    </td>
 
-                        <td>
-                            <a href="{{ route('wali-kelas.input-nilai', $jadwal->id) }}">
-                                Input Nilai
-                            </a>
-                        </td>
-                    </tr>
+                    <td>
+                        <a href="{{ route('wali-kelas.input-nilai', $jadwal->id) }}" class="btn btn-primary btn-sm">
+                            Input Nilai
+                        </a>
+                    </td>
+                </tr>
 
                 @empty
 
-                    <tr>
-                        <td colspan="6">
-                            Kamu belum memiliki jadwal mengajar.
-                        </td>
-                    </tr>
+                <tr>
+                    <td colspan="6">
+                        Kamu belum memiliki jadwal mengajar.
+                    </td>
+                </tr>
 
                 @endforelse
 

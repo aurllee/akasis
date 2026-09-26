@@ -120,11 +120,7 @@
 
 <div class="card">
 
-    <div style="margin-bottom: 20px;">
-        <a href="{{ route('wali-kelas.index') }}" class="btn btn-secondary">
-            Kembali
-        </a>
-    </div>
+    
 
     <div class="table-wrapper">
         <table>

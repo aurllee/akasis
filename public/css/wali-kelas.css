@@ -1,0 +1,220 @@
+.walas-page {
+    color: #1f2937;
+    font-family: 'Poppins', sans-serif;
+}
+
+.walas-page .page-wrap {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.walas-page .page-header {
+    margin-bottom: 24px;
+}
+
+.walas-page .page-header h1,
+.walas-page .page-title {
+    margin: 0 0 8px;
+    color: #1e293b;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.walas-page .page-header p,
+.walas-page .page-subtitle {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.walas-page .page-card,
+.walas-page .card,
+.walas-page .walas-card,
+.walas-page .filter-card,
+.walas-page .data-card,
+.walas-page .rekap-container {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+}
+
+.walas-page .page-card,
+.walas-page .card,
+.walas-page .walas-card,
+.walas-page .rekap-container {
+    padding: 24px;
+}
+
+.walas-page .welcome-card {
+    background: linear-gradient(135deg, #2449a4 0%, #3c73fe 100%);
+    border: 0;
+    color: #ffffff;
+}
+
+.walas-page .welcome-card .page-title {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.walas-page .welcome-card .page-subtitle {
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.walas-page .info-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.walas-page .info-item {
+    padding: 14px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.walas-page .info-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.walas-page .info-value {
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.walas-page .schedule-card h2 {
+    color: #1e293b;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.walas-page .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+}
+
+.walas-page table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.walas-page table th {
+    padding: 12px 15px;
+    background: #eff6ff;
+    border-bottom: 2px solid #bfdbfe;
+    color: #1e40af;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.walas-page table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.walas-page table tbody tr:hover td {
+    background: #f8fafc;
+}
+
+.walas-page .filter-card,
+.walas-page .data-card {
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.walas-page .filter-card-body,
+.walas-page .data-card-header {
+    padding: 20px 22px;
+}
+
+.walas-page .data-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.walas-page .data-card-title {
+    margin: 0;
+    color: #1e293b;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.walas-page .data-card-icon {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.walas-page .custom-input,
+.walas-page .custom-select,
+.walas-page .form-control,
+.walas-page .form-select {
+    min-height: 42px;
+    border-color: #cbd5e1;
+    border-radius: 7px;
+    color: #1e293b;
+    font-size: 13px;
+}
+
+.walas-page .custom-input:focus,
+.walas-page .custom-select:focus,
+.walas-page .form-control:focus,
+.walas-page .form-select:focus {
+    border-color: #2449a4;
+    box-shadow: 0 0 0 3px rgba(36, 73, 164, 0.12);
+}
+
+.walas-page .btn-primary,
+.walas-page .btn-brand {
+    background: #2449a4;
+    border-color: #2449a4;
+    color: #ffffff;
+}
+
+.walas-page .btn-primary:hover,
+.walas-page .btn-brand:hover {
+    background: #1d3d8b;
+    border-color: #1d3d8b;
+    color: #ffffff;
+}
+
+.walas-page .empty-state,
+.walas-page .empty-schedule,
+.walas-page .empty-alert {
+    padding: 28px 16px !important;
+    background: #f8fafc;
+    color: #64748b;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .walas-page .page-card,
+    .walas-page .walas-card,
+    .walas-page .rekap-container {
+        padding: 18px;
+    }
+
+    .walas-page .info-grid {
+        grid-template-columns: 1fr;
+    }
+}

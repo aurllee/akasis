@@ -130,6 +130,19 @@ Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(func
     Route::get('/absen', [WaliKelasAbsenController::class, 'index'])->name('absen.index');
 });
 
+Route::get('/wali-kelas/kelas-mengajar', [WaliKelasController::class, 'kelasMengajar'])
+    ->name('wali-kelas.kelas-mengajar');
+
+Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(function () {
+    Route::get('/kelas-mengajar/{jadwal}/input-nilai', [WaliKelasController::class, 'inputNilai'])
+        ->name('input-nilai');
+    Route::post('/kelas-mengajar/{jadwal}/input-nilai', [WaliKelasController::class, 'simpanNilai'])
+        ->name('simpan-nilai');
+    Route::get('/kelas-mengajar/{jadwal}/detail-nilai', [WaliKelasController::class, 'detailNilai'])
+        ->name('detail-nilai');
+});
+
+
 Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(function () {
     Route::get('/izin-tidak-masuk', [WaliKelasSakitController::class, 'index'])->name('sakit.index');
     Route::patch('/izin-tidak-masuk/{sakit}/setujui', [WaliKelasSakitController::class, 'setujui'])->name('sakit.setujui');
