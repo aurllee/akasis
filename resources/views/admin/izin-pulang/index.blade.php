@@ -345,16 +345,6 @@
 
             </div>
 
-            <div class="mt-3 d-flex gap-2">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-search"></i>
-                    Filter
-                </button>
-
-                <a href="{{ route('admin.izin-pulang.index') }}" class="btn btn-light border">
-                    Reset
-                </a>
-            </div>
         </div>
     </form>
 
@@ -519,5 +509,27 @@
         @endif
 
     </div>
+
+    @push('scripts')
+        <script>
+            (() => {
+                const searchInput = document.getElementById('search');
+                const filterForm = searchInput.form;
+                let searchTimer;
+
+                searchInput.addEventListener('input', function () {
+                    clearTimeout(searchTimer);
+                    searchTimer = setTimeout(() => filterForm.requestSubmit(), 500);
+                });
+
+                document.querySelectorAll('#jenis, #status').forEach((select) => {
+                    select.addEventListener('change', () => {
+                        clearTimeout(searchTimer);
+                        filterForm.requestSubmit();
+                    });
+                });
+            })();
+        </script>
+    @endpush
 
 @endsection
