@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class CalonSiswa extends Model
@@ -69,5 +70,15 @@ class CalonSiswa extends Model
     public function pembagianKelas()
     {
         return $this->hasMany(SiswaKelas::class, 'siswa_id');
+    }
+
+    public function scopeNotAssignedToClass(Builder $query): Builder
+    {
+        return $query->whereNotExists(function ($subquery) {
+            $subquery->selectRaw('1')
+                ->from('datasiswa')
+                ->join('siswa_kelas', 'datasiswa.id', '=', 'siswa_kelas.siswa_id')
+                ->whereRaw('BINARY calon_siswa.nisn = BINARY datasiswa.nisn');
+        });
     }
 }

@@ -18,7 +18,8 @@ class SpmbController extends Controller
 
     public function index(Request $request)
 {
-    $query = CalonSiswa::with('jurusan');
+    $query = CalonSiswa::with('jurusan')
+        ->notAssignedToClass();
 
   
     if ($request->filled('search')) {

@@ -12,24 +12,32 @@ use App\Imports\PembagianKelasImport;
 
 class PembagianKelasController extends Controller
 {
-    
-    public function index()
+    public function index(Request $request)
     {
-        $pembagian = SiswaKelas::with(['siswa', 'kelas.jurusan'])
-            ->paginate(10);
+        $query = SiswaKelas::with(['siswa', 'kelas.jurusan']);
+
+        if ($request->filled('kelas_id')) {
+            $query->where('kelas_id', $request->kelas_id);
+        }
+
+        $pembagian = $query
+            ->paginate(10)
+            ->withQueryString();
+
+        $kelas = Kelas::with('jurusan')
+            ->orderBy('tingkat')
+            ->orderBy('nama_kelas')
+            ->get();
 
         return view(
             'admin.pembagian_kelas.index',
-            compact('pembagian')
+            compact('pembagian', 'kelas')
         );
     }
 
-
-    
     public function create()
     {
-        
-        $siswa = CalonSiswa::whereDoesntHave('pembagianKelas')
+        $siswa = CalonSiswa::notAssignedToClass()
             ->orderBy('nama_lengkap')
             ->get();
 
@@ -44,8 +52,6 @@ class PembagianKelasController extends Controller
         );
     }
 
-
-    
     public function store(Request $request)
     {
         $request->validate([
@@ -54,17 +60,6 @@ class PembagianKelasController extends Controller
         ]);
 
         $calonSiswa = CalonSiswa::findOrFail($request->siswa_id);
-       
-        $sudahAda = SiswaKelas::where(
-            'siswa_id',
-            $request->siswa_id
-        )->exists();
-
-        if ($sudahAda) {
-            return back()
-                ->withInput()
-                ->with('error', 'Siswa tersebut sudah memiliki kelas.');
-        }
 
         $siswa = Siswa::firstOrCreate(
             ['nisn' => $calonSiswa->nisn],
@@ -77,9 +72,16 @@ class PembagianKelasController extends Controller
                 'jk' => $calonSiswa->jenis_kelamin,
                 'alamat' => $calonSiswa->alamat,
                 'nama_orang_tua' => $calonSiswa->nama_ayah,
-                
             ]
         );
+
+        $sudahAda = SiswaKelas::where('siswa_id', $siswa->id)->exists();
+
+        if ($sudahAda) {
+            return back()
+                ->withInput()
+                ->with('error', 'Siswa tersebut sudah memiliki kelas.');
+        }
 
         SiswaKelas::create([
             'siswa_id' => $siswa->id,
@@ -91,8 +93,6 @@ class PembagianKelasController extends Controller
             ->with('success', 'Siswa berhasil dimasukkan ke kelas dan data siswa telah dibuat.');
     }
 
-
-    
     public function edit($id)
     {
         $pembagian = SiswaKelas::with(['siswa', 'kelas'])
@@ -109,8 +109,6 @@ class PembagianKelasController extends Controller
         );
     }
 
-
-    
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -131,8 +129,6 @@ class PembagianKelasController extends Controller
             );
     }
 
-
-    
     public function import(Request $request)
     {
         $request->validate([
@@ -146,28 +142,43 @@ class PembagianKelasController extends Controller
         $import = new PembagianKelasImport();
 
         try {
+            if (!class_exists(Excel::class)) {
+                return back()
+                    ->with('error', 'Import belum dapat dijalankan karena paket Laravel Excel belum terpasang.');
+            }
 
             Excel::import(
                 $import,
                 $request->file('file')
             );
 
+            $jumlahGagal = count($import->gagal);
+
+            if ($import->berhasil > 0 && $jumlahGagal > 0) {
+                return redirect()
+                    ->route('pembagian_kelas.index')
+                    ->with('warning', "Import selesai sebagian: {$import->berhasil} siswa berhasil masuk, {$jumlahGagal} data gagal.")
+                    ->with('gagal_import', $import->gagal);
+            }
+
+            if ($import->berhasil === 0) {
+                return redirect()
+                    ->route('pembagian_kelas.index')
+                    ->with('error', 'Import tidak memasukkan data siswa. Periksa format file dan data yang diunggah.')
+                    ->with('gagal_import', $import->gagal);
+            }
+
             return redirect()
                 ->route('pembagian_kelas.index')
-                ->with('success', "Import selesai. {$import->berhasil} siswa berhasil dimasukkan ke kelas.")
-                ->with('gagal_import', $import->gagal);
-        } catch (\Exception $e) {
+                ->with('success', "Import berhasil: {$import->berhasil} siswa dimasukkan ke kelas.");
+        } catch (\Throwable $e) {
+            report($e);
 
             return back()
-                ->with(
-                    'error',
-                    'Import gagal: ' . $e->getMessage()
-                );
+                ->with('error', 'Import gagal diproses. Periksa format file dan coba lagi.');
         }
     }
 
-
-    
     public function destroy($id)
     {
         $pembagian = SiswaKelas::findOrFail($id);

@@ -16,6 +16,7 @@ class Perizinan extends Model
         'jenis',
         'tanggal',
         'jam_mulai',
+        'jp_pulang',
         'jam_selesai',
         'alasan',
         'dokumen',

@@ -31,10 +31,75 @@
         .header p {
             color: #64748b;
             font-size: 14px;
+            margin: 4px 0 0;
+        }
+
+        .table-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .table-toolbar h2 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #334155;
             margin: 0;
         }
 
-        /* Flash Message Status */
+        .table-filter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .table-filter label {
+            color: #475569;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .table-filter select {
+            min-width: 200px;
+            padding: 7px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: #ffffff;
+            color: #334155;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .table-filter select:focus {
+            border-color: #2449a4;
+        }
+
+        .btn-reset {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: #ffffff;
+            color: #475569;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .btn-reset:hover {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
         .success {
             background-color: #ecfdf5;
             color: #047857;
@@ -70,7 +135,6 @@
             padding: 0;
         }
 
-        /* Card Import Box */
         .import-box {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -124,7 +188,6 @@
             background-color: #e2e8f0;
         }
 
-        /* Button Styling */
         .btn-import {
             background: #2449a4;
             color: #ffffff;
@@ -160,7 +223,6 @@
             color: #334155;
         }
 
-        /* Table Styling */
         .pembagian-table-wrapper {
             overflow-x: auto;
         }
@@ -244,7 +306,6 @@
             text-decoration: none;
         }
 
-        /* Pagination Styling */
         .pagination {
             margin-top: 24px;
             display: flex;
@@ -282,10 +343,25 @@
             cursor: not-allowed;
         }
 
-        /* Responsive Layout */
         @media (max-width: 768px) {
             .pembagian-card {
                 padding: 18px;
+            }
+
+            .table-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .table-filter {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .table-filter select,
+            .btn-reset {
+                width: 100%;
+                box-sizing: border-box;
             }
 
             .import-form {
@@ -315,9 +391,36 @@
                 <p>Daftar siswa berdasarkan kelas yang telah ditentukan.</p>
             </div>
 
+            @if (session('success'))
+                <div class="success" role="status">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('warning'))
+                <div class="import-error" role="status">
+                    {{ session('warning') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="error" role="alert">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="error" role="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             @if (session('gagal_import'))
                 <div class="import-error">
-
                     <strong>Data yang tidak berhasil diimport:</strong>
 
                     <ul>
@@ -325,11 +428,8 @@
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
-
                 </div>
             @endif
-
-
 
             <div class="import-box">
 
@@ -340,8 +440,8 @@
                     <strong>NISN</strong> dan <strong>Kelas</strong>.
                 </p>
 
-                <form action="{{ route('pembagian_kelas.import') }}" method="POST" enctype="multipart/form-data"
-                    class="import-form">
+                <form action="{{ route('pembagian_kelas.import') }}" method="POST"
+                    enctype="multipart/form-data" class="import-form">
 
                     @csrf
 
@@ -359,7 +459,35 @@
 
             </div>
 
+            <div class="table-toolbar">
+                <h2>Daftar Siswa</h2>
 
+                <form action="{{ route('pembagian_kelas.index') }}" method="GET" class="table-filter">
+
+                    <label for="kelas_id">Filter Kelas</label>
+
+                    <select name="kelas_id" id="kelas_id" onchange="this.form.submit()">
+                        <option value="">Semua Kelas</option>
+
+                        @foreach ($kelas as $itemKelas)
+                            <option value="{{ $itemKelas->id }}"
+                                {{ request('kelas_id') == $itemKelas->id ? 'selected' : '' }}>
+                                {{ $itemKelas->tingkat }} {{ $itemKelas->nama_kelas }}
+                                @if ($itemKelas->jurusan)
+                                    - {{ $itemKelas->jurusan->nama_jurusan }}
+                                @endif
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @if (request('kelas_id'))
+                        <a href="{{ route('pembagian_kelas.index') }}" class="btn-reset">
+                            Reset
+                        </a>
+                    @endif
+
+                </form>
+            </div>
 
             <div class="pembagian-table-wrapper">
                 <table class="pembagian-table">
@@ -395,33 +523,38 @@
                                 </td>
 
                                 <td>
-                                    {{ $item->kelas->tingkat }}
+                                    {{ $item->kelas?->tingkat ?? '-' }}
                                 </td>
 
                                 <td>
-                                    {{ $item->kelas->nama_kelas }}
+                                    {{ $item->kelas?->nama_kelas ?? '-' }}
                                 </td>
 
                                 <td>
-                                    {{ $item->kelas->jurusan?->nama_jurusan ?? 'Jurusan belum dipilih' }}
+                                    {{ $item->kelas?->jurusan?->nama_jurusan ?? 'Jurusan belum dipilih' }}
                                 </td>
-
 
                                 <td>
                                     <div class="action-buttons">
+
                                         <a href="{{ route('pembagian_kelas.edit', $item->id) }}" class="btn-edit">
                                             Edit
                                         </a>
 
-                                        <form action="{{ route('pembagian_kelas.destroy', $item->id) }}" method="POST"
+                                        <form action="{{ route('pembagian_kelas.destroy', $item->id) }}"
+                                            method="POST"
                                             style="margin: 0;"
                                             onsubmit="return confirm('Yakin ingin mengeluarkan siswa dari kelas ini?')">
+
                                             @csrf
                                             @method('DELETE')
+
                                             <button type="submit" class="btn-hapus">
                                                 Hapus
                                             </button>
+
                                         </form>
+
                                     </div>
                                 </td>
 
@@ -430,7 +563,7 @@
                         @empty
 
                             <tr>
-                                <td colspan="6" style="text-align: center;">
+                                <td colspan="7" style="text-align: center;">
                                     Belum ada pembagian kelas.
                                 </td>
                             </tr>
@@ -441,8 +574,6 @@
 
                 </table>
             </div>
-
-
 
             @if ($pembagian->hasPages())
 
@@ -462,15 +593,14 @@
 
                     @endif
 
-
                     @for ($i = 1; $i <= $pembagian->lastPage(); $i++)
 
-                        <a href="{{ $pembagian->url($i) }}" class="{{ $pembagian->currentPage() == $i ? 'active' : '' }}">
+                        <a href="{{ $pembagian->url($i) }}"
+                            class="{{ $pembagian->currentPage() == $i ? 'active' : '' }}">
                             {{ $i }}
                         </a>
 
                     @endfor
-
 
                     @if ($pembagian->hasMorePages())
 
@@ -492,4 +622,5 @@
 
         </div>
     </div>
+
 @endsection

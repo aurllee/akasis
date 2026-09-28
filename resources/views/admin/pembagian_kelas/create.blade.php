@@ -102,6 +102,10 @@
         <h1>Tambah Pembagian Kelas</h1>
         <p class="description">Pilih siswa dan kelas untuk membuat pembagian kelas baru.</p>
 
+        @if (session('error'))
+            <div class="error" role="alert">{{ session('error') }}</div>
+        @endif
+
         @if ($errors->any())
             <div class="error">
                 <ul>

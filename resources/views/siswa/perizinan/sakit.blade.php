@@ -148,6 +148,9 @@
                                                 {{ $item->jam_mulai }} - {{ $item->jam_selesai }}
                                             @elseif($item->jenis === 'pulang')
                                                 {{ $item->jam_mulai }} - <span class="text-muted">pulang</span>
+                                                @if($item->jp_pulang)
+                                                    <br><span class="badge bg-primary-subtle text-primary">JP {{ $item->jp_pulang }}</span>
+                                                @endif
                                             @endif
                                         </td>
                                         <td>

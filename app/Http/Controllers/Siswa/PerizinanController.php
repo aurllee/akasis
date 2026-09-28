@@ -73,6 +73,13 @@ class PerizinanController extends Controller
                 'date_format:H:i'
             ];
 
+            $rules['jp_pulang'] = [
+                'required',
+                'integer',
+                'min:1',
+                'max:12',
+            ];
+
             $rules['jam_selesai'] = ['nullable'];
         }
 
@@ -124,6 +131,10 @@ class PerizinanController extends Controller
             'jam_mulai' => $requiresWaliKelas
                 ? null
                 : $request->jam_mulai,
+
+            'jp_pulang' => $jenis === 'pulang'
+                ? $request->jp_pulang
+                : null,
 
             'jam_selesai' => $jenis === 'keluar'
                 ? $request->jam_selesai

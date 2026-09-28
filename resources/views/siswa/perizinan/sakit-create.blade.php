@@ -130,8 +130,8 @@
 
                         <div class="text-muted small mt-1">
                             Digunakan jika kamu perlu pulang sebelum
-                            kegiatan sekolah selesai. Dokumen wajib
-                            sudah ditandatangani.
+                            kegiatan sekolah selesai. Isi jam pulang dan JP,
+                            serta lampirkan dokumen yang sudah ditandatangani.
                         </div>
 
                     </div>
@@ -183,6 +183,26 @@
                             </div>
                         @enderror
 
+                    </div>
+
+                    <div class="mb-3 d-none" id="fieldJpPulang">
+                        <label class="form-label fw-semibold" for="jp_pulang">
+                            JP Pulang
+                        </label>
+
+                        <select name="jp_pulang" id="jp_pulang"
+                            class="form-select @error('jp_pulang') is-invalid @enderror">
+                            <option value="">-- Pilih JP --</option>
+                            @for ($jp = 1; $jp <= 12; $jp++)
+                                <option value="{{ $jp }}" @selected(old('jp_pulang') == $jp)>
+                                    JP {{ $jp }}
+                                </option>
+                            @endfor
+                        </select>
+
+                        @error('jp_pulang')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="mb-3">
@@ -258,6 +278,12 @@
                 const fieldJamSelesai =
                     document.getElementById('fieldJamSelesai');
 
+                const fieldJpPulang =
+                    document.getElementById('fieldJpPulang');
+
+                const jpPulang =
+                    document.getElementById('jp_pulang');
+
                 const infoSakit =
                     document.getElementById('infoSakit');
 
@@ -278,6 +304,8 @@
                     // Reset
                     fieldJamMulai.classList.add('d-none');
                     fieldJamSelesai.classList.add('d-none');
+                    fieldJpPulang.classList.add('d-none');
+                    jpPulang.required = false;
 
                     infoSakit.classList.add('d-none');
                     infoIzin.classList.add('d-none');
@@ -315,6 +343,8 @@
                     else if (value === 'pulang') {
 
                         fieldJamMulai.classList.remove('d-none');
+                        fieldJpPulang.classList.remove('d-none');
+                        jpPulang.required = true;
 
                         infoPulang.classList.remove('d-none');
 

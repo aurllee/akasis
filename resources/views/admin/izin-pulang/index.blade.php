@@ -380,6 +380,7 @@
                         <th>Siswa</th>
                         <th>Jenis</th>
                         <th>Tanggal</th>
+                        <th>JP Pulang</th>
                         <th>Alasan</th>
                         <th>Status</th>
                         <th class="text-center">Aksi</th>
@@ -460,6 +461,14 @@
                             </td>
 
                             <td>
+                                @if ($item->jp_pulang)
+                                    JP {{ $item->jp_pulang }}
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+
+                            <td>
                                 {{ $item->alasan ?? $item->kegiatan ?? '-' }}
                             </td>
 
@@ -482,7 +491,7 @@
                     @empty
 
                         <tr>
-                            <td colspan="7" class="empty-state">
+                            <td colspan="8" class="empty-state">
 
                                 <div class="empty-state-icon">
                                     <i class="bi bi-inbox"></i>
