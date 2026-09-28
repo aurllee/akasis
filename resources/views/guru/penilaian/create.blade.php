@@ -142,6 +142,12 @@
                     </select>
                 </div>
 
+                <div class="penilaian-filter mb-3">
+                    <label for="judul_tugas" class="form-label fw-semibold">Judul Tugas</label>
+                    <input type="text" name="judul_tugas" id="judul_tugas" class="form-control"
+                        value="{{ old('judul_tugas') }}" placeholder="Contoh: Tugas 1, Ulangan Harian 1, Quiz Materi..." required>
+                </div>
+
                 <div class="penilaian-filter mb-4">
                     <label for="tanggal_penilaian" class="form-label fw-semibold">Tanggal Penilaian</label>
                     <input type="date" name="tanggal_penilaian" id="tanggal_penilaian" class="form-control"

@@ -201,6 +201,15 @@
             </div>
 
             <div class="form-group-custom">
+                <label for="judul_tugas">Judul Tugas <span class="text-danger">*</span></label>
+                <input type="text" name="judul_tugas" id="judul_tugas" class="form-control"
+                       value="{{ old('judul_tugas', $penilaian->judul_tugas) }}" placeholder="Contoh: Tugas 1, Ulangan Harian 1, Quiz Materi..." required>
+                @error('judul_tugas')
+                    <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="form-group-custom">
                 <label for="tanggal_penilaian">Tanggal Penilaian <span class="text-danger">*</span></label>
                 <input type="date" name="tanggal_penilaian" id="tanggal_penilaian" class="form-control" value="{{ old('tanggal_penilaian', $penilaian->tanggal_penilaian?->format('Y-m-d')) }}" required>
                 @error('tanggal_penilaian')

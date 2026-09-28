@@ -7,6 +7,7 @@
     body {
         font-family: 'Poppins', sans-serif;
         color: #1f2937;
+        background: #f4f7fb;
     }
 
     .page-wrap {
@@ -25,8 +26,6 @@
         margin: 0 0 8px;
         font-size: 25px;
         font-weight: 500;
-        font-size: 25px;
-
     }
 
     .page-subtitle {
@@ -67,10 +66,6 @@
         align-items: center;
     }
 
-    .mb-1 {
-        margin-bottom: 4px;
-    }
-
     .mb-3 {
         margin-bottom: 16px;
     }
@@ -91,16 +86,8 @@
         color: #64748b;
     }
 
-    .text-start {
-        text-align: left;
-    }
-
     .text-center {
         text-align: center;
-    }
-
-    .d-block {
-        display: block;
     }
 
     .row {
@@ -169,11 +156,6 @@
         font-size: 13px;
     }
 
-    .filter-form button,
-    .filter-form a {
-        font-size: 13px;
-    }
-
     .table-responsive {
         overflow-x: auto;
     }
@@ -196,47 +178,12 @@
         color: #1e40af;
     }
 
-    .form-control {
-        box-sizing: border-box;
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #cbd5e1;
-        border-radius: 4px;
-    }
-
-    .nilai-input {
-        text-align: right;
-    }
-
     .nilai-cell {
         text-align: right;
     }
 
-    .py-5 {
-        padding-top: 48px;
-        padding-bottom: 48px;
-    }
-
-    .pagination {
-        display: flex;
-        gap: 6px;
-        align-items: center;
-        padding: 14px 0 0;
-        flex-wrap: wrap;
-    }
-
-    .pagination a,
-    .pagination span {
-        padding: 6px 10px;
-        border: 1px solid #cbd5e1;
-        border-radius: 4px;
-        text-decoration: none;
-        color: #475569;
-    }
-
-    .pagination .active span {
-        background: #2449a4;
-        color: #ffffff;
+    .fs-12 {
+        font-size: 13px;
     }
 
     @media (max-width: 768px) {
@@ -250,62 +197,6 @@
             flex-direction: column;
             gap: 12px;
         }
-    }
-
-    .shadow-medium {
-        box-shadow: 0 0.125rem 0.3rem rgba(0, 0, 0, 0.12);
-    }
-
-    .fs-12 {
-        font-size: 13px;
-    }
-
-    .walas-page .wali-detail-page.page-wrap {
-        max-width: none;
-        margin: 0;
-    }
-
-    .walas-page .wali-detail-page .page-title {
-        font-weight: 500;
-    }
-
-    .walas-page .wali-detail-page .card {
-        padding: 0;
-        border-radius: 10px;
-    }
-
-    .walas-page .wali-detail-page .card.border-0 {
-        border: 0;
-    }
-
-    .walas-page .wali-detail-page .shadow-medium {
-        box-shadow: 0 0.125rem 0.3rem rgba(0, 0, 0, 0.12);
-    }
-
-    .walas-page .wali-detail-page .shadow-sm {
-        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    }
-
-    .walas-page .wali-detail-page .table th,
-    .walas-page .wali-detail-page .table td {
-        padding: 10px 12px;
-    }
-
-    .walas-page .wali-detail-page .table th {
-        font-size: 1rem;
-        font-weight: 600;
-        letter-spacing: normal;
-        text-transform: none;
-        white-space: normal;
-        border-bottom: 1px solid #e2e8f0;
-    }
-
-    .walas-page .wali-detail-page .table td {
-        font-size: 1rem;
-    }
-
-    .walas-page .wali-detail-page table tbody tr:hover td {
-        background: transparent;
     }
 </style>
 @endpush
@@ -396,15 +287,12 @@
                                 @php
                                 $tanggalJenis = \Carbon\Carbon::parse($jenis->tanggal_penilaian)->format('d-m-Y');
                                 @endphp
-                                <th width="160">
+                                <th width="180">
                                     <span class="d-block fw-semibold">
-                                        {{ ucfirst($jenis->jenis_nilai) }} {{ $jenis->penilaian_ke }}
+                                        {{ $jenis->judul_tugas ?: ucfirst($jenis->jenis_nilai) . ' ' . $jenis->penilaian_ke }}
                                     </span>
                                     <small class="text-muted d-block mt-1">
                                         {{ $tanggalJenis }}
-                                    </small>
-                                    <small class="text-muted d-block">
-                                        {{ $jenis->judul_tugas ?: '-' }}
                                     </small>
                                 </th>
                                 @endforeach

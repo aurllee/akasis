@@ -4,177 +4,529 @@
 
 @push('styles')
 <style>
-    .academic-card {
+    body {
+        font-family: 'Poppins', sans-serif;
+        color: #1f2937;
+        background: #f4f7fb;
+    }
+
+    .page-wrap {
+        width: 100%;
+    }
+
+    .page-card {
         background: #ffffff;
-        border: 1px solid #e2e8f0;
+        border: 1px solid #e5e7eb;
         border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
         padding: 24px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
-        margin-bottom: 24px;
     }
 
-    .academic-header {
-        margin-bottom: 20px;
+    .page-title {
+        margin: 0 0 8px;
+        font-size: 25px;
+        font-weight: 600;
+        color: #111827;
     }
 
-    .academic-header h1 {
-        font-size: 20px;
-        font-weight: 700;
-        color: #0f172a;
-        margin: 0 0 4px;
-    }
-
-    .academic-header p {
-        font-size: 13px;
-        color: #64748b;
+    .page-subtitle {
         margin: 0;
+        color: #64748b;
+        font-size: 13px;
     }
 
-    .btn-back-link {
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 20px;
         color: #64748b;
         text-decoration: none;
         font-size: 13px;
         font-weight: 500;
-        display: inline-flex;
+    }
+
+    .btn-back:hover {
+        color: #2449a4;
+    }
+
+    .card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+        overflow: hidden;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-body.p-0 {
+        padding: 0;
+    }
+
+    .mb-3 {
+        margin-bottom: 16px;
+    }
+
+    .mb-4 {
+        margin-bottom: 24px;
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+    .justify-content-between {
+        justify-content: space-between;
+    }
+
+    .align-items-center {
         align-items: center;
-        gap: 6px;
-        margin-bottom: 12px;
     }
 
-    .btn-back-link:hover {
-        color: #2563eb;
+    .fw-bold {
+        font-weight: 700;
     }
 
-    .btn-action-primary {
-        background: #2563eb !important;
-        color: #fff !important;
-        border: 1px solid #2563eb !important;
-        padding: 9px 18px;
-        border-radius: 6px;
-        font-size: 13px;
+    .fw-semibold {
         font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
     }
 
-    .btn-action-secondary {
-        background: #fff;
-        color: #475569;
-        border: 1px solid #cbd5e1;
-        padding: 9px 18px;
-        border-radius: 6px;
-        font-size: 13px;
+    .text-muted {
+        color: #64748b;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-start {
+        text-align: left;
+    }
+
+    .text-end {
+        text-align: right;
+    }
+
+    .row {
+        display: flex;
+        gap: 24px;
+    }
+
+    .col-md-4 {
+        flex: 1;
+    }
+
+    .info-label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 12px;
+        color: #64748b;
+    }
+
+    .info-value {
+        font-size: 14px;
         font-weight: 600;
-        text-decoration: none;
+        color: #111827;
+    }
+
+    .btn {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        justify-content: center;
+        gap: 5px;
+        padding: 9px 14px;
+        border-radius: 8px;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        border: 1px solid transparent;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-primary {
+        background: #2449a4;
+        color: #ffffff;
+        border-color: #2449a4;
+    }
+
+    .btn-primary:hover {
+        background: #1a3679;
+        color: #ffffff;
     }
 
     .btn-action-edit {
-        color: #2563eb;
-        background: #eff6ff;
-        border: 1px solid #bfdbfe;
-        padding: 5px 10px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 7px 11px;
+        border-radius: 8px;
+        background: #2449a4;
+        color: #ffffff;
+        border: 1px solid #2449a4;
         text-decoration: none;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .btn-action-edit:hover {
+        background: #1a3679;
+        color: #ffffff;
     }
 
     .btn-action-delete {
-        color: #dc2626;
-        background: #fef2f2;
-        border: 1px solid #fecaca;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 7px 11px;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-action-delete:hover {
+        background: #f8fafc;
+    }
+
+    .action-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .search-card {
+        margin-bottom: 20px;
+    }
+
+    .search-label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #475569;
+    }
+
+    .search-wrapper {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #ffffff;
+        overflow: hidden;
+    }
+
+    .search-icon {
+        padding: 10px 12px;
+        color: #64748b;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 10px 12px 10px 0;
+        border: 0;
+        outline: none;
+        font-family: 'Poppins', sans-serif;
+        font-size: 13px;
+        color: #1f2937;
+    }
+
+    .search-input:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .badge-blue {
+        display: inline-block;
+        background: #eff6ff;
+        color: #2449a4;
+        border: 1px solid #bfdbfe;
         padding: 5px 10px;
         border-radius: 6px;
         font-size: 12px;
         font-weight: 600;
-        cursor: pointer;
     }
 
-    .badge-blue {
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        min-width: 850px;
+        border-collapse: collapse;
+        margin: 0;
+    }
+
+    .table th,
+    .table td {
+        border: 1px solid #dbe3ef;
+        padding: 10px 12px;
+        vertical-align: middle;
+    }
+
+    .table th {
         background: #eff6ff;
-        color: #2563eb;
-        border: 1px solid #bfdbfe;
-        padding: 4px 10px;
-        border-radius: 6px;
+        color: #2449a4;
         font-size: 12px;
         font-weight: 600;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .table td {
+        font-size: 13px;
+        color: #1f2937;
+        background: #ffffff;
+    }
+
+    .table tbody tr:hover td {
+        background: #f8fafc;
+    }
+
+    .table .student-name {
+        font-weight: 600;
+        color: #111827;
+        white-space: nowrap;
+    }
+
+    .assessment-header {
+        line-height: 1.4;
+    }
+
+    .assessment-header-title {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .assessment-header-date {
+        display: block;
+        margin-top: 3px;
+        font-size: 11px;
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    .nilai {
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .empty-data {
+        padding: 50px 20px !important;
+        text-align: center;
+        color: #64748b;
+    }
+
+    .empty-data i {
+        font-size: 36px;
+    }
+
+    .empty-data h6 {
+        margin: 12px 0 6px;
+        font-size: 14px;
+        color: #334155;
+    }
+
+    .empty-data p {
+        margin: 0 0 16px;
+        font-size: 13px;
+    }
+
+    @media (max-width: 768px) {
+        .page-card {
+            padding: 18px;
+        }
+
+        .row {
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .d-flex {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .table {
+            min-width: 850px;
+        }
     }
 </style>
 @endpush
 
 @section('content')
 
-<div class="academic-container">
+@php
+    $siswa = $penilaian
+        ->filter(fn ($item) => $item->siswa)
+        ->groupBy('siswa_id')
+        ->map(fn ($items) => $items->first()->siswa)
+        ->values();
 
-    <a
-        href="{{ route('admin.penilaian.mapel.mapel', [
-            'kelasId' => $kelas->id,
-            'mapelId' => $mataPelajaran->id
-        ]) }}"
-        class="btn-back-link"
-    >
-        <i class="bi bi-arrow-left"></i>
-        Kembali ke Jenis Penilaian
-    </a>
+    $jenisPenilaian = $penilaian
+        ->groupBy(function ($item) {
+            return implode('|', [
+                $item->jenis_nilai,
+                $item->tanggal_penilaian,
+                $item->judul_tugas,
+                $item->penilaian_ke
+            ]);
+        })
+        ->map(fn ($items) => $items->first())
+        ->values();
+@endphp
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="page-wrap">
 
-        <div class="academic-header border-0 mb-0 pb-0">
-
-            <h1>Penilaian Harian</h1>
-
-            <p>
-                {{ $mataPelajaran->nama_mapel }}
-                —
-                {{ $kelas->tingkat }} {{ $kelas->nama_kelas }}
-
-                @if($kelas->jurusan)
-                    — {{ $kelas->jurusan->nama_jurusan }}
-                @endif
-            </p>
-
-        </div>
+    <div class="page-card">
 
         <a
-            href="{{ route('admin.penilaian.mapel.create', [
+            href="{{ route('admin.penilaian.mapel.mapel', [
                 'kelasId' => $kelas->id,
-                'mapelId' => $mataPelajaran->id,
-                'jenis_nilai' => 'harian'
+                'mapelId' => $mataPelajaran->id
             ]) }}"
-            class="btn-action-primary"
+            class="btn-back"
         >
-            <i class="bi bi-plus-lg"></i>
-            Tambah Penilaian
+            <i class="bi bi-arrow-left"></i>
+            Kembali ke Jenis Penilaian
         </a>
 
-    </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <div class="academic-card">
-        <label for="searchHarian" class="form-label fw-semibold text-secondary">
-            Cari Siswa
-        </label>
-        <div class="input-group">
-            <span class="input-group-text bg-white">
-                <i class="bi bi-search text-muted"></i>
-            </span>
-            <input
-                type="search"
-                id="searchHarian"
-                class="form-control"
-                placeholder="Nama, NIS, atau NISN"
-                autocomplete="off"
+            <div>
+
+                <h1 class="page-title">
+                    Penilaian Harian
+                </h1>
+
+                <p class="page-subtitle">
+                    {{ $mataPelajaran->nama_mapel }}
+                    —
+                    {{ $kelas->tingkat }}
+                    {{ $kelas->nama_kelas }}
+
+                    @if($kelas->jurusan)
+                        — {{ $kelas->jurusan->nama_jurusan }}
+                    @endif
+                </p>
+
+            </div>
+
+            <a
+                href="{{ route('admin.penilaian.mapel.create', [
+                    'kelasId' => $kelas->id,
+                    'mapelId' => $mataPelajaran->id,
+                    'jenis_nilai' => 'harian'
+                ]) }}"
+                class="btn btn-primary"
             >
+                + Tambah Penilaian
+            </a>
+
         </div>
-    </div>
 
-    <div class="academic-card p-0 overflow-hidden">
+        <div class="card mb-4">
 
-        <div class="p-4 border-bottom">
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-4">
+
+                        <span class="info-label">
+                            Mata Pelajaran
+                        </span>
+
+                        <div class="info-value">
+                            {{ $mataPelajaran->nama_mapel }}
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <span class="info-label">
+                            Kelas
+                        </span>
+
+                        <div class="info-value">
+                            {{ $kelas->tingkat }}
+                            {{ $kelas->jurusan?->kode_jurusan ?? '' }}
+                            {{ $kelas->nama_kelas }}
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <span class="info-label">
+                            Jenis Penilaian
+                        </span>
+
+                        <div class="info-value">
+                            Penilaian Harian
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card search-card">
+
+            <div class="card-body">
+
+                <label
+                    for="searchHarian"
+                    class="search-label"
+                >
+                    Cari Siswa
+                </label>
+
+                <div class="search-wrapper">
+
+                    <span class="search-icon">
+                        <i class="bi bi-search"></i>
+                    </span>
+
+                    <input
+                        type="search"
+                        id="searchHarian"
+                        class="search-input"
+                        placeholder="Nama, NIS, atau NISN"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h5 class="fw-bold mb-0">
+                Daftar Nilai Siswa
+            </h5>
 
             <span class="badge-blue">
                 Penilaian Harian
@@ -182,141 +534,203 @@
 
         </div>
 
-        <div class="table-responsive">
+        <div class="card">
 
-            <table class="table table-hover align-middle mb-0">
+            <div class="card-body p-0">
 
-                <thead class="bg-light">
+                <div class="table-responsive">
 
-                    <tr>
+                    <table class="table">
 
-                        <th class="ps-4">No</th>
-                        <th>NIS</th>
-                        <th>Siswa</th>
-                        <th>Nilai</th>
-                        <th>Tanggal</th>
-                        <th class="text-end pe-4">Aksi</th>
+                        <thead>
 
-                    </tr>
+                            <tr>
 
-                </thead>
+                                <th width="60">
+                                    NO
+                                </th>
 
-                <tbody id="harianTableBody">
+                                <th width="120">
+                                    NIS
+                                </th>
 
-                    @forelse($penilaian as $item)
+                                <th style="min-width: 220px; text-align: left;">
+                                    NAMA SISWA
+                                </th>
 
-                        <tr class="assessment-row" data-search="{{ strtolower(($item->siswa?->nama ?? '') . ' ' . ($item->siswa?->nis ?? '') . ' ' . ($item->siswa?->nisn ?? '')) }}">
+                                @foreach($jenisPenilaian as $jenis)
 
-                            <td class="ps-4">
-                                {{ $loop->iteration }}
-                            </td>
+                                    @php
+                                        $tanggalJenis = $jenis->tanggal_penilaian
+                                            ? \Carbon\Carbon::parse($jenis->tanggal_penilaian)->format('d-m-Y')
+                                            : '-';
 
-                            <td>
-                                {{ $item->siswa?->nis ?? '-' }}
-                            </td>
+                                        $judulJenis = $jenis->judul_tugas
+                                            ?: ucfirst($jenis->jenis_nilai ?? 'Penilaian')
+                                                . ' '
+                                                . ($jenis->penilaian_ke ?? '');
+                                    @endphp
 
-                            <td class="fw-semibold">
-                                {{ $item->siswa?->nama ?? '-' }}
-                            </td>
+                                    <th style="min-width: 150px;">
 
-                            <td>
-                                <strong>
-                                    {{ $item->nilai }}
-                                </strong>
-                            </td>
+                                        <div class="assessment-header">
 
-                            <td>
+                                            <span class="assessment-header-title">
+                                                {{ trim($judulJenis) }}
+                                            </span>
 
-                                {{
-                                    $item->tanggal_penilaian?->format('d/m/Y')
-                                    ?? $item->created_at?->format('d/m/Y')
-                                    ?? '-'
-                                }}
+                                            <span class="assessment-header-date">
+                                                {{ $tanggalJenis }}
+                                            </span>
 
-                            </td>
+                                        </div>
 
-                            <td class="text-end pe-4">
+                                    </th>
 
-                                <div class="d-inline-flex gap-2">
+                                @endforeach
 
-                                    <a
-                                        href="{{ route('admin.penilaian.mapel.edit', [
-                                            'kelasId' => $kelas->id,
-                                            'mapelId' => $mataPelajaran->id,
-                                            'id' => $item->id
-                                        ]) }}"
-                                        class="btn-action-edit"
-                                    >
-                                        <i class="bi bi-pencil"></i>
-                                        Edit
-                                    </a>
+                                <th width="170">
+                                    AKSI
+                                </th>
 
-                                    <form
-                                        action="{{ route('admin.penilaian.mapel.destroy', [
-                                            'kelasId' => $kelas->id,
-                                            'mapelId' => $mataPelajaran->id,
-                                            'id' => $item->id
-                                        ]) }}"
-                                        method="POST"
-                                    >
+                            </tr>
 
-                                        @csrf
-                                        @method('DELETE')
+                        </thead>
 
-                                        <button
-                                            type="submit"
-                                            class="btn-action-delete"
-                                            onclick="return confirm('Yakin ingin menghapus nilai ini?')"
-                                        >
-                                            <i class="bi bi-trash"></i>
-                                            Hapus
-                                        </button>
+                        <tbody id="harianTableBody">
 
-                                    </form>
+                            @forelse($siswa as $index => $item)
 
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    @empty
-
-                        <tr>
-
-                            <td colspan="6" class="text-center py-5">
-
-                                <i class="bi bi-clipboard-x fs-1 text-muted"></i>
-
-                                <h6 class="mt-3">
-                                    Belum ada penilaian harian
-                                </h6>
-
-                                <p class="text-muted small">
-                                    Belum ada data nilai harian.
-                                </p>
-
-                                <a
-                                    href="{{ route('admin.penilaian.mapel.create', [
-                                        'kelasId' => $kelas->id,
-                                        'mapelId' => $mataPelajaran->id,
-                                        'jenis_nilai' => 'harian'
-                                    ]) }}"
-                                    class="btn-action-primary"
+                                <tr
+                                    class="student-row"
+                                    data-search="{{ strtolower(
+                                        ($item->nama ?? '')
+                                        . ' '
+                                        . ($item->nis ?? '')
+                                        . ' '
+                                        . ($item->nisn ?? '')
+                                    ) }}"
                                 >
-                                    <i class="bi bi-plus-lg"></i>
-                                    Tambah Penilaian
-                                </a>
 
-                            </td>
+                                    <td class="text-center">
+                                        {{ $index + 1 }}
+                                    </td>
 
-                        </tr>
+                                    <td class="text-center">
+                                        {{ $item->nis ?? $item->nisn ?? '-' }}
+                                    </td>
 
-                    @endforelse
+                                    <td>
+                                        <span class="student-name">
+                                            {{ $item->nama ?? '-' }}
+                                        </span>
+                                    </td>
 
-                </tbody>
+                                    @foreach($jenisPenilaian as $jenis)
 
-            </table>
+                                        @php
+                                            $nilai = $penilaian
+                                                ->where('siswa_id', $item->id)
+                                                ->first(function ($data) use ($jenis) {
+                                                    return
+                                                        $data->jenis_nilai === $jenis->jenis_nilai &&
+                                                        $data->tanggal_penilaian == $jenis->tanggal_penilaian &&
+                                                        $data->judul_tugas === $jenis->judul_tugas &&
+                                                        $data->penilaian_ke == $jenis->penilaian_ke;
+                                                });
+                                        @endphp
+
+                                        <td class="nilai">
+                                            {{ $nilai->nilai ?? '-' }}
+                                        </td>
+
+                                    @endforeach
+
+                                    <td>
+
+                                        <div class="action-wrapper">
+
+                                            @foreach($jenisPenilaian as $jenis)
+
+                                                @php
+                                                    $nilaiItem = $penilaian
+                                                        ->where('siswa_id', $item->id)
+                                                        ->first(function ($data) use ($jenis) {
+                                                            return
+                                                                $data->jenis_nilai === $jenis->jenis_nilai &&
+                                                                $data->tanggal_penilaian == $jenis->tanggal_penilaian &&
+                                                                $data->judul_tugas === $jenis->judul_tugas &&
+                                                                $data->penilaian_ke == $jenis->penilaian_ke;
+                                                        });
+                                                @endphp
+
+                                                @if($nilaiItem)
+
+                                                    <a
+                                                        href="{{ route('admin.penilaian.mapel.edit', [
+                                                            'kelasId' => $kelas->id,
+                                                            'mapelId' => $mataPelajaran->id,
+                                                            'id' => $nilaiItem->id
+                                                        ]) }}"
+                                                        class="btn-action-edit"
+                                                        title="Edit {{ $jenis->judul_tugas ?: 'Penilaian' }}"
+                                                    >
+                                                        Edit
+                                                    </a>
+
+                                                @endif
+
+                                            @endforeach
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            @empty
+
+                                <tr>
+
+                                    <td
+                                        colspan="{{ 4 + $jenisPenilaian->count() }}"
+                                        class="empty-data"
+                                    >
+
+                                        <i class="bi bi-clipboard-x"></i>
+
+                                        <h6>
+                                            Belum ada penilaian harian
+                                        </h6>
+
+                                        <p>
+                                            Belum ada data nilai harian.
+                                        </p>
+
+                                        <a
+                                            href="{{ route('admin.penilaian.mapel.create', [
+                                                'kelasId' => $kelas->id,
+                                                'mapelId' => $mataPelajaran->id,
+                                                'jenis_nilai' => 'harian'
+                                            ]) }}"
+                                            class="btn btn-primary"
+                                        >
+                                            + Tambah Penilaian
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -329,32 +743,67 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
         const searchInput = document.getElementById('searchHarian');
         const tableBody = document.getElementById('harianTableBody');
 
-        if (!searchInput || !tableBody) return;
+        if (!searchInput || !tableBody) {
+            return;
+        }
 
         searchInput.addEventListener('input', function () {
+
             const keyword = searchInput.value.trim().toLowerCase();
-            const rows = tableBody.querySelectorAll('.assessment-row');
+
+            const rows = tableBody.querySelectorAll('.student-row');
+
             let visibleCount = 0;
 
             rows.forEach(function (row) {
-                const matches = !keyword || (row.dataset.search || '').includes(keyword);
+
+                const searchText = row.dataset.search || '';
+
+                const matches =
+                    !keyword ||
+                    searchText.includes(keyword);
+
                 row.style.display = matches ? '' : 'none';
-                if (matches) visibleCount++;
+
+                if (matches) {
+                    visibleCount++;
+                }
+
             });
 
-            const oldEmpty = tableBody.querySelector('.live-search-empty');
-            if (oldEmpty) oldEmpty.remove();
+            const oldEmpty =
+                tableBody.querySelector('.live-search-empty');
+
+            if (oldEmpty) {
+                oldEmpty.remove();
+            }
 
             if (rows.length > 0 && visibleCount === 0) {
+
                 const emptyRow = document.createElement('tr');
+
                 emptyRow.className = 'live-search-empty';
-                emptyRow.innerHTML = '<td colspan="6" class="text-center py-5"><i class="bi bi-search fs-1 text-muted"></i><h6 class="mt-3">Siswa tidak ditemukan</h6><p class="text-muted small mb-0">Coba kata kunci lain.</p></td>';
+
+                emptyRow.innerHTML = `
+                    <td
+                        colspan="${tableBody.closest('table').querySelectorAll('thead th').length}"
+                        class="empty-data"
+                    >
+                        <i class="bi bi-search"></i>
+                        <h6>Siswa tidak ditemukan</h6>
+                        <p>Coba kata kunci lain.</p>
+                    </td>
+                `;
+
                 tableBody.appendChild(emptyRow);
             }
+
         });
+
     });
 </script>
 @endpush

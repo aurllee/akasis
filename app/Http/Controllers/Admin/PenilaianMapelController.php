@@ -324,6 +324,9 @@ public function ujian(Request $request, $kelasId, $mapelId)
             'jenis_nilai' =>
             'required|in:harian,ujian',
 
+            'judul_tugas' =>
+            'required|string|max:255',
+
             'tanggal_penilaian' =>
             'required|date',
 
@@ -343,6 +346,9 @@ public function ujian(Request $request, $kelasId, $mapelId)
 
             'jenis_nilai' =>
             $request->jenis_nilai,
+
+            'judul_tugas' =>
+            $request->judul_tugas,
 
             'tanggal_penilaian' =>
             $request->tanggal_penilaian,
@@ -449,6 +455,9 @@ public function ujian(Request $request, $kelasId, $mapelId)
             'jenis_nilai' =>
             'required|in:harian,ujian',
 
+            'judul_tugas' =>
+            'required|string|max:255',
+
             'tanggal_penilaian' =>
             'required|date',
 
@@ -468,6 +477,9 @@ public function ujian(Request $request, $kelasId, $mapelId)
 
             'jenis_nilai' =>
             $request->jenis_nilai,
+
+            'judul_tugas' =>
+            $request->judul_tugas,
 
             'tanggal_penilaian' =>
             $request->tanggal_penilaian,

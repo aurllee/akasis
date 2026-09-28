@@ -4,29 +4,34 @@
 
 @push('styles')
 <style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        color: #1f2937;
+        background: #f4f7fb;
+    }
+
     .nilai-page .page-wrap {
         width: 100%;
     }
 
     .nilai-page .page-card {
-        padding: 24px;
         background: #ffffff;
         border: 1px solid #e5e7eb;
         border-radius: 12px;
         box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+        padding: 24px;
     }
 
     .nilai-page .page-header {
         display: flex;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
         gap: 16px;
         margin-bottom: 24px;
     }
 
     .nilai-page .page-header h1 {
         margin: 0 0 6px;
-        color: #1e293b;
         font-size: 25px;
         font-weight: 500;
     }
@@ -35,6 +40,14 @@
         margin: 0;
         color: #64748b;
         font-size: 14px;
+    }
+
+    .nilai-page .form-control,
+    .nilai-page .form-select {
+        box-sizing: border-box;
+        padding: 8px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
     }
 
     .nilai-page .table th {
@@ -52,10 +65,37 @@
         max-width: 180px;
     }
 
+    .nilai-page .btn {
+        display: inline-block;
+        padding: 9px 14px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        border: 1px solid transparent;
+        cursor: pointer;
+        font-size: 13px;
+    }
+
+    .nilai-page .btn-primary {
+        background: #2449a4;
+        color: #ffffff;
+    }
+
+    .nilai-page .btn-secondary {
+        background: #64748b;
+        color: #ffffff;
+    }
+
+    .nilai-page .btn-outline-secondary {
+        border-color: #cbd5e1;
+        color: #475569;
+        background: #ffffff;
+    }
+
     @media (max-width: 768px) {
         .nilai-page .page-header {
-            align-items: flex-start;
             flex-direction: column;
+            align-items: flex-start;
         }
     }
 </style>

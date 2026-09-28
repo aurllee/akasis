@@ -193,6 +193,7 @@
                         <th class="ps-4">No</th>
                         <th>NIS</th>
                         <th>Siswa</th>
+                        <th>Judul Tugas</th>
                         <th>Nilai</th>
                         <th>Tanggal</th>
                         <th class="text-end pe-4">Aksi</th>
@@ -217,6 +218,10 @@
 
                             <td class="fw-semibold">
                                 {{ $item->siswa?->nama ?? '-' }}
+                            </td>
+
+                            <td>
+                                {{ $item->judul_tugas ?: 'Ujian' }}
                             </td>
 
                             <td>

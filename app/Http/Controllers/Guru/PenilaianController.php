@@ -74,6 +74,7 @@ class PenilaianController extends Controller
 
         $request->validate([
             'jenis_nilai' => 'required|in:harian,ujian',
+            'judul_tugas' => 'required|string|max:255',
             'nilai' => 'required|array',
             'nilai.*' => 'nullable|numeric|min:0|max:100',
             'tanggal_penilaian' => 'required|date',
@@ -89,6 +90,7 @@ class PenilaianController extends Controller
                 'jadwal_pelajaran_id' => $jadwal->id,
                 'siswa_id' => $siswaId,
                 'jenis_nilai' => $request->jenis_nilai,
+                'judul_tugas' => $request->judul_tugas,
                 'tanggal_penilaian' => $request->tanggal_penilaian,
                 'nilai' => $nilai,
             ]);
@@ -151,8 +153,9 @@ class PenilaianController extends Controller
             ->sortBy([
                 ['jenis_nilai', 'asc'],
                 ['tanggal_penilaian', 'asc'],
+                ['judul_tugas', 'asc'],
             ])
-            ->unique(fn($item) => $item->jenis_nilai . '|' . $item->tanggal_penilaian)
+            ->unique(fn($item) => $item->jenis_nilai . '|' . $item->tanggal_penilaian . '|' . ($item->judul_tugas ?? ''))
             ->map(function ($item) use (&$counterJenis) {
                 $counterJenis[$item->jenis_nilai] = ($counterJenis[$item->jenis_nilai] ?? 0) + 1;
 
@@ -160,6 +163,7 @@ class PenilaianController extends Controller
                     'id' => $item->id,
                     'jenis_nilai' => $item->jenis_nilai,
                     'tanggal_penilaian' => $item->tanggal_penilaian,
+                    'judul_tugas' => $item->judul_tugas,
                     'penilaian_ke' => $counterJenis[$item->jenis_nilai],
                     'nama_penilaian' => ucfirst($item->jenis_nilai) . ' ' . $counterJenis[$item->jenis_nilai],
                 ];
