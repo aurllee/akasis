@@ -44,10 +44,6 @@ class PerizinanController extends Controller
             ],
         ];
 
-        // =========================
-        // VALIDASI BERDASARKAN JENIS
-        // =========================
-
         $requiresWaliKelas = in_array($jenis, ['sakit', 'izin'], true);
 
         if ($requiresWaliKelas) {
@@ -87,11 +83,6 @@ class PerizinanController extends Controller
 
         $siswa = Auth::user()->siswa;
 
-        // =========================
-        // CARI WALI KELAS
-        // KHUSUS IZIN SAKIT
-        // =========================
-
         $walikelasId = null;
 
         if ($requiresWaliKelas) {
@@ -112,16 +103,8 @@ class PerizinanController extends Controller
             }
         }
 
-        // =========================
-        // SIMPAN DOKUMEN
-        // =========================
-
         $dokumen = $request->file('dokumen')
             ->store('dokumen-' . $jenis, 'public');
-
-        // =========================
-        // SIMPAN PERIZINAN
-        // =========================
 
         Perizinan::create([
             'siswa_id' => $siswa->id,
@@ -143,7 +126,6 @@ class PerizinanController extends Controller
             'alasan' => $request->alasan,
             'dokumen' => $dokumen,
 
-            // Khusus sakit
             'walikelas_id' => $walikelasId,
             'status_walikelas' => $requiresWaliKelas
                 ? 'menunggu'
@@ -151,10 +133,6 @@ class PerizinanController extends Controller
 
             'waktu_verifikasi_walikelas' => null,
             'catatan_walikelas' => null,
-
-            // Sakit menunggu wali kelas.
-            // Keluar & pulang langsung disetujui
-            // karena dokumen sudah bertanda tangan offline.
             'status' => $requiresWaliKelas
                 ? 'menunggu'
                 : 'disetujui',
@@ -165,9 +143,6 @@ class PerizinanController extends Controller
             ->with('success', 'Pengajuan perizinan berhasil dikirim.');
     }
 
-    /**
-     * Menampilkan form edit.
-     */
     public function edit($id)
     {
         $siswa = Auth::user()->siswa;
@@ -176,9 +151,6 @@ class PerizinanController extends Controller
             ->where('siswa_id', $siswa->id)
             ->firstOrFail();
 
-        // Sakit hanya bisa diedit selama masih menunggu.
-        // Keluar dan pulang langsung disetujui,
-        // sehingga tidak boleh diubah setelah dikirim.
         if (
             !in_array($perizinan->jenis, ['sakit', 'izin'], true) ||
             $perizinan->status !== 'menunggu'
@@ -190,10 +162,6 @@ class PerizinanController extends Controller
 
         return view('siswa.perizinan.create', compact('perizinan'));
     }
-
-    /**
-     * Memperbarui pengajuan sakit.
-     */
     public function update(Request $request, $id)
     {
         $siswa = Auth::user()->siswa;
@@ -201,9 +169,6 @@ class PerizinanController extends Controller
         $perizinan = Perizinan::where('id', $id)
             ->where('siswa_id', $siswa->id)
             ->firstOrFail();
-
-        // Hanya izin sakit yang masih menunggu
-        // yang boleh diedit.
         if (
             $perizinan->jenis !== 'sakit' ||
             $perizinan->status !== 'menunggu'
@@ -229,14 +194,10 @@ class PerizinanController extends Controller
             'tanggal' => $request->tanggal,
             'alasan' => $request->alasan,
         ];
-
-        // Kalau upload dokumen baru
         if ($request->hasFile('dokumen')) {
 
             $dokumenBaru = $request->file('dokumen')
                 ->store('dokumen-sakit', 'public');
-
-            // Hapus dokumen lama
             if ($perizinan->dokumen) {
                 Storage::disk('public')->delete($perizinan->dokumen);
             }
@@ -251,9 +212,6 @@ class PerizinanController extends Controller
             ->with('success', 'Perizinan berhasil diperbarui.');
     }
 
-    /**
-     * Menghapus pengajuan.
-     */
     public function destroy($id)
     {
         $siswa = Auth::user()->siswa;
@@ -261,9 +219,6 @@ class PerizinanController extends Controller
         $perizinan = Perizinan::where('id', $id)
             ->where('siswa_id', $siswa->id)
             ->firstOrFail();
-
-        // Hanya sakit yang masih menunggu
-        // yang boleh dihapus.
         if (
             !in_array($perizinan->jenis, ['sakit', 'izin'], true) ||
             $perizinan->status !== 'menunggu'
@@ -272,8 +227,6 @@ class PerizinanController extends Controller
                 ->route('siswa.perizinan.index')
                 ->with('error', 'Perizinan ini sudah tidak dapat dihapus.');
         }
-
-        // Hapus file dokumen
         if ($perizinan->dokumen) {
             Storage::disk('public')->delete($perizinan->dokumen);
         }

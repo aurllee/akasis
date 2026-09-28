@@ -386,8 +386,6 @@
 
     <div class="academic-page">
         <div class="academic-panel">
-
-            <!-- Header Card (Di Luar Tabel) -->
             <div class="academic-header">
                 <div class="academic-header-title">
                     <h1>Jadwal Pelajaran</h1>

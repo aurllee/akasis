@@ -391,46 +391,6 @@
                 <p>Daftar siswa berdasarkan kelas yang telah ditentukan.</p>
             </div>
 
-            @if (session('success'))
-                <div class="success" role="status">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if (session('warning'))
-                <div class="import-error" role="status">
-                    {{ session('warning') }}
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="error" role="alert">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            @if ($errors->any())
-                <div class="error" role="alert">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            @if (session('gagal_import'))
-                <div class="import-error">
-                    <strong>Data yang tidak berhasil diimport:</strong>
-
-                    <ul>
-                        @foreach (session('gagal_import') as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <div class="import-box">
 
                 <h3>Import Pembagian Kelas</h3>

@@ -38,6 +38,7 @@ class PembagianKelasController extends Controller
     public function create()
     {
         $siswa = CalonSiswa::notAssignedToClass()
+            ->with('jurusan')
             ->orderBy('nama_lengkap')
             ->get();
 

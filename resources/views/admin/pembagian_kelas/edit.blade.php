@@ -209,7 +209,7 @@
 
                 <div class="academic-actions">
                     <button class="academic-save" type="submit">Simpan Perubahan</button>
-                    <a class="academic-back" href="{{ route('pembagian_kelas.index') }}">Kembali</a>
+                    <a class="btn btn-secondary" href="{{ route('pembagian_kelas.index') }}">Kembali</a>
                 </div>
             </form>
         </div>

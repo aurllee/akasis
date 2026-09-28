@@ -176,8 +176,7 @@
 
     <div class="login-page">
         <div class="login-card">
-            
-            <!-- Sisi Kiri: Teks Papan Selamat Datang -->
+        
             <div class="login-left">
                 <div class="login-left-content">
                     <h1>Sistem Akademik</h1>
@@ -185,7 +184,6 @@
                 </div>
             </div>
 
-            <!-- Sisi Kanan: Form Login -->
             <div class="login-right">
                 <h2>Login</h2>
 
