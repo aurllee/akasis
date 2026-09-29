@@ -31,7 +31,10 @@ class PenilaianPjblController extends Controller
         ])
             ->where('guru_id', $guru->id)
             ->whereHas('pjbl', function ($query) {
-                $query->whereDate('tanggal', now()->toDateString());
+                $query->where(function ($query) {
+                    $query->whereNotNull('mulai_penilaian')
+                        ->orWhereNotNull('batas_penilaian');
+                })->orWhereDate('tanggal', now()->toDateString());
             })
             ->get()
             ->filter(function ($penguji) {

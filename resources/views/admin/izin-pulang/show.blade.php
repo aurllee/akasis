@@ -316,23 +316,25 @@
 
         <div class="data-card-body">
 
-            <table class="detail-table">
+            $jenisText = match ($jenisValue) {
+                'sakit' => 'Sakit',
+                'izin' => 'Izin',
+                'pulang' => 'Izin Pulang',
+                'keluar' => 'Izin Keluar',
+                'dispen' => 'Dispen',
+                default => ucfirst($jenisValue ?: '-'),
+            };
 
-                <tr>
-                    <th>Nama Siswa</th>
-                    <td>
-                        <span class="student-name">
-                            {{ $izinPulang->siswa->nama ?? '-' }}
-                        </span>
-                    </td>
-                </tr>
+            $jenisClass = match ($jenisValue) {
+                'sakit' => 'type-sakit',
+                'izin' => 'type-izin',
+                'pulang' => 'type-pulang',
+                'keluar' => 'type-keluar',
+                'dispen' => 'type-dispen',
+                default => '',
+            };
 
-                <tr>
-                    <th>NIS</th>
-                    <td>
-                        {{ $izinPulang->siswa->nis ?? '-' }}
-                    </td>
-                </tr>
+            $statusValue = $izinPulang->status ?? 'menunggu';
 
                 <tr>
                     <th>Jenis</th>
@@ -392,9 +394,10 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <th>Dokumen</th>
-                    <td>
+            <div class="data-card-header">
+                <div class="data-card-icon">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
 
                         @if ($izinPulang->dokumen)
 
@@ -403,22 +406,65 @@
                             Lihat Surat
                         </a>
 
-                        @else
+                <table class="detail-table">
 
                         <span class="no-document">
                             Tidak ada dokumen
                         </span>
 
-                        @endif
+                    <tr>
+                        <th>NIS</th>
+                        <td>
+                            {{ $izinPulang->siswa->nis ?? '-' }}
+                        </td>
+                    </tr>
 
-                    </td>
-                </tr>
+                    <tr>
+                        <th>Jenis</th>
+                        <td>
+                            <span class="type-badge {{ $jenisClass }}">
+                                {{ $jenisText }}
+                            </span>
+                        </td>
+                    </tr>
 
-            </table>
+                    <tr>
+                        <th>Tanggal</th>
+                        <td>
+                            {{ $izinPulang->tanggal?->format('d-m-Y') ?? '-' }}
+                            @if ($izinPulang->tanggal_selesai ?? null)
+                                @if ($izinPulang->tanggal_selesai->format('Y-m-d') !== $izinPulang->tanggal?->format('Y-m-d'))
+                                    - {{ $izinPulang->tanggal_selesai->format('d-m-Y') }}
+                                @endif
+                            @endif
+                        </td>
+                    </tr>
 
-        </div>
+                    <tr>
+                        <th>Jam</th>
+                        <td>
+                            @if (in_array($jenisValue, ['sakit', 'izin', 'dispen'], true))
+                                <span class="text-muted">-</span>
+                            @else
+                                                {{ $izinPulang->jam_mulai
+                                ? \Carbon\Carbon::parse($izinPulang->jam_mulai)->format('H:i')
+                                : '-' }}
+                                                <span class="text-muted mx-1">-</span>
+                                                @if ($izinPulang->jam_selesai)
+                                                    {{ \Carbon\Carbon::parse($izinPulang->jam_selesai)->format('H:i') }}
+                                                @else
+                                                    <span class="text-muted">pulang</span>
+                                                @endif
+                            @endif
+                        </td>
+                    </tr>
 
-    </div>
+                    <tr>
+                        <th>Alasan</th>
+                        <td>
+                            {{ $izinPulang->alasan ?? '-' }}
+                        </td>
+                    </tr>
 
     <div class="data-card">
 
@@ -455,7 +501,5 @@
         </div>
 
     </div>
-
-</div>
 
 @endsection
