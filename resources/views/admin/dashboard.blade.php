@@ -186,6 +186,12 @@
                                             Sakit
                                         </span>
 
+                                    @elseif($item->jenis === 'Izin')
+
+                                        <span class="type-badge keluar-badge">
+                                            Izin
+                                        </span>
+
                                     @elseif($item->jenis === 'Izin Keluar')
 
                                         <span class="type-badge keluar-badge">

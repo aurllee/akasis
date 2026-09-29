@@ -39,11 +39,37 @@ class SesiAbsensiController extends Controller
             'jamPelajaran',
         ])
             ->where('guru_id', $guru->id)
+            ->orderBy('id')
             ->get()
             ->unique(function ($item) {
                 return $item->kelas_id . '-' . $item->mata_pelajaran_id;
             })
             ->values();
+
+        $jadwalKelas = Jadwal_pelajaran::with('jamPelajaran:id,jp')
+            ->whereIn('kelas_id', $jadwal->pluck('kelas_id')->unique())
+            ->orderBy('id')
+            ->get(['id', 'kelas_id', 'hari', 'jumlah_jp', 'jam_pelajaran_id']);
+
+        $jpBerikutnya = [];
+        $rentangJp = [];
+
+        foreach ($jadwalKelas as $item) {
+            $key = $item->kelas_id . '-' . strtolower($item->hari);
+            $jpMulai = (int) ($item->jamPelajaran?->jp ?? $jpBerikutnya[$key] ?? 1);
+            $jpSelesai = $jpMulai + max((int) ($item->jumlah_jp ?? 1), 1) - 1;
+
+            $rentangJp[$item->id] = [
+                'mulai' => $jpMulai,
+                'selesai' => $jpSelesai,
+            ];
+            $jpBerikutnya[$key] = $jpSelesai + 1;
+        }
+
+        $jadwal->each(function ($item) use ($rentangJp) {
+            $item->jp_mulai = $rentangJp[$item->id]['mulai'] ?? null;
+            $item->jp_selesai = $rentangJp[$item->id]['selesai'] ?? null;
+        });
 
         return view('guru.absen.index', compact('jadwal'));
     }

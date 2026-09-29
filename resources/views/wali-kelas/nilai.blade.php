@@ -15,6 +15,33 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
 
+    .rekap-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        padding: 9px 14px;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        background: #eff6ff;
+        color: #2449a4;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .rekap-back:hover {
+        background: #dbeafe;
+        border-color: #93c5fd;
+        color: #1e40af;
+    }
+
+    .rekap-back:focus-visible {
+        outline: 3px solid rgba(37, 99, 235, 0.25);
+        outline-offset: 2px;
+    }
+
     .rekap-title {
         font-size: 24px;
         font-weight: 600;
@@ -62,7 +89,10 @@
 @endpush
 
 @section('content')
-<a href="{{ url()->previous() }}">Kembali</a>
+<a href="{{ url()->previous() }}" class="rekap-back">
+    <i class="bi bi-arrow-left" aria-hidden="true"></i>
+    <span>Kembali</span>
+</a>
 <div class="rekap-container">
     <h1 class="rekap-title">Rekap Nilai</h1>
     <p class="siswa-info">Siswa: <strong>{{ $siswa->nama }}</strong></p>

@@ -8,9 +8,7 @@ use App\Models\Guru;
 use App\Models\Kelas;
 use App\Models\MataPelajaran;
 use App\Models\Absensi;
-use App\Models\Sakit;
-use App\Models\IzinKeluar;
-use App\Models\IzinPulang;
+use App\Models\Perizinan;
 use App\Models\Dispen;
 use App\Models\TahunAjaran;
 use Illuminate\Support\Carbon;
@@ -56,13 +54,34 @@ class DashboardController extends Controller
             ->count();
 
 
-        $absensiIzin = Absensi::whereDate('tanggal', $hariIni)
+        $absensiIzinIds = Absensi::whereDate('tanggal', $hariIni)
             ->where('status', 'izin')
+            ->pluck('siswa_id');
+
+
+        $pengajuanIzinIds = Perizinan::whereDate('tanggal', $hariIni)
+            ->whereIn('jenis', ['izin', 'keluar', 'pulang', 'izin_keluar', 'izin_pulang'])
+            ->where('status', 'disetujui')
+            ->pluck('siswa_id');
+
+        $absensiIzin = $absensiIzinIds
+            ->merge($pengajuanIzinIds)
+            ->unique()
             ->count();
 
 
-        $absensiSakit = Absensi::whereDate('tanggal', $hariIni)
+        $absensiSakitIds = Absensi::whereDate('tanggal', $hariIni)
             ->where('status', 'sakit')
+            ->pluck('siswa_id');
+
+        $pengajuanSakitIds = Perizinan::whereDate('tanggal', $hariIni)
+            ->where('jenis', 'sakit')
+            ->where('status', 'disetujui')
+            ->pluck('siswa_id');
+
+        $absensiSakit = $absensiSakitIds
+            ->merge($pengajuanSakitIds)
+            ->unique()
             ->count();
 
 
@@ -72,11 +91,11 @@ class DashboardController extends Controller
 
 
 
-        $totalPengajuanSakit = Sakit::count();
+        $totalPengajuanSakit = Perizinan::where('jenis', 'sakit')->count();
 
-        $totalIzinKeluar = IzinKeluar::count();
+        $totalIzinKeluar = Perizinan::where('jenis', 'izin_keluar')->count();
 
-        $totalIzinPulang = IzinPulang::count();
+        $totalIzinPulang = Perizinan::where('jenis', 'izin_pulang')->count();
 
         $totalDispen = Dispen::count();
 
@@ -94,7 +113,8 @@ class DashboardController extends Controller
         )->count();
 
 
-        $pengajuanSakit = Sakit::with('siswa')
+        $pengajuanSakit = Perizinan::where('jenis', 'sakit')
+            ->with('siswa')
             ->latest('created_at')
             ->take(5)
             ->get()
@@ -109,13 +129,14 @@ class DashboardController extends Controller
             });
 
 
-        $pengajuanIzinKeluar = IzinKeluar::with('siswa')
+        $pengajuanIzinKeluar = Perizinan::whereIn('jenis', ['izin', 'keluar', 'izin_keluar'])
+            ->with('siswa')
             ->latest('created_at')
             ->take(5)
             ->get()
             ->map(function ($item) {
                 return (object) [
-                    'jenis' => 'Izin Keluar',
+                    'jenis' => $item->jenis === 'izin' ? 'Izin' : 'Izin Keluar',
                     'siswa' => $item->siswa->nama ?? '-',
                     'tanggal' => $item->tanggal,
                     'status' => $item->status ?? 'menunggu',
@@ -124,7 +145,8 @@ class DashboardController extends Controller
             });
 
 
-        $pengajuanIzinPulang = IzinPulang::with('siswa')
+        $pengajuanIzinPulang = Perizinan::whereIn('jenis', ['pulang', 'izin_pulang'])
+            ->with('siswa')
             ->latest('created_at')
             ->take(5)
             ->get()
