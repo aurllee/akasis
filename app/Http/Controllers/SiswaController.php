@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 
 class SiswaController extends Controller
 {
-    
     public function index()
     {
         $siswas = Siswa::latest('id')->paginate(5);
@@ -16,13 +15,11 @@ class SiswaController extends Controller
         return view('admin.master-data.siswa.index', compact('siswas'));
     }
 
-    
     public function create()
     {
         return view('admin.master-data.siswa.create');
     }
 
-    
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -34,27 +31,25 @@ class SiswaController extends Controller
             'tanggal_lahir' => 'required|date',
             'agama' => 'required|in:Islam,Kristen,Katolik,Budha,Hindu,Konghucu',
             'nik' => 'nullable|max:20',
-            'nama_orang_tua' => 'required|max:255',
             'no_kk' => 'nullable|max:20',
+            'nama_orang_tua' => 'required|max:255',
             'alamat' => 'required',
             'no_hp' => 'nullable|max:20',
             'email' => 'nullable|email|max:255',
-            'nama_orang_tua' => 'required|max:255',
-            'password' => Hash::make($request->nis),
         ]);
+
+        $data['password'] = Hash::make($request->nis);
 
         Siswa::create($data);
 
-        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil ditambahkan.');
+        return redirect()->route('siswa.index')
+            ->with('success', 'Data siswa berhasil ditambahkan.');
     }
 
-    
     public function show(string $id)
     {
-        
     }
 
-    
     public function edit(string $id)
     {
         $siswa = Siswa::findOrFail($id);
@@ -62,7 +57,6 @@ class SiswaController extends Controller
         return view('admin.master-data.siswa.edit', compact('siswa'));
     }
 
-    
     public function update(Request $request, string $id)
     {
         $data = $request->validate([
@@ -79,19 +73,19 @@ class SiswaController extends Controller
             'alamat' => 'required',
             'no_hp' => 'nullable|max:20',
             'email' => 'nullable|email|max:255',
-            'nama_orang_tua' => 'required|max:255',
         ]);
 
         Siswa::findOrFail($id)->update($data);
 
-        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil diperbarui.');
+        return redirect()->route('siswa.index')
+            ->with('success', 'Data siswa berhasil diperbarui.');
     }
 
-    
     public function destroy(string $id)
     {
         Siswa::findOrFail($id)->delete();
 
-        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil dihapus.');
+        return redirect()->route('siswa.index')
+            ->with('success', 'Data siswa berhasil dihapus.');
     }
 }

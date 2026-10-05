@@ -50,100 +50,90 @@ class PenilaianMapelController extends Controller
 
 
     public function mapel($kelasId, $mapelId)
-{
-    $kelas = Kelas::with('jurusan')->findOrFail($kelasId);
+    {
+        $kelas = Kelas::with('jurusan')->findOrFail($kelasId);
 
-    $mataPelajaran = MataPelajaran::findOrFail($mapelId);
+        $mataPelajaran = MataPelajaran::findOrFail($mapelId);
 
-    return view('admin.penilaian.mapel.mapel', compact(
-        'kelas',
-        'mataPelajaran'
-    ));
-}
-
-public function harian(Request $request, $kelasId, $mapelId)
-{
-    $kelas = Kelas::with('jurusan')->findOrFail($kelasId);
-
-    $mataPelajaran = MataPelajaran::findOrFail($mapelId);
-
-    $query = PenilaianMapel::with('siswa')
-        ->whereHas('jadwal', function ($query) use ($kelasId, $mapelId) {
-            $query->where('kelas_id', $kelasId)
-                ->where('mata_pelajaran_id', $mapelId);
-        })
-        ->where('jenis_nilai', 'harian');
-
-    if ($request->filled('search')) {
-        $search = $request->search;
-
-        $query->whereHas('siswa', function ($q) use ($search) {
-            $q->where('nama', 'like', '%' . $search . '%')
-                ->orWhere('nis', 'like', '%' . $search . '%')
-                ->orWhere('nisn', 'like', '%' . $search . '%');
-        });
+        return view('admin.penilaian.mapel.mapel', compact(
+            'kelas',
+            'mataPelajaran'
+        ));
     }
 
-    if ($request->filled('tanggal')) {
-        $query->whereDate(
-            'tanggal_penilaian',
-            $request->tanggal
-        );
+    public function harian(Request $request, $kelasId, $mapelId)
+    {
+        return $this->showScoresForType($request, $kelasId, $mapelId, 'harian');
     }
 
-    $penilaian = $query
-        ->latest('tanggal_penilaian')
-        ->latest('id')
-        ->get();
-
-    return view('admin.penilaian.mapel.harian', compact(
-        'kelas',
-        'mataPelajaran',
-        'penilaian'
-    ));
-}
-
-public function ujian(Request $request, $kelasId, $mapelId)
-{
-    $kelas = Kelas::with('jurusan')->findOrFail($kelasId);
-
-    $mataPelajaran = MataPelajaran::findOrFail($mapelId);
-
-    $query = PenilaianMapel::with('siswa')
-        ->whereHas('jadwal', function ($query) use ($kelasId, $mapelId) {
-            $query->where('kelas_id', $kelasId)
-                ->where('mata_pelajaran_id', $mapelId);
-        })
-        ->where('jenis_nilai', 'ujian');
-
-    if ($request->filled('search')) {
-        $search = $request->search;
-
-        $query->whereHas('siswa', function ($q) use ($search) {
-            $q->where('nama', 'like', '%' . $search . '%')
-                ->orWhere('nis', 'like', '%' . $search . '%')
-                ->orWhere('nisn', 'like', '%' . $search . '%');
-        });
+    public function ujian(Request $request, $kelasId, $mapelId)
+    {
+        return $this->showScoresForType($request, $kelasId, $mapelId, 'ujian');
     }
 
-    if ($request->filled('tanggal')) {
-        $query->whereDate(
-            'tanggal_penilaian',
-            $request->tanggal
-        );
+    private function showScoresForType(Request $request, $kelasId, $mapelId, string $jenis)
+    {
+        $kelas = Kelas::with(['jurusan', 'siswaKelas.siswa'])
+            ->findOrFail($kelasId);
+
+        $mataPelajaran = MataPelajaran::findOrFail($mapelId);
+
+        $siswa = $kelas->siswaKelas
+            ->pluck('siswa')
+            ->filter()
+            ->unique('id')
+            ->sortBy('nama')
+            ->values();
+
+        $query = PenilaianMapel::with('siswa')
+            ->whereHas('jadwal', function ($query) use ($kelasId, $mapelId) {
+                $query->where('kelas_id', $kelasId)
+                    ->where('mata_pelajaran_id', $mapelId);
+            })
+            ->where('jenis_nilai', $jenis);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->whereHas('siswa', function ($query) use ($search) {
+                $query->where('nama', 'like', '%' . $search . '%')
+                    ->orWhere('nis', 'like', '%' . $search . '%')
+                    ->orWhere('nisn', 'like', '%' . $search . '%');
+            });
+        }
+
+        if ($request->filled('tanggal')) {
+            $query->whereDate('tanggal_penilaian', $request->tanggal);
+        }
+
+        $penilaian = $query
+            ->orderBy('tanggal_penilaian')
+            ->orderBy('id')
+            ->get();
+
+        $jenisPenilaian = $penilaian
+            ->groupBy(fn($item) => ($item->tanggal_penilaian?->format('Y-m-d') ?? 'tanpa-tanggal-' . $item->id) . '|' . ($item->judul_tugas ?? ''))
+            ->sortKeys()
+            ->values()
+            ->map(function ($records, $index) use ($jenis) {
+                $first = $records->first();
+
+                return (object) [
+                    'jenis_nilai' => $jenis,
+                    'tanggal_penilaian' => $first->tanggal_penilaian,
+                    'judul_tugas' => $first->judul_tugas,
+                    'penilaian_ke' => $index + 1,
+                    'records' => $records,
+                ];
+            });
+
+        return view('admin.penilaian.mapel.' . $jenis, compact(
+            'kelas',
+            'mataPelajaran',
+            'siswa',
+            'jenisPenilaian'
+        ));
     }
-
-    $penilaian = $query
-        ->latest('tanggal_penilaian')
-        ->latest('id')
-        ->get();
-
-    return view('admin.penilaian.mapel.ujian', compact(
-        'kelas',
-        'mataPelajaran',
-        'penilaian'
-    ));
-}
 
 
     public function nilai(Request $request, $kelasId, $mapelId)
@@ -325,7 +315,9 @@ public function ujian(Request $request, $kelasId, $mapelId)
             'required|in:harian,ujian',
 
             'judul_tugas' =>
+
             'required|string|max:255',
+
 
             'tanggal_penilaian' =>
             'required|date',
@@ -456,7 +448,7 @@ public function ujian(Request $request, $kelasId, $mapelId)
             'required|in:harian,ujian',
 
             'judul_tugas' =>
-            'required|string|max:255',
+             'nullable|string|max:255',
 
             'tanggal_penilaian' =>
             'required|date',

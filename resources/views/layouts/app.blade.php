@@ -15,17 +15,17 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
 
-    
+
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
 
 
-    
-    
-    
+
+
+
 
     <style>
         * {
@@ -53,9 +53,9 @@
         }
 
 
-        
-        
-        
+
+
+
 
         .wrapper {
 
@@ -66,9 +66,9 @@
         }
 
 
-        
-        
-        
+
+
+
 
         .main {
 
@@ -81,9 +81,9 @@
         }
 
 
-        
-        
-        
+
+
+
 
         .navbar {
 
@@ -124,9 +124,9 @@
         }
 
 
-        
-        
-        
+
+
+
 
         .content {
 
@@ -135,9 +135,9 @@
         }
 
 
-        
-        
-        
+
+
+
 
         .page-header {
 
@@ -164,9 +164,9 @@
         }
 
 
-        
-        
-        
+
+
+
 
         .card {
 
@@ -175,9 +175,9 @@
         }
 
 
-        
-        
-        
+
+
+
 
         .table-wrapper {
 
@@ -218,9 +218,9 @@
         }
 
 
-        
-        
-        
+
+
+
 
         .btn {
 
@@ -229,9 +229,9 @@
         }
 
 
-        
-        
-        
+
+
+
 
         .alert {
 
@@ -240,11 +240,11 @@
         }
 
 
-        
-        
-        
 
-        
+
+
+
+
 
         .kelas-search-card {
 
@@ -284,7 +284,7 @@
         }
 
 
-        
+
 
         .kelas-grid {
 
@@ -298,7 +298,7 @@
         }
 
 
-        
+
 
         .kelas-item {
 
@@ -413,7 +413,7 @@
         }
 
 
-        
+
 
         .kelas-empty {
 
@@ -423,7 +423,7 @@
         }
 
 
-        
+
 
         @media (max-width: 991px) {
 
@@ -449,9 +449,9 @@
         }
 
 
-        
-        
-        
+
+
+
 
         @media (max-width: 768px) {
 
@@ -483,11 +483,11 @@
     </style>
 
 
-    
+
     @stack('styles')
 
     @if(request()->is('wali-kelas') || request()->is('wali-kelas/*'))
-        <link rel="stylesheet" href="{{ asset('css/wali-kelas.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/wali-kelas.css') }}">
     @endif
 
 </head>
@@ -499,41 +499,43 @@
     <div class="wrapper">
 
 
-        
+
         @php
-            $currentUser = auth()->user();
-            $currentRole = $currentUser?->role_id;
+        $currentUser = auth()->user();
+        $currentRole = $currentUser?->role_id;
         @endphp
 
-        @if($currentUser && $currentRole == 5)
-            @include('layouts.sidebar-siswa')
+        @if(request()->is('admin*') || request()->routeIs('admin.*') || request()->is('master-data*'))
+        @include('layouts.sidebar')
+        @elseif($currentUser && $currentRole == 5)
+        @include('layouts.sidebar-siswa')
         @elseif($currentUser && $currentRole == 3)
-            @include('layouts.sidebar-wali-kelas')
+        @include('layouts.sidebar-wali-kelas')
         @elseif($currentUser && $currentRole == 2)
-            @include('layouts.sidebar-guru')
+        @include('layouts.sidebar-guru')
         @elseif($currentUser && $currentRole == 1)
-            @include('layouts.sidebar')
-        @elseif(request()->is('siswa') || request()->is('siswa/*'))
-            @include('layouts.sidebar-siswa')
-        @elseif(request()->is('guru') || request()->is('guru/*'))
-            @include('layouts.sidebar-guru')
-        @elseif(request()->is('wali-kelas') || request()->is('wali-kelas/*'))
-            @include('layouts.sidebar-wali-kelas')
+        @include('layouts.sidebar')
+        @elseif(request()->is('siswa') || request()->is('siswa/*') || request()->routeIs('siswa.*'))
+        @include('layouts.sidebar-siswa')
+        @elseif(request()->is('guru') || request()->is('guru/*') || request()->routeIs('guru.*'))
+        @include('layouts.sidebar-guru')
+        @elseif(request()->is('wali-kelas') || request()->is('wali-kelas/*') || request()->routeIs('wali-kelas.*'))
+        @include('layouts.sidebar-wali-kelas')
         @else
-            @include('layouts.sidebar')
+        @include('layouts.sidebar')
         @endif
 
-   
-    <main class="main">
+
+        <main class="main">
 
 
-            
+
             <nav class="navbar">
 
                 <h3>
 
                     @yield(
-                        'title',
+                    'title',
                     )
 
                 </h3>
@@ -548,36 +550,11 @@
             </nav>
 
 
-            
-            
-            
+
+
+
 
             <section class="content {{ request()->is('wali-kelas') || request()->is('wali-kelas/*') ? 'walas-page' : '' }}">
-
-
-                
-                @if(session('success'))
-
-                    <div class="alert alert-success">
-
-                        {{ session('success') }}
-
-                    </div>
-
-                @endif
-
-
-                
-                @if(session('error'))
-
-                    <div class="alert alert-danger">
-
-                        {{ session('error') }}
-
-                    </div>
-
-                @endif
-
                 @yield('content')
 
             </section>
@@ -589,29 +566,28 @@
     </div>
 
 
-    
-    
-    
+
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
-    
-    
-    
+
+
+
 
     @stack('scripts')
 
 
-    
-    
-    
+
+
+
 
     <script>
-
         document.addEventListener(
             'DOMContentLoaded',
-            function () {
+            function() {
 
                 const sidebar =
                     document.querySelector(
@@ -643,7 +619,7 @@
 
                 sidebar.addEventListener(
                     'scroll',
-                    function () {
+                    function() {
 
                         sessionStorage.setItem(
                             'sidebarScroll',
@@ -655,7 +631,6 @@
 
             }
         );
-
     </script>
 
 

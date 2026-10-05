@@ -24,56 +24,6 @@
 
     </div>
 
-    @if(session('success'))
-
-        <div class="alert-custom alert-success-custom">
-
-            <div class="alert-icon">
-                <i class="bi bi-check-circle-fill"></i>
-            </div>
-
-            <div class="alert-content">
-                <strong>Berhasil</strong>
-                <span>{{ session('success') }}</span>
-            </div>
-
-            <button
-                type="button"
-                class="alert-close"
-                data-bs-dismiss="alert"
-            >
-                <i class="bi bi-x-lg"></i>
-            </button>
-
-        </div>
-
-    @endif
-
-    @if(session('error'))
-
-        <div class="alert-custom alert-danger-custom">
-
-            <div class="alert-icon">
-                <i class="bi bi-exclamation-circle-fill"></i>
-            </div>
-
-            <div class="alert-content">
-                <strong>Terjadi Kesalahan</strong>
-                <span>{{ session('error') }}</span>
-            </div>
-
-            <button
-                type="button"
-                class="alert-close"
-                data-bs-dismiss="alert"
-            >
-                <i class="bi bi-x-lg"></i>
-            </button>
-
-        </div>
-
-    @endif
-
     <div class="filter-card">
 
         <div class="filter-header">
@@ -94,8 +44,7 @@
             <button
                 type="button"
                 id="resetSpmb"
-                class="btn-reset"
-            >
+                class="btn-reset">
                 <i class="bi bi-arrow-counterclockwise"></i>
                 Reset
             </button>
@@ -107,8 +56,7 @@
             <form
                 method="GET"
                 action="{{ route('admin.spmb.index') }}"
-                id="spmbFilterForm"
-            >
+                id="spmbFilterForm">
 
                 <div class="row g-3">
 
@@ -116,8 +64,7 @@
 
                         <label
                             for="spmbSearch"
-                            class="form-label"
-                        >
+                            class="form-label">
                             Pencarian
                         </label>
 
@@ -132,8 +79,7 @@
                                 class="form-control custom-input"
                                 placeholder="Nama, NISN, NIK, No. Pendaftaran"
                                 value="{{ request('search') }}"
-                                autocomplete="off"
-                            >
+                                autocomplete="off">
 
                         </div>
 
@@ -143,8 +89,7 @@
 
                         <label
                             for="spmbJurusan"
-                            class="form-label"
-                        >
+                            class="form-label">
                             Jurusan
                         </label>
 
@@ -153,8 +98,7 @@
                             <select
                                 name="jurusan_id"
                                 id="spmbJurusan"
-                                class="form-select custom-input"
-                            >
+                                class="form-select custom-input">
 
                                 <option value="">
                                     Semua Jurusan
@@ -162,12 +106,12 @@
 
                                 @foreach($jurusan as $item)
 
-                                    <option
-                                        value="{{ $item->id }}"
-                                        @selected(request('jurusan_id') == $item->id)
+                                <option
+                                    value="{{ $item->id }}"
+                                    @selected(request('jurusan_id')==$item->id)
                                     >
-                                        {{ $item->kode_jurusan }} - {{ $item->nama_jurusan }}
-                                    </option>
+                                    {{ $item->kode_jurusan }} - {{ $item->nama_jurusan }}
+                                </option>
 
                                 @endforeach
 
@@ -181,8 +125,7 @@
 
                         <label
                             for="spmbJalur"
-                            class="form-label"
-                        >
+                            class="form-label">
                             Jalur
                         </label>
 
@@ -191,8 +134,7 @@
                             <select
                                 name="jalur_pendaftaran"
                                 id="spmbJalur"
-                                class="form-select custom-input"
-                            >
+                                class="form-select custom-input">
 
                                 <option value="">
                                     Semua
@@ -200,12 +142,11 @@
 
                                 @foreach(['Domisili', 'Prestasi', 'Afirmasi', 'Mutasi'] as $jalur)
 
-                                    <option
-                                        value="{{ $jalur }}"
-                                        @selected(request('jalur_pendaftaran') == $jalur)
-                                    >
-                                        {{ $jalur }}
-                                    </option>
+                                <option
+                                    value="{{ $jalur }}"
+                                    @selected(request('jalur_pendaftaran')==$jalur)>
+                                    {{ $jalur }}
+                                </option>
 
                                 @endforeach
 
@@ -219,8 +160,7 @@
 
                         <label
                             for="spmbStatus"
-                            class="form-label"
-                        >
+                            class="form-label">
                             Status Daftar Ulang
                         </label>
 
@@ -229,8 +169,7 @@
                             <select
                                 name="status_daftar_ulang"
                                 id="spmbStatus"
-                                class="form-select custom-input"
-                            >
+                                class="form-select custom-input">
 
                                 <option value="">
                                     Semua Status
@@ -238,29 +177,25 @@
 
                                 <option
                                     value="belum_daftar_ulang"
-                                    @selected(request('status_daftar_ulang') == 'belum_daftar_ulang')
-                                >
+                                    @selected(request('status_daftar_ulang')=='belum_daftar_ulang' )>
                                     Belum Daftar Ulang
                                 </option>
 
                                 <option
                                     value="menunggu_verifikasi"
-                                    @selected(request('status_daftar_ulang') == 'menunggu_verifikasi')
-                                >
+                                    @selected(request('status_daftar_ulang')=='menunggu_verifikasi' )>
                                     Menunggu Verifikasi
                                 </option>
 
                                 <option
                                     value="revisi"
-                                    @selected(request('status_daftar_ulang') == 'revisi')
-                                >
+                                    @selected(request('status_daftar_ulang')=='revisi' )>
                                     Revisi
                                 </option>
 
                                 <option
                                     value="terverifikasi"
-                                    @selected(request('status_daftar_ulang') == 'terverifikasi')
-                                >
+                                    @selected(request('status_daftar_ulang')=='terverifikasi' )>
                                     Terverifikasi
                                 </option>
 
@@ -317,7 +252,7 @@
 
                     <tbody>
 
-                    @forelse($calonSiswa as $index => $item)
+                        @forelse($calonSiswa as $index => $item)
 
                         <tr>
 
@@ -365,23 +300,23 @@
 
                                 @if($item->jurusan)
 
-                                    <div class="jurusan-cell">
+                                <div class="jurusan-cell">
 
-                                        <span class="jurusan-code">
-                                            {{ $item->jurusan->kode_jurusan }}
-                                        </span>
+                                    <span class="jurusan-code">
+                                        {{ $item->jurusan->kode_jurusan }}
+                                    </span>
 
-                                        <span class="jurusan-name">
-                                            {{ $item->jurusan->nama_jurusan }}
-                                        </span>
+                                    <span class="jurusan-name">
+                                        {{ $item->jurusan->nama_jurusan }}
+                                    </span>
 
-                                    </div>
+                                </div>
 
                                 @else
 
-                                    <span class="empty-text">
-                                        Jurusan tidak tersedia
-                                    </span>
+                                <span class="empty-text">
+                                    Jurusan tidak tersedia
+                                </span>
 
                                 @endif
 
@@ -399,31 +334,31 @@
 
                                 @if($item->status_daftar_ulang === 'terverifikasi')
 
-                                    <span class="status-badge status-verified">
-                                        <i class="bi bi-check-circle-fill"></i>
-                                        Terverifikasi
-                                    </span>
+                                <span class="status-badge status-verified">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Terverifikasi
+                                </span>
 
                                 @elseif($item->status_daftar_ulang === 'revisi')
 
-                                    <span class="status-badge status-revision">
-                                        <i class="bi bi-exclamation-circle-fill"></i>
-                                        Revisi
-                                    </span>
+                                <span class="status-badge status-revision">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                    Revisi
+                                </span>
 
                                 @elseif($item->status_daftar_ulang === 'menunggu_verifikasi')
 
-                                    <span class="status-badge status-waiting">
-                                        <i class="bi bi-clock-fill"></i>
-                                        Menunggu Verifikasi
-                                    </span>
+                                <span class="status-badge status-waiting">
+                                    <i class="bi bi-clock-fill"></i>
+                                    Menunggu Verifikasi
+                                </span>
 
                                 @else
 
-                                    <span class="status-badge status-unregistered">
-                                        <i class="bi bi-dash-circle-fill"></i>
-                                        Belum Daftar Ulang
-                                    </span>
+                                <span class="status-badge status-unregistered">
+                                    <i class="bi bi-dash-circle-fill"></i>
+                                    Belum Daftar Ulang
+                                </span>
 
                                 @endif
 
@@ -436,8 +371,7 @@
                                     <a
                                         href="{{ route('admin.spmb.show', $item->id) }}"
                                         class="action-btn detail-btn"
-                                        title="Lihat Detail"
-                                    >
+                                        title="Lihat Detail">
                                         <i class="bi bi-eye-fill"></i>
                                         Detail
                                     </a>
@@ -445,8 +379,7 @@
                                     <a
                                         href="{{ route('admin.spmb.edit', $item->id) }}"
                                         class="action-btn edit-btn"
-                                        title="Edit Data"
-                                    >
+                                        title="Edit Data">
                                         <i class="bi bi-pencil-fill"></i>
                                         Edit
                                     </a>
@@ -457,7 +390,7 @@
 
                         </tr>
 
-                    @empty
+                        @empty
 
                         <tr>
 
@@ -477,8 +410,7 @@
 
                                     <a
                                         href="{{ route('admin.spmb.create') }}"
-                                        class="empty-action"
-                                    >
+                                        class="empty-action">
                                         <i class="bi bi-plus-lg"></i>
                                         Tambah Calon Siswa
                                     </a>
@@ -489,7 +421,7 @@
 
                         </tr>
 
-                    @endforelse
+                        @endforelse
 
                     </tbody>
 
@@ -501,9 +433,9 @@
 
         @if($calonSiswa->hasPages())
 
-            <div class="pagination-container">
-                {{ $calonSiswa->links() }}
-            </div>
+        <div class="pagination-container">
+            {{ $calonSiswa->links() }}
+        </div>
 
         @endif
 
@@ -516,7 +448,6 @@
 @push('styles')
 
 <style>
-
     body {
         font-family: 'Poppins', sans-serif;
     }
@@ -726,7 +657,7 @@
         position: relative;
     }
 
-    .input-wrapper > i {
+    .input-wrapper>i {
         position: absolute;
         top: 50%;
         left: 13px;
@@ -1220,7 +1151,6 @@
         }
 
     }
-
 </style>
 
 @endpush
@@ -1228,705 +1158,611 @@
 @push('scripts')
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
-    const form = document.getElementById('spmbFilterForm');
-    const results = document.getElementById('spmb-search-results');
-    const searchInput = document.getElementById('spmbSearch');
-    const resetButton = document.getElementById('resetSpmb');
+        const form = document.getElementById('spmbFilterForm');
+        const results = document.getElementById('spmb-search-results');
+        const searchInput = document.getElementById('spmbSearch');
+        const resetButton = document.getElementById('resetSpmb');
 
-    if (!form || !results) {
-        return;
-    }
+        if (!form || !results) {
+            return;
+        }
 
-    let searchTimeout;
+        let searchTimeout;
 
-    function loadData(url = null) {
+        function loadData(url = null) {
 
-        let targetUrl = url;
+            let targetUrl = url;
 
-        if (!targetUrl) {
+            if (!targetUrl) {
 
-            const formData = new FormData(form);
-            const params = new URLSearchParams(formData);
+                const formData = new FormData(form);
+                const params = new URLSearchParams(formData);
 
-            targetUrl =
-                "{{ route('admin.spmb.index') }}" +
-                "?" +
-                params.toString();
+                targetUrl =
+                    "{{ route('admin.spmb.index') }}" +
+                    "?" +
+                    params.toString();
+
+            }
+
+            results.classList.add('loading');
+
+            fetch(targetUrl, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'text/html'
+                    }
+                })
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error('Gagal memuat data.');
+                    }
+
+                    return response.text();
+
+                })
+                .then(html => {
+
+                    const parser = new DOMParser();
+
+                    const doc =
+                        parser.parseFromString(
+                            html,
+                            'text/html'
+                        );
+
+                    const newResults =
+                        doc.querySelector(
+                            '#spmb-search-results'
+                        );
+
+                    if (newResults) {
+
+                        results.innerHTML =
+                            newResults.innerHTML;
+
+                        history.pushState({},
+                            '',
+                            targetUrl
+                        );
+
+                    }
+
+                })
+                .catch(error => {
+
+                    console.error(
+                        'Gagal mengambil data:',
+                        error
+                    );
+
+                })
+                .finally(() => {
+
+                    results.classList.remove('loading');
+
+                });
 
         }
 
-        results.classList.add('loading');
+        if (searchInput) {
 
-        fetch(targetUrl, {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'text/html'
-            }
-        })
-        .then(response => {
+            searchInput.addEventListener(
+                'input',
+                function() {
 
-            if (!response.ok) {
-                throw new Error('Gagal memuat data.');
-            }
+                    clearTimeout(searchTimeout);
 
-            return response.text();
+                    searchTimeout = setTimeout(
+                        function() {
+                            loadData();
+                        },
+                        400
+                    );
 
-        })
-        .then(html => {
-
-            const parser = new DOMParser();
-
-            const doc =
-                parser.parseFromString(
-                    html,
-                    'text/html'
-                );
-
-            const newResults =
-                doc.querySelector(
-                    '#spmb-search-results'
-                );
-
-            if (newResults) {
-
-                results.innerHTML =
-                    newResults.innerHTML;
-
-                history.pushState(
-                    {},
-                    '',
-                    targetUrl
-                );
-
-            }
-
-        })
-        .catch(error => {
-
-            console.error(
-                'Gagal mengambil data:',
-                error
+                }
             );
 
-        })
-        .finally(() => {
+        }
 
-            results.classList.remove('loading');
+        form.querySelectorAll('select').forEach(
+            function(input) {
 
-        });
-
-    }
-
-    if (searchInput) {
-
-        searchInput.addEventListener(
-            'input',
-            function () {
-
-                clearTimeout(searchTimeout);
-
-                searchTimeout = setTimeout(
-                    function () {
+                input.addEventListener(
+                    'change',
+                    function() {
                         loadData();
-                    },
-                    400
+                    }
                 );
 
             }
         );
 
-    }
+        if (resetButton) {
 
-    form.querySelectorAll('select').forEach(
-        function (input) {
+            resetButton.addEventListener(
+                'click',
+                function() {
 
-            input.addEventListener(
-                'change',
-                function () {
+                    form.reset();
+
+                    if (searchInput) {
+                        searchInput.value = '';
+                    }
+
                     loadData();
+
                 }
             );
 
         }
-    );
 
-    if (resetButton) {
-
-        resetButton.addEventListener(
+        results.addEventListener(
             'click',
-            function () {
+            function(event) {
 
-                form.reset();
+                const link =
+                    event.target.closest(
+                        '.pagination a'
+                    );
 
-                if (searchInput) {
-                    searchInput.value = '';
+                if (!link) {
+                    return;
                 }
+
+                event.preventDefault();
+
+                loadData(link.href);
+
+            }
+        );
+
+        window.addEventListener(
+            'popstate',
+            function() {
+
+                loadData(
+                    window.location.href
+                );
+
+            }
+        );
+
+        form.addEventListener(
+            'submit',
+            function(event) {
+
+                event.preventDefault();
 
                 loadData();
 
             }
         );
 
-    }
-
-    results.addEventListener(
-        'click',
-        function (event) {
-
-            const link =
-                event.target.closest(
-                    '.pagination a'
-                );
-
-            if (!link) {
-                return;
-            }
-
-            event.preventDefault();
-
-            loadData(link.href);
-
-        }
-    );
-
-    window.addEventListener(
-        'popstate',
-        function () {
-
-            loadData(
-                window.location.href
-            );
-
-        }
-    );
-
-    form.addEventListener(
-        'submit',
-        function (event) {
-
-            event.preventDefault();
-
-            loadData();
-
-        }
-    );
-
-});
+    });
 </script>
 
-@endpush@extends('layouts.app')
 
-@section('title', 'Data Calon Siswa')
+<div class="filter-card">
 
-@section('content')
+    <div class="filter-header">
 
-<div class="spmb-page">
+        <div class="filter-title">
 
-    <div class="page-header">
-
-        <div class="page-title">
+            <div class="filter-icon">
+                <i class="bi bi-funnel"></i>
+            </div>
 
             <div>
-                <h4>Data Calon Siswa</h4>
-                <p>Pengelolaan data calon siswa SPMB berdasarkan jurusan.</p>
+                <h5>Filter Data</h5>
+                <span>Cari dan filter data calon siswa</span>
             </div>
 
         </div>
 
-        <a href="{{ route('admin.spmb.create') }}" class="btn-add">
-            <i class="bi bi-plus-lg"></i>
-            <span>Tambah Calon Siswa</span>
-        </a>
+        <button
+            type="button"
+            id="resetSpmb"
+            class="btn-reset">
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Reset
+        </button>
 
     </div>
 
-    @if(session('success'))
-
-        <div class="alert-custom alert-success-custom">
-
-            <div class="alert-icon">
-                <i class="bi bi-check-circle-fill"></i>
-            </div>
-
-            <div class="alert-content">
-                <strong>Berhasil</strong>
-                <span>{{ session('success') }}</span>
-            </div>
-
-            <button
-                type="button"
-                class="alert-close"
-                data-bs-dismiss="alert"
-            >
-                <i class="bi bi-x-lg"></i>
-            </button>
-
-        </div>
-
-    @endif
-
-    @if(session('error'))
-
-        <div class="alert-custom alert-danger-custom">
-
-            <div class="alert-icon">
-                <i class="bi bi-exclamation-circle-fill"></i>
-            </div>
-
-            <div class="alert-content">
-                <strong>Terjadi Kesalahan</strong>
-                <span>{{ session('error') }}</span>
-            </div>
-
-            <button
-                type="button"
-                class="alert-close"
-                data-bs-dismiss="alert"
-            >
-                <i class="bi bi-x-lg"></i>
-            </button>
-
-        </div>
-
-    @endif
-
-    <div class="filter-card">
-
-        <div class="filter-header">
-
-            <div class="filter-title">
-
-                <div class="filter-icon">
-                    <i class="bi bi-funnel"></i>
-                </div>
-
-                <div>
-                    <h5>Filter Data</h5>
-                    <span>Cari dan filter data calon siswa</span>
-                </div>
-
-            </div>
-
-            <button
-                type="button"
-                id="resetSpmb"
-                class="btn-reset"
-            >
-                <i class="bi bi-arrow-counterclockwise"></i>
-                Reset
-            </button>
-
-        </div>
-
-        <div class="filter-body">
-
-            <form
-                method="GET"
-                action="{{ route('admin.spmb.index') }}"
-                id="spmbFilterForm"
-            >
-
-                <div class="row g-3">
-
-                    <div class="col-lg-4 col-md-6">
-
-                        <label
-                            for="spmbSearch"
-                            class="form-label"
-                        >
-                            Pencarian
-                        </label>
-
-                        <div class="input-wrapper">
-
-                            <i class="bi bi-search"></i>
-
-                            <input
-                                type="text"
-                                name="search"
-                                id="spmbSearch"
-                                class="form-control custom-input"
-                                placeholder="Nama, NISN, NIK, No. Pendaftaran"
-                                value="{{ request('search') }}"
-                                autocomplete="off"
-                            >
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-
-                        <label
-                            for="spmbJurusan"
-                            class="form-label"
-                        >
-                            Jurusan
-                        </label>
-
-                        <div class="select-wrapper">
-
-                            <select
-                                name="jurusan_id"
-                                id="spmbJurusan"
-                                class="form-select custom-input"
-                            >
-
-                                <option value="">
-                                    Semua Jurusan
-                                </option>
-
-                                @foreach($jurusan as $item)
-
-                                    <option
-                                        value="{{ $item->id }}"
-                                        @selected(request('jurusan_id') == $item->id)
-                                    >
-                                        {{ $item->kode_jurusan }} - {{ $item->nama_jurusan }}
-                                    </option>
-
-                                @endforeach
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-lg-2 col-md-6">
-
-                        <label
-                            for="spmbJalur"
-                            class="form-label"
-                        >
-                            Jalur
-                        </label>
-
-                        <div class="select-wrapper">
-
-                            <select
-                                name="jalur_pendaftaran"
-                                id="spmbJalur"
-                                class="form-select custom-input"
-                            >
-
-                                <option value="">
-                                    Semua
-                                </option>
-
-                                @foreach(['Domisili', 'Prestasi', 'Afirmasi', 'Mutasi'] as $jalur)
-
-                                    <option
-                                        value="{{ $jalur }}"
-                                        @selected(request('jalur_pendaftaran') == $jalur)
-                                    >
-                                        {{ $jalur }}
-                                    </option>
-
-                                @endforeach
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-
-                        <label
-                            for="spmbStatus"
-                            class="form-label"
-                        >
-                            Status Daftar Ulang
-                        </label>
-
-                        <div class="select-wrapper">
-
-                            <select
-                                name="status_daftar_ulang"
-                                id="spmbStatus"
-                                class="form-select custom-input"
-                            >
-
-                                <option value="">
-                                    Semua Status
-                                </option>
-
-                                <option
-                                    value="belum_daftar_ulang"
-                                    @selected(request('status_daftar_ulang') == 'belum_daftar_ulang')
-                                >
-                                    Belum Daftar Ulang
-                                </option>
-
-                                <option
-                                    value="menunggu_verifikasi"
-                                    @selected(request('status_daftar_ulang') == 'menunggu_verifikasi')
-                                >
-                                    Menunggu Verifikasi
-                                </option>
-
-                                <option
-                                    value="revisi"
-                                    @selected(request('status_daftar_ulang') == 'revisi')
-                                >
-                                    Revisi
-                                </option>
-
-                                <option
-                                    value="terverifikasi"
-                                    @selected(request('status_daftar_ulang') == 'terverifikasi')
-                                >
-                                    Terverifikasi
-                                </option>
-
-                            </select>
-
-                        </div>
+    <div class="filter-body">
+
+        <form
+            method="GET"
+            action="{{ route('admin.spmb.index') }}"
+            id="spmbFilterForm">
+
+            <div class="row g-3">
+
+                <div class="col-lg-4 col-md-6">
+
+                    <label
+                        for="spmbSearch"
+                        class="form-label">
+                        Pencarian
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="bi bi-search"></i>
+
+                        <input
+                            type="text"
+                            name="search"
+                            id="spmbSearch"
+                            class="form-control custom-input"
+                            placeholder="Nama, NISN, NIK, No. Pendaftaran"
+                            value="{{ request('search') }}"
+                            autocomplete="off">
 
                     </div>
 
                 </div>
 
-            </form>
+                <div class="col-lg-3 col-md-6">
+
+                    <label
+                        for="spmbJurusan"
+                        class="form-label">
+                        Jurusan
+                    </label>
+
+                    <div class="select-wrapper">
+
+                        <select
+                            name="jurusan_id"
+                            id="spmbJurusan"
+                            class="form-select custom-input">
+
+                            <option value="">
+                                Semua Jurusan
+                            </option>
+
+                            @foreach($jurusan as $item)
+
+                            <option
+                                value="{{ $item->id }}"
+                                @selected(request('jurusan_id')==$item->id)
+                                >
+                                {{ $item->kode_jurusan }} - {{ $item->nama_jurusan }}
+                            </option>
+
+                            @endforeach
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+
+                    <label
+                        for="spmbJalur"
+                        class="form-label">
+                        Jalur
+                    </label>
+
+                    <div class="select-wrapper">
+
+                        <select
+                            name="jalur_pendaftaran"
+                            id="spmbJalur"
+                            class="form-select custom-input">
+
+                            <option value="">
+                                Semua
+                            </option>
+
+                            @foreach(['Domisili', 'Prestasi', 'Afirmasi', 'Mutasi'] as $jalur)
+
+                            <option
+                                value="{{ $jalur }}"
+                                @selected(request('jalur_pendaftaran')==$jalur)>
+                                {{ $jalur }}
+                            </option>
+
+                            @endforeach
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+
+                    <label
+                        for="spmbStatus"
+                        class="form-label">
+                        Status Daftar Ulang
+                    </label>
+
+                    <div class="select-wrapper">
+
+                        <select
+                            name="status_daftar_ulang"
+                            id="spmbStatus"
+                            class="form-select custom-input">
+
+                            <option value="">
+                                Semua Status
+                            </option>
+
+                            <option
+                                value="belum_daftar_ulang"
+                                @selected(request('status_daftar_ulang')=='belum_daftar_ulang' )>
+                                Belum Daftar Ulang
+                            </option>
+
+                            <option
+                                value="menunggu_verifikasi"
+                                @selected(request('status_daftar_ulang')=='menunggu_verifikasi' )>
+                                Menunggu Verifikasi
+                            </option>
+
+                            <option
+                                value="revisi"
+                                @selected(request('status_daftar_ulang')=='revisi' )>
+                                Revisi
+                            </option>
+
+                            <option
+                                value="terverifikasi"
+                                @selected(request('status_daftar_ulang')=='terverifikasi' )>
+                                Terverifikasi
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="data-card" id="spmb-search-results">
+
+    <div class="data-card-header">
+
+        <div>
+
+            <h5>Daftar Calon Siswa</h5>
+
+            <span>
+                Data calon siswa yang terdaftar pada sistem SPMB.
+            </span>
 
         </div>
 
     </div>
 
-    <div class="data-card" id="spmb-search-results">
+    <div class="table-container">
 
-        <div class="data-card-header">
+        <div class="table-responsive">
 
-            <div>
+            <table class="custom-table">
 
-                <h5>Daftar Calon Siswa</h5>
+                <thead>
 
-                <span>
-                    Data calon siswa yang terdaftar pada sistem SPMB.
-                </span>
+                    <tr>
+                        <th width="60">No</th>
+                        <th>No. Pendaftaran</th>
+                        <th>Nama Calon Siswa</th>
+                        <th>NISN</th>
+                        <th>Jurusan</th>
+                        <th>Jalur</th>
+                        <th>Status</th>
+                        <th width="155">Aksi</th>
+                    </tr>
 
-            </div>
+                </thead>
 
-        </div>
-
-        <div class="table-container">
-
-            <div class="table-responsive">
-
-                <table class="custom-table">
-
-                    <thead>
-
-                        <tr>
-                            <th width="60">No</th>
-                            <th>No. Pendaftaran</th>
-                            <th>Nama Calon Siswa</th>
-                            <th>NISN</th>
-                            <th>Jurusan</th>
-                            <th>Jalur</th>
-                            <th>Status</th>
-                            <th width="155">Aksi</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
+                <tbody>
 
                     @forelse($calonSiswa as $index => $item)
 
-                        <tr>
+                    <tr>
 
-                            <td>
+                        <td>
 
-                                <span class="number-cell">
-                                    {{ $calonSiswa->firstItem() + $index }}
+                            <span class="number-cell">
+                                {{ $calonSiswa->firstItem() + $index }}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="registration-number">
+                                {{ $item->no_pendaftaran }}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="student-name">
+
+                                <span class="student-avatar">
+                                    {{ strtoupper(substr($item->nama_lengkap, 0, 1)) }}
                                 </span>
 
-                            </td>
-
-                            <td>
-
-                                <span class="registration-number">
-                                    {{ $item->no_pendaftaran }}
+                                <span>
+                                    {{ $item->nama_lengkap }}
                                 </span>
 
-                            </td>
+                            </div>
 
-                            <td>
+                        </td>
 
-                                <div class="student-name">
+                        <td>
 
-                                    <span class="student-avatar">
-                                        {{ strtoupper(substr($item->nama_lengkap, 0, 1)) }}
-                                    </span>
+                            <span class="nisn-text">
+                                {{ $item->nisn ?? '-' }}
+                            </span>
 
-                                    <span>
-                                        {{ $item->nama_lengkap }}
-                                    </span>
+                        </td>
 
-                                </div>
+                        <td>
 
-                            </td>
+                            @if($item->jurusan)
 
-                            <td>
+                            <div class="jurusan-cell">
 
-                                <span class="nisn-text">
-                                    {{ $item->nisn ?? '-' }}
+                                <span class="jurusan-code">
+                                    {{ $item->jurusan->kode_jurusan }}
                                 </span>
 
-                            </td>
-
-                            <td>
-
-                                @if($item->jurusan)
-
-                                    <div class="jurusan-cell">
-
-                                        <span class="jurusan-code">
-                                            {{ $item->jurusan->kode_jurusan }}
-                                        </span>
-
-                                        <span class="jurusan-name">
-                                            {{ $item->jurusan->nama_jurusan }}
-                                        </span>
-
-                                    </div>
-
-                                @else
-
-                                    <span class="empty-text">
-                                        Jurusan tidak tersedia
-                                    </span>
-
-                                @endif
-
-                            </td>
-
-                            <td>
-
-                                <span class="jalur-badge">
-                                    {{ $item->jalur_pendaftaran }}
+                                <span class="jurusan-name">
+                                    {{ $item->jurusan->nama_jurusan }}
                                 </span>
 
-                            </td>
+                            </div>
 
-                            <td>
+                            @else
 
-                                @if($item->status_daftar_ulang === 'terverifikasi')
+                            <span class="empty-text">
+                                Jurusan tidak tersedia
+                            </span>
 
-                                    <span class="status-badge status-verified">
-                                        <i class="bi bi-check-circle-fill"></i>
-                                        Terverifikasi
-                                    </span>
+                            @endif
 
-                                @elseif($item->status_daftar_ulang === 'revisi')
+                        </td>
 
-                                    <span class="status-badge status-revision">
-                                        <i class="bi bi-exclamation-circle-fill"></i>
-                                        Revisi
-                                    </span>
+                        <td>
 
-                                @elseif($item->status_daftar_ulang === 'menunggu_verifikasi')
+                            <span class="jalur-badge">
+                                {{ $item->jalur_pendaftaran }}
+                            </span>
 
-                                    <span class="status-badge status-waiting">
-                                        <i class="bi bi-clock-fill"></i>
-                                        Menunggu Verifikasi
-                                    </span>
+                        </td>
 
-                                @else
+                        <td>
 
-                                    <span class="status-badge status-unregistered">
-                                        <i class="bi bi-dash-circle-fill"></i>
-                                        Belum Daftar Ulang
-                                    </span>
+                            @if($item->status_daftar_ulang === 'terverifikasi')
 
-                                @endif
+                            <span class="status-badge status-verified">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Terverifikasi
+                            </span>
 
-                            </td>
+                            @elseif($item->status_daftar_ulang === 'revisi')
 
-                            <td>
+                            <span class="status-badge status-revision">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                Revisi
+                            </span>
 
-                                <div class="action-buttons">
+                            @elseif($item->status_daftar_ulang === 'menunggu_verifikasi')
 
-                                    <a
-                                        href="{{ route('admin.spmb.show', $item->id) }}"
-                                        class="action-btn detail-btn"
-                                        title="Lihat Detail"
-                                    >
-                                        <i class="bi bi-eye-fill"></i>
-                                        Detail
-                                    </a>
+                            <span class="status-badge status-waiting">
+                                <i class="bi bi-clock-fill"></i>
+                                Menunggu Verifikasi
+                            </span>
 
-                                    <a
-                                        href="{{ route('admin.spmb.edit', $item->id) }}"
-                                        class="action-btn edit-btn"
-                                        title="Edit Data"
-                                    >
-                                        <i class="bi bi-pencil-fill"></i>
-                                        Edit
-                                    </a>
+                            @else
 
-                                </div>
+                            <span class="status-badge status-unregistered">
+                                <i class="bi bi-dash-circle-fill"></i>
+                                Belum Daftar Ulang
+                            </span>
 
-                            </td>
+                            @endif
 
-                        </tr>
+                        </td>
+
+                        <td>
+
+                            <div class="action-buttons">
+
+                                <a
+                                    href="{{ route('admin.spmb.show', $item->id) }}"
+                                    class="action-btn detail-btn"
+                                    title="Lihat Detail">
+                                    <i class="bi bi-eye-fill"></i>
+                                    Detail
+                                </a>
+
+                                <a
+                                    href="{{ route('admin.spmb.edit', $item->id) }}"
+                                    class="action-btn edit-btn"
+                                    title="Edit Data">
+                                    <i class="bi bi-pencil-fill"></i>
+                                    Edit
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
 
                     @empty
 
-                        <tr>
+                    <tr>
 
-                            <td colspan="8">
+                        <td colspan="8">
 
-                                <div class="empty-state">
+                            <div class="empty-state">
 
-                                    <div class="empty-icon">
-                                        <i class="bi bi-inbox"></i>
-                                    </div>
-
-                                    <h6>Belum Ada Data</h6>
-
-                                    <p>
-                                        Belum ada data calon siswa yang tersedia.
-                                    </p>
-
-                                    <a
-                                        href="{{ route('admin.spmb.create') }}"
-                                        class="empty-action"
-                                    >
-                                        <i class="bi bi-plus-lg"></i>
-                                        Tambah Calon Siswa
-                                    </a>
-
+                                <div class="empty-icon">
+                                    <i class="bi bi-inbox"></i>
                                 </div>
 
-                            </td>
+                                <h6>Belum Ada Data</h6>
 
-                        </tr>
+                                <p>
+                                    Belum ada data calon siswa yang tersedia.
+                                </p>
+
+                                <a
+                                    href="{{ route('admin.spmb.create') }}"
+                                    class="empty-action">
+                                    <i class="bi bi-plus-lg"></i>
+                                    Tambah Calon Siswa
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
 
                     @endforelse
 
-                    </tbody>
+                </tbody>
 
-                </table>
-
-            </div>
+            </table>
 
         </div>
 
-        @if($calonSiswa->hasPages())
-
-            <div class="pagination-container">
-                {{ $calonSiswa->links() }}
-            </div>
-
-        @endif
-
     </div>
+
+    @if($calonSiswa->hasPages())
+
+    <div class="pagination-container">
+        {{ $calonSiswa->links() }}
+    </div>
+
+    @endif
+
+</div>
 
 </div>
 
@@ -1935,7 +1771,6 @@ document.addEventListener('DOMContentLoaded', function () {
 @push('styles')
 
 <style>
-
     body {
         font-family: 'Poppins', sans-serif;
     }
@@ -2145,7 +1980,7 @@ document.addEventListener('DOMContentLoaded', function () {
         position: relative;
     }
 
-    .input-wrapper > i {
+    .input-wrapper>i {
         position: absolute;
         top: 50%;
         left: 13px;
@@ -2639,7 +2474,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
     }
-
 </style>
 
 @endpush
@@ -2647,193 +2481,192 @@ document.addEventListener('DOMContentLoaded', function () {
 @push('scripts')
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
-    const form = document.getElementById('spmbFilterForm');
-    const results = document.getElementById('spmb-search-results');
-    const searchInput = document.getElementById('spmbSearch');
-    const resetButton = document.getElementById('resetSpmb');
+        const form = document.getElementById('spmbFilterForm');
+        const results = document.getElementById('spmb-search-results');
+        const searchInput = document.getElementById('spmbSearch');
+        const resetButton = document.getElementById('resetSpmb');
 
-    if (!form || !results) {
-        return;
-    }
+        if (!form || !results) {
+            return;
+        }
 
-    let searchTimeout;
+        let searchTimeout;
 
-    function loadData(url = null) {
+        function loadData(url = null) {
 
-        let targetUrl = url;
+            let targetUrl = url;
 
-        if (!targetUrl) {
+            if (!targetUrl) {
 
-            const formData = new FormData(form);
-            const params = new URLSearchParams(formData);
+                const formData = new FormData(form);
+                const params = new URLSearchParams(formData);
 
-            targetUrl =
-                "{{ route('admin.spmb.index') }}" +
-                "?" +
-                params.toString();
+                targetUrl =
+                    "{{ route('admin.spmb.index') }}" +
+                    "?" +
+                    params.toString();
+
+            }
+
+            results.classList.add('loading');
+
+            fetch(targetUrl, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'text/html'
+                    }
+                })
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error('Gagal memuat data.');
+                    }
+
+                    return response.text();
+
+                })
+                .then(html => {
+
+                    const parser = new DOMParser();
+
+                    const doc =
+                        parser.parseFromString(
+                            html,
+                            'text/html'
+                        );
+
+                    const newResults =
+                        doc.querySelector(
+                            '#spmb-search-results'
+                        );
+
+                    if (newResults) {
+
+                        results.innerHTML =
+                            newResults.innerHTML;
+
+                        history.pushState({},
+                            '',
+                            targetUrl
+                        );
+
+                    }
+
+                })
+                .catch(error => {
+
+                    console.error(
+                        'Gagal mengambil data:',
+                        error
+                    );
+
+                })
+                .finally(() => {
+
+                    results.classList.remove('loading');
+
+                });
 
         }
 
-        results.classList.add('loading');
+        if (searchInput) {
 
-        fetch(targetUrl, {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'text/html'
-            }
-        })
-        .then(response => {
+            searchInput.addEventListener(
+                'input',
+                function() {
 
-            if (!response.ok) {
-                throw new Error('Gagal memuat data.');
-            }
+                    clearTimeout(searchTimeout);
 
-            return response.text();
+                    searchTimeout = setTimeout(
+                        function() {
+                            loadData();
+                        },
+                        400
+                    );
 
-        })
-        .then(html => {
-
-            const parser = new DOMParser();
-
-            const doc =
-                parser.parseFromString(
-                    html,
-                    'text/html'
-                );
-
-            const newResults =
-                doc.querySelector(
-                    '#spmb-search-results'
-                );
-
-            if (newResults) {
-
-                results.innerHTML =
-                    newResults.innerHTML;
-
-                history.pushState(
-                    {},
-                    '',
-                    targetUrl
-                );
-
-            }
-
-        })
-        .catch(error => {
-
-            console.error(
-                'Gagal mengambil data:',
-                error
+                }
             );
 
-        })
-        .finally(() => {
+        }
 
-            results.classList.remove('loading');
+        form.querySelectorAll('select').forEach(
+            function(input) {
 
-        });
-
-    }
-
-    if (searchInput) {
-
-        searchInput.addEventListener(
-            'input',
-            function () {
-
-                clearTimeout(searchTimeout);
-
-                searchTimeout = setTimeout(
-                    function () {
+                input.addEventListener(
+                    'change',
+                    function() {
                         loadData();
-                    },
-                    400
+                    }
                 );
 
             }
         );
 
-    }
+        if (resetButton) {
 
-    form.querySelectorAll('select').forEach(
-        function (input) {
+            resetButton.addEventListener(
+                'click',
+                function() {
 
-            input.addEventListener(
-                'change',
-                function () {
+                    form.reset();
+
+                    if (searchInput) {
+                        searchInput.value = '';
+                    }
+
                     loadData();
+
                 }
             );
 
         }
-    );
 
-    if (resetButton) {
-
-        resetButton.addEventListener(
+        results.addEventListener(
             'click',
-            function () {
+            function(event) {
 
-                form.reset();
+                const link =
+                    event.target.closest(
+                        '.pagination a'
+                    );
 
-                if (searchInput) {
-                    searchInput.value = '';
+                if (!link) {
+                    return;
                 }
+
+                event.preventDefault();
+
+                loadData(link.href);
+
+            }
+        );
+
+        window.addEventListener(
+            'popstate',
+            function() {
+
+                loadData(
+                    window.location.href
+                );
+
+            }
+        );
+
+        form.addEventListener(
+            'submit',
+            function(event) {
+
+                event.preventDefault();
 
                 loadData();
 
             }
         );
 
-    }
-
-    results.addEventListener(
-        'click',
-        function (event) {
-
-            const link =
-                event.target.closest(
-                    '.pagination a'
-                );
-
-            if (!link) {
-                return;
-            }
-
-            event.preventDefault();
-
-            loadData(link.href);
-
-        }
-    );
-
-    window.addEventListener(
-        'popstate',
-        function () {
-
-            loadData(
-                window.location.href
-            );
-
-        }
-    );
-
-    form.addEventListener(
-        'submit',
-        function (event) {
-
-            event.preventDefault();
-
-            loadData();
-
-        }
-    );
-
-});
+    });
 </script>
 
 @endpush

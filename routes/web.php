@@ -149,9 +149,9 @@ Route::prefix('admin')->group(function () {
     Route::put('/spmb/calon-siswa/{id}', [SpmbController::class, 'update'])->name('admin.spmb.update');
     Route::delete('/spmb/calon-siswa/{id}', [SpmbController::class, 'destroy'])->name('admin.spmb.destroy');
     Route::put(
-    '/admin/spmb/{id}/dokumen/verifikasi-semua',
-    [SpmbController::class, 'verifikasiSemuaDokumen']
-)->name('admin.spmb.dokumen.verifikasi-semua');
+        '/admin/spmb/{id}/dokumen/verifikasi-semua',
+        [SpmbController::class, 'verifikasiSemuaDokumen']
+    )->name('admin.spmb.dokumen.verifikasi-semua');
     Route::put('/spmb/calon-siswa/{id}/verifikasi-daftar-ulang', [SpmbController::class, 'verifikasiDaftarUlang'])->name('admin.spmb.daftar-ulang.verifikasi');
 });
 

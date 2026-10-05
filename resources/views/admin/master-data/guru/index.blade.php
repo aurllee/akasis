@@ -80,6 +80,10 @@
     }
 
     .data-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
         padding: 20px 24px;
         border-bottom: 1px solid #e8edf5;
     }
@@ -89,6 +93,37 @@
         font-size: 17px;
         font-weight: 600;
         color: #1e293b;
+    }
+
+    .search-wrap {
+        position: relative;
+        width: min(320px, 100%);
+    }
+
+    .search-input {
+        width: 100%;
+        min-height: 40px;
+        padding: 9px 12px 9px 38px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #334155;
+        font-size: 13px;
+    }
+
+    .search-input:focus {
+        border-color: #2563eb;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 14px;
     }
 
     .table-wrapper {
@@ -230,6 +265,31 @@
         white-space: normal !important;
     }
 
+    .search-empty-state {
+        display: none;
+        padding: 48px 20px;
+        text-align: center;
+        background: #f8fafc;
+        border-top: 1px solid #e8edf5;
+    }
+
+    .search-empty-state i {
+        font-size: 2rem;
+        color: #94a3b8;
+    }
+
+    .search-empty-state h4 {
+        margin: 14px 0 8px;
+        font-size: 18px;
+        color: #1e293b;
+    }
+
+    .search-empty-state p {
+        margin: 0;
+        color: #64748b;
+        font-size: 14px;
+    }
+
     .room-pagination {
         display: flex;
         justify-content: center;
@@ -331,17 +391,22 @@
     </div>
 
     @if(session('username') || session('password_awal'))
-        <div class="account-info">
-            <strong>Username:</strong> {{ session('username') }}
-            <br>
-            <strong>Password awal:</strong> {{ session('password_awal') }}
-        </div>
+    <div class="account-info">
+        <strong>Username:</strong> {{ session('username') }}
+        <br>
+        <strong>Password awal:</strong> {{ session('password_awal') }}
+    </div>
     @endif
 
     <div class="data-card">
 
         <div class="data-card-header">
             <h2 class="data-card-title">Data Guru</h2>
+
+            <div class="search-wrap">
+                <i class="bi bi-search search-icon"></i>
+                <input type="search" id="guruSearch" class="search-input" placeholder="Cari NIP, nama, email, alamat..." autocomplete="off">
+            </div>
         </div>
 
         <div class="table-wrapper">
@@ -367,103 +432,145 @@
 
                 <tbody>
                     @forelse($gurus as $guru)
-                        <tr>
-                            <td class="number-cell">
-                                {{ $gurus->firstItem() + $loop->index }}
-                            </td>
+                    <tr data-search="{{ strtolower($guru->nip . ' ' . $guru->nama . ' ' . ($guru->email ?? '') . ' ' . ($guru->alamat ?? '')) }}">
+                        <td class="number-cell">
+                            {{ $gurus->firstItem() + $loop->index }}
+                        </td>
 
-                            <td class="nip-cell">
-                                {{ $guru->nip }}
-                            </td>
+                        <td class="nip-cell">
+                            {{ $guru->nip }}
+                        </td>
 
-                            <td class="name-cell">
-                                {{ $guru->nama }}
-                            </td>
+                        <td class="name-cell">
+                            {{ $guru->nama }}
+                        </td>
 
-                            <td>
-                                {{ $guru->jk }}
-                            </td>
+                        <td>
+                            {{ $guru->jk }}
+                        </td>
 
-                            <td>
-                                {{ optional($guru->tgl_lahir)->format('d-m-Y') }}
-                            </td>
+                        <td>
+                            {{ optional($guru->tgl_lahir)->format('d-m-Y') }}
+                        </td>
 
-                            <td>
-                                {{ $guru->agama }}
-                            </td>
+                        <td>
+                            {{ $guru->agama }}
+                        </td>
 
-                            <td>
-                                {{ $guru->alamat }}
-                            </td>
+                        <td>
+                            {{ $guru->alamat }}
+                        </td>
 
-                            <td>
-                                {{ $guru->no_hp }}
-                            </td>
+                        <td>
+                            {{ $guru->no_hp }}
+                        </td>
 
-                            <td class="email-cell">
-                                {{ $guru->email }}
-                            </td>
+                        <td class="email-cell">
+                            {{ $guru->email }}
+                        </td>
 
-                            <td>
-                                <span class="status-badge">
-                                    {{ str_replace('_', ' ', $guru->status_kepegawaian) }}
-                                </span>
-                            </td>
+                        <td>
+                            <span class="status-badge">
+                                {{ str_replace('_', ' ', $guru->status_kepegawaian) }}
+                            </span>
+                        </td>
 
-                            <td>
-                                <span class="status-badge">
-                                    {{ str_replace('_', ' ', $guru->jabatan) }}
-                                </span>
-                            </td>
+                        <td>
+                            <span class="status-badge">
+                                {{ str_replace('_', ' ', $guru->jabatan) }}
+                            </span>
+                        </td>
 
-                            <td>
-                                {{ optional($guru->tmt)->format('d-m-Y') }}
-                            </td>
+                        <td>
+                            {{ optional($guru->tmt)->format('d-m-Y') }}
+                        </td>
 
-                            <td>
-                                @if(optional($guru->mataPelajaran)->nama_mapel)
-                                    <span class="mapel-badge">
-                                        {{ $guru->mataPelajaran->nama_mapel }}
-                                    </span>
-                                @else
-                                    <span class="text-muted">-</span>
-                                @endif
-                            </td>
+                        <td>
+                            @if(optional($guru->mataPelajaran)->nama_mapel)
+                            <span class="mapel-badge">
+                                {{ $guru->mataPelajaran->nama_mapel }}
+                            </span>
+                            @else
+                            <span class="text-muted">-</span>
+                            @endif
+                        </td>
 
-                            <td>
-                                <div class="action-wrapper">
-                                    <a href="{{ route('guru.edit', $guru->id) }}" class="btn-action btn-edit">
-                                        Edit
-                                    </a>
+                        <td>
+                            <div class="action-wrapper">
+                                <a href="{{ route('guru.edit', $guru->id) }}" class="btn-action btn-edit">
+                                    Edit
+                                </a>
 
-                                    <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" class="delete-form">
-                                        @csrf
-                                        @method('DELETE')
+                                <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" class="delete-form">
+                                    @csrf
+                                    @method('DELETE')
 
-                                        <button type="submit" class="btn-action btn-delete" onclick="return confirm('Hapus data guru?')">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
+                                    <button type="submit" class="btn-action btn-delete" onclick="return confirm('Hapus data guru?')">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
                     @empty
-                        <tr>
-                            <td colspan="14" class="empty-state">
-                                Belum ada data guru.
-                            </td>
-                        </tr>
+                    <tr>
+                        <td colspan="14" class="empty-state">
+                            Belum ada data guru.
+                        </td>
+                    </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        <div class="room-pagination">
+        <div id="guruEmptyState" class="search-empty-state" aria-live="polite">
+            <i class="bi bi-search"></i>
+            <h4>Guru tidak ditemukan</h4>
+            <p>Coba cari dengan kata kunci lain atau reset pencarian.</p>
+        </div>
+
+        <div class="room-pagination" id="guruPagination">
             {{ $gurus->links('pagination::bootstrap-5') }}
         </div>
 
     </div>
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('guruSearch');
+        const rows = Array.from(document.querySelectorAll('.guru-table tbody tr[data-search]'));
+        const emptyState = document.getElementById('guruEmptyState');
+        const pagination = document.getElementById('guruPagination');
+
+        if (!searchInput || rows.length === 0) {
+            return;
+        }
+
+        const applySearch = () => {
+            const keyword = searchInput.value.trim().toLowerCase();
+            let visible = 0;
+
+            rows.forEach(function(row) {
+                const haystack = (row.dataset.search || '').toLowerCase();
+                const match = keyword === '' || haystack.includes(keyword);
+                row.style.display = match ? '' : 'none';
+                if (match) visible++;
+            });
+
+            if (emptyState) {
+                emptyState.style.display = visible === 0 ? 'block' : 'none';
+            }
+
+            if (pagination) {
+                pagination.style.display = visible <= 10 ? 'none' : 'flex';
+            }
+        };
+
+        searchInput.addEventListener('input', applySearch);
+        applySearch();
+    });
+</script>
 
 @endsection

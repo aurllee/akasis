@@ -13,8 +13,14 @@
         </a>
 
         <div class="menu-title">Informasi</div>
-        <a href="{{ route('siswa.nilai.index') }}"><i class="bi bi-bar-chart" aria-hidden="true"></i>Nilai</a>
-        <a href="{{ route('siswa.jadwal.index') }}"><i class="bi bi-calendar3" aria-hidden="true"></i>Jadwal</a>
+        <a href="{{ route('siswa.nilai.index') }}"
+            class="{{ request()->routeIs('siswa.nilai.*') ? 'active' : '' }}">
+            <i class="bi bi-bar-chart" aria-hidden="true"></i><span>Nilai</span>
+        </a>
+        <a href="{{ route('siswa.jadwal.index') }}"
+            class="{{ request()->routeIs('siswa.jadwal.*') ? 'active' : '' }}">
+            <i class="bi bi-calendar3" aria-hidden="true"></i><span>Jadwal</span>
+        </a>
 
         <div class="menu-title">Perizinan</div>
         <a href="{{ route('siswa.absensi.index') }}"

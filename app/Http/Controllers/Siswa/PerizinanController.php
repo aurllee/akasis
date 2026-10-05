@@ -160,7 +160,7 @@ class PerizinanController extends Controller
                 ->with('error', 'Perizinan ini sudah tidak dapat diedit.');
         }
 
-        return view('siswa.perizinan.create', compact('perizinan'));
+        return view('siswa.perizinan.sakit-create', compact('perizinan'));
     }
     public function update(Request $request, $id)
     {
@@ -170,7 +170,7 @@ class PerizinanController extends Controller
             ->where('siswa_id', $siswa->id)
             ->firstOrFail();
         if (
-            $perizinan->jenis !== 'sakit' ||
+            !in_array($perizinan->jenis, ['sakit', 'izin'], true) ||
             $perizinan->status !== 'menunggu'
         ) {
             return redirect()
@@ -191,13 +191,14 @@ class PerizinanController extends Controller
         ]);
 
         $data = [
+            'jenis' => $request->jenis,
             'tanggal' => $request->tanggal,
             'alasan' => $request->alasan,
         ];
         if ($request->hasFile('dokumen')) {
 
             $dokumenBaru = $request->file('dokumen')
-                ->store('dokumen-sakit', 'public');
+                ->store('dokumen-' . $request->jenis, 'public');
             if ($perizinan->dokumen) {
                 Storage::disk('public')->delete($perizinan->dokumen);
             }

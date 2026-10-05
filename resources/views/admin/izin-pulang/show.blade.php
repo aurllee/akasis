@@ -376,16 +376,16 @@
                     </td>
                 </tr>
 
-                    <tr>
-                        <th>JP Pulang</th>
-                        <td>
-                            @if ($jenisValue === 'pulang' && ($izinPulang->jp_pulang ?? null))
-                                JP {{ $izinPulang->jp_pulang }}
-                            @else
-                                <span class="text-muted">-</span>
-                            @endif
-                        </td>
-                    </tr>
+                <tr>
+                    <th>JP Pulang</th>
+                    <td>
+                        @if ($jenisValue === 'pulang' && ($izinPulang->jp_pulang ?? null))
+                        JP {{ $izinPulang->jp_pulang }}
+                        @else
+                        <span class="text-muted">-</span>
+                        @endif
+                    </td>
+                </tr>
 
                 <tr>
                     <th>Alasan</th>

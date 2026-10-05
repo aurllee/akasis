@@ -140,18 +140,14 @@
         <h1>Tambah Pembagian Kelas</h1>
         <p class="academic-create__description">Pilih siswa dan kelas untuk membuat pembagian kelas baru.</p>
 
-        @if (session('error'))
-            <div class="academic-create__error" role="alert">{{ session('error') }}</div>
-        @endif
-
         @if ($errors->any())
-            <div class="academic-create__error" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
+        <div class="error">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
         @endif
 
         <form action="{{ route('pembagian_kelas.store') }}" method="POST">
@@ -162,10 +158,9 @@
                 <select name="siswa_id" id="siswa_id" required>
                     <option value="">-- Pilih Siswa --</option>
                     @foreach ($siswa as $item)
-                        <option value="{{ $item->id }}" data-jurusan-id="{{ $item->jurusan_id }}"
-                            {{ old('siswa_id') == $item->id ? 'selected' : '' }}>
-                            {{ $item->nisn }} - {{ $item->nama_lengkap }}
-                        </option>
+                    <option value="{{ $item->id }}" data-jurusan-id="{{ $item->jurusan_id ?? '' }}" {{ old('siswa_id') == $item->id ? 'selected' : '' }}>
+                        {{ $item->nisn }} - {{ $item->nama_lengkap }}
+                    </option>
                     @endforeach
                 </select>
             </div>
@@ -175,11 +170,10 @@
                 <select name="kelas_id" id="kelas_id" required>
                     <option value="">-- Pilih Kelas --</option>
                     @foreach ($kelas as $item)
-                        <option value="{{ $item->id }}" data-jurusan-id="{{ $item->jurusan_id }}"
-                            {{ old('kelas_id') == $item->id ? 'selected' : '' }}>
-                            {{ $item->tingkat }} {{ $item->nama_kelas }}
-                            - {{ $item->jurusan?->nama_jurusan ?? 'Jurusan belum dipilih' }}
-                        </option>
+                    <option value="{{ $item->id }}" data-jurusan-id="{{ $item->jurusan_id ?? '' }}" {{ old('kelas_id') == $item->id ? 'selected' : '' }}>
+                        {{ $item->tingkat }} {{ $item->nama_kelas }}
+                        - {{ $item->jurusan?->nama_jurusan ?? 'Jurusan belum dipilih' }}
+                    </option>
                     @endforeach
                 </select>
             </div>
@@ -194,50 +188,50 @@
 @endsection
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const siswaSelect = document.getElementById('siswa_id');
-    const kelasSelect = document.getElementById('kelas_id');
+    document.addEventListener('DOMContentLoaded', function() {
+        const siswaSelect = document.getElementById('siswa_id');
+        const kelasSelect = document.getElementById('kelas_id');
 
-    const semuaKelas = Array.from(
-        kelasSelect.querySelectorAll('option[data-jurusan-id]')
-    );
+        const semuaKelas = Array.from(
+            kelasSelect.querySelectorAll('option[data-jurusan-id]')
+        );
 
-    siswaSelect.addEventListener('change', function () {
-        const selectedSiswa = this.options[this.selectedIndex];
+        siswaSelect.addEventListener('change', function() {
+            const selectedSiswa = this.options[this.selectedIndex];
 
-        const jurusanId = selectedSiswa
-            ? selectedSiswa.dataset.jurusanId
-            : '';
+            const jurusanId = selectedSiswa ?
+                selectedSiswa.dataset.jurusanId :
+                '';
 
-        kelasSelect.innerHTML = '';
+            kelasSelect.innerHTML = '';
 
-        if (!jurusanId) {
-            kelasSelect.disabled = true;
+            if (!jurusanId) {
+                kelasSelect.disabled = true;
 
-            const option = document.createElement('option');
-            option.value = '';
-            option.textContent = '-- Pilih Siswa Terlebih Dahulu --';
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = '-- Pilih Siswa Terlebih Dahulu --';
 
-            kelasSelect.appendChild(option);
-            return;
-        }
-
-        kelasSelect.disabled = false;
-
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '';
-        defaultOption.textContent = '-- Pilih Kelas --';
-
-        kelasSelect.appendChild(defaultOption);
-
-        semuaKelas.forEach(function (kelas) {
-            if (kelas.dataset.jurusanId === jurusanId) {
-                kelasSelect.appendChild(kelas.cloneNode(true));
+                kelasSelect.appendChild(option);
+                return;
             }
+
+            kelasSelect.disabled = false;
+
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = '-- Pilih Kelas --';
+
+            kelasSelect.appendChild(defaultOption);
+
+            semuaKelas.forEach(function(kelas) {
+                if (kelas.dataset.jurusanId === jurusanId) {
+                    kelasSelect.appendChild(kelas.cloneNode(true));
+                }
+            });
         });
+        if (siswaSelect.value) {
+            siswaSelect.dispatchEvent(new Event('change'));
+        }
     });
-    if (siswaSelect.value) {
-        siswaSelect.dispatchEvent(new Event('change'));
-    }
-});
 </script>

@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('content')
@@ -18,11 +17,9 @@
     }
 
     .card-header-absen {
-        background: linear-gradient(
-            135deg,
-            var(--brand) 0%,
-            var(--brand-dark) 100%
-        );
+        background: linear-gradient(135deg,
+                var(--brand) 0%,
+                var(--brand-dark) 100%);
         color: #fff;
         padding: 1.25rem 1.5rem;
     }
@@ -99,8 +96,7 @@
                         type="date"
                         name="tanggal"
                         value="{{ $tanggal ?? now()->format('Y-m-d') }}"
-                        class="form-control"
-                    >
+                        class="form-control">
                 </div>
 
                 <div class="col-auto">
@@ -110,12 +106,6 @@
                 </div>
 
             </form>
-
-            @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
 
             <div class="table-responsive">
 
@@ -136,68 +126,68 @@
 
                         @forelse($absensi as $i => $absen)
 
-                            @php
-                                $nama = $absen->nama ?? $absen['nama'] ?? '-';
-                                $tanggalAbsen = $absen->tanggal ?? $absen['tanggal'] ?? null;
-                                $keterangan = $absen->keterangan ?? $absen['keterangan'] ?? '-';
-                                $alasan = $absen->alasan ?? $absen['alasan'] ?? '-';
+                        @php
+                        $nama = $absen->nama ?? $absen['nama'] ?? '-';
+                        $tanggalAbsen = $absen->tanggal ?? $absen['tanggal'] ?? null;
+                        $keterangan = $absen->keterangan ?? $absen['keterangan'] ?? '-';
+                        $alasan = $absen->alasan ?? $absen['alasan'] ?? '-';
 
-                                $ket = strtolower($keterangan);
+                        $ket = strtolower($keterangan);
 
-                                $badgeClass = match($ket) {
-                                    'hadir' => 'badge-hadir',
-                                    'sakit' => 'badge-sakit',
-                                    'izin'  => 'badge-izin',
-                                    'alpa', 'alfa' => 'badge-alpa',
-                                    default => 'bg-secondary',
-                                };
-                            @endphp
+                        $badgeClass = match($ket) {
+                        'hadir' => 'badge-hadir',
+                        'sakit' => 'badge-sakit',
+                        'izin' => 'badge-izin',
+                        'alpa', 'alfa' => 'badge-alpa',
+                        default => 'bg-secondary',
+                        };
+                        @endphp
 
-                            <tr>
+                        <tr>
 
-                                <td>{{ $i + 1 }}</td>
+                            <td>{{ $i + 1 }}</td>
 
-                                <td>{{ $nama }}</td>
+                            <td>{{ $nama }}</td>
 
-                                <td>
-                                    @if($tanggalAbsen)
-                                        {{ \Carbon\Carbon::parse($tanggalAbsen)
+                            <td>
+                                @if($tanggalAbsen)
+                                {{ \Carbon\Carbon::parse($tanggalAbsen)
                                             ->locale('id')
                                             ->translatedFormat('l, d/m/Y') }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
+                                @else
+                                -
+                                @endif
+                            </td>
 
-<td>
-                                        @if ($absen->dokumen)
-                                            <a href="{{ asset('storage/' . $absen->dokumen) }}" target="_blank"
-                                                class="btn btn-sm btn-outline-secondary">
-                                                <i class="bi bi-file-earmark me-1"></i>Lihat
-                                            </a>
-                                        @else
-                                            <span class="text-muted">-</span>
-                                        @endif
-                                    </td>
-                                <td>
-                                    <span class="badge {{ $badgeClass }}">
-                                        {{ ucfirst($keterangan) }}
-                                    </span>
-                                </td>
+                            <td>
+                                @if ($absen->dokumen)
+                                <a href="{{ asset('storage/' . $absen->dokumen) }}" target="_blank"
+                                    class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-file-earmark me-1"></i>Lihat
+                                </a>
+                                @else
+                                <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td>
+                                <span class="badge {{ $badgeClass }}">
+                                    {{ ucfirst($keterangan) }}
+                                </span>
+                            </td>
 
-                                <td>
-                                    {{ $alasan }}
-                                </td>
+                            <td>
+                                {{ $alasan }}
+                            </td>
 
-                            </tr>
+                        </tr>
 
                         @empty
 
-                            <tr>
-                                <td colspan="6" class="text-center text-muted py-3">
-                                    Belum ada data absen untuk tanggal ini.
-                                </td>
-                            </tr>
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-3">
+                                Belum ada data absen untuk tanggal ini.
+                            </td>
+                        </tr>
 
                         @endforelse
 
@@ -213,4 +203,3 @@
 </div>
 
 @endsection
-

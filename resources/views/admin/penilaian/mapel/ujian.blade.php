@@ -116,8 +116,7 @@
             'kelasId' => $kelas->id,
             'mapelId' => $mataPelajaran->id
         ]) }}"
-        class="btn-back-link"
-    >
+        class="btn-back-link">
         <i class="bi bi-arrow-left"></i>
         Kembali ke Jenis Penilaian
     </a>
@@ -134,7 +133,7 @@
                 {{ $kelas->tingkat }} {{ $kelas->nama_kelas }}
 
                 @if($kelas->jurusan)
-                    — {{ $kelas->jurusan->nama_jurusan }}
+                — {{ $kelas->jurusan->nama_jurusan }}
                 @endif
             </p>
 
@@ -146,8 +145,7 @@
                 'mapelId' => $mataPelajaran->id,
                 'jenis_nilai' => 'ujian'
             ]) }}"
-            class="btn-action-primary"
-        >
+            class="btn-action-primary">
             <i class="bi bi-plus-lg"></i>
             Tambah Penilaian
         </a>
@@ -167,8 +165,7 @@
                 id="searchUjian"
                 class="form-control"
                 placeholder="Nama, NIS, atau NISN"
-                autocomplete="off"
-            >
+                autocomplete="off">
         </div>
     </div>
 
@@ -193,7 +190,6 @@
                         <th class="ps-4">No</th>
                         <th>NIS</th>
                         <th>Siswa</th>
-                        <th>Judul Tugas</th>
                         <th>Nilai</th>
                         <th>Tanggal</th>
                         <th class="text-end pe-4">Aksi</th>
@@ -218,10 +214,6 @@
 
                             <td class="fw-semibold">
                                 {{ $item->siswa?->nama ?? '-' }}
-                            </td>
-
-                            <td>
-                                {{ $item->judul_tugas ?: 'Ujian' }}
                             </td>
 
                             <td>
@@ -280,42 +272,22 @@
                                     </form>
 
                                 </div>
-
-                            </td>
-
-                        </tr>
-
+                            @else
+                                <span class="text-muted">-</span>
+                            @endif
+                        </td>
+                    </tr>
                     @empty
 
-                        <tr>
+                    <tr>
 
-                            <td colspan="6" class="text-center py-5">
+                        <td colspan="{{ 4 + max($jenisPenilaian->count(), 1) }}" class="text-center py-5">
+                            <i class="bi bi-people fs-1 text-muted"></i>
+                            <h6 class="mt-3">Belum ada siswa di kelas ini</h6>
 
-                                <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+                        </td>
 
-                                <h6 class="mt-3">
-                                    Belum ada penilaian ujian
-                                </h6>
-
-                                <p class="text-muted small">
-                                    Belum ada data nilai ujian.
-                                </p>
-
-                                <a
-                                    href="{{ route('admin.penilaian.mapel.create', [
-                                        'kelasId' => $kelas->id,
-                                        'mapelId' => $mataPelajaran->id,
-                                        'jenis_nilai' => 'ujian'
-                                    ]) }}"
-                                    class="btn-action-primary"
-                                >
-                                    <i class="bi bi-plus-lg"></i>
-                                    Tambah Penilaian
-                                </a>
-
-                            </td>
-
-                        </tr>
+                    </tr>
 
                     @endforelse
 
@@ -333,18 +305,18 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('searchUjian');
         const tableBody = document.getElementById('ujianTableBody');
 
         if (!searchInput || !tableBody) return;
 
-        searchInput.addEventListener('input', function () {
+        searchInput.addEventListener('input', function() {
             const keyword = searchInput.value.trim().toLowerCase();
             const rows = tableBody.querySelectorAll('.assessment-row');
             let visibleCount = 0;
 
-            rows.forEach(function (row) {
+            rows.forEach(function(row) {
                 const matches = !keyword || (row.dataset.search || '').includes(keyword);
                 row.style.display = matches ? '' : 'none';
                 if (matches) visibleCount++;
@@ -356,7 +328,8 @@
             if (rows.length > 0 && visibleCount === 0) {
                 const emptyRow = document.createElement('tr');
                 emptyRow.className = 'live-search-empty';
-                emptyRow.innerHTML = '<td colspan="6" class="text-center py-5"><i class="bi bi-search fs-1 text-muted"></i><h6 class="mt-3">Siswa tidak ditemukan</h6><p class="text-muted small mb-0">Coba kata kunci lain.</p></td>';
+                const columnCount = tableBody.closest('table').querySelectorAll('thead th').length;
+                emptyRow.innerHTML = `<td colspan="${columnCount}" class="text-center py-5"><i class="bi bi-search fs-1 text-muted"></i><h6 class="mt-3">Siswa tidak ditemukan</h6><p class="text-muted small mb-0">Coba kata kunci lain.</p></td>`;
                 tableBody.appendChild(emptyRow);
             }
         });

@@ -74,7 +74,7 @@ class PenilaianController extends Controller
 
         $request->validate([
             'jenis_nilai' => 'required|in:harian,ujian',
-            'judul_tugas' => 'required|string|max:255',
+            'judul_tugas' => 'nullable|string|max:255',
             'nilai' => 'required|array',
             'nilai.*' => 'nullable|numeric|min:0|max:100',
             'tanggal_penilaian' => 'required|date',

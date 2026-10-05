@@ -14,67 +14,67 @@ use Illuminate\Validation\ValidationException;
 
 class SpmbController extends Controller
 {
-   
+
 
     public function index(Request $request)
-{
-    $query = CalonSiswa::with('jurusan')
-        ->notAssignedToClass();
-
-  
-    if ($request->filled('search')) {
-        $search = $request->search;
-
-        $query->where(function ($q) use ($search) {
-            $q->where('nama_lengkap', 'like', "%{$search}%")
-              ->orWhere('no_pendaftaran', 'like', "%{$search}%")
-              ->orWhere('nisn', 'like', "%{$search}%")
-              ->orWhere('nik', 'like', "%{$search}%");
-        });
-    }
+    {
+        $query = CalonSiswa::with('jurusan')
+            ->notAssignedToClass();
 
 
-    if ($request->filled('jurusan_id')) {
-        $query->where('jurusan_id', $request->jurusan_id);
-    }
+        if ($request->filled('search')) {
+            $search = $request->search;
 
- 
-    if ($request->filled('jalur_pendaftaran')) {
-        $query->where(
-            'jalur_pendaftaran',
-            $request->jalur_pendaftaran
-        );
-    }
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                    ->orWhere('no_pendaftaran', 'like', "%{$search}%")
+                    ->orWhere('nisn', 'like', "%{$search}%")
+                    ->orWhere('nik', 'like', "%{$search}%");
+            });
+        }
 
 
-    if ($request->filled('status_daftar_ulang')) {
-        $query->where(
-            'status_daftar_ulang',
-            $request->status_daftar_ulang
-        );
-    }
+        if ($request->filled('jurusan_id')) {
+            $query->where('jurusan_id', $request->jurusan_id);
+        }
 
-    $calonSiswa = $query
-        ->latest('id')
-        ->paginate(10)
-        ->appends($request->query());
 
-    $jurusan = Jurusan::orderBy('nama_jurusan')->get();
+        if ($request->filled('jalur_pendaftaran')) {
+            $query->where(
+                'jalur_pendaftaran',
+                $request->jalur_pendaftaran
+            );
+        }
 
-    if ($request->ajax()) {
+
+        if ($request->filled('status_daftar_ulang')) {
+            $query->where(
+                'status_daftar_ulang',
+                $request->status_daftar_ulang
+            );
+        }
+
+        $calonSiswa = $query
+            ->latest('id')
+            ->paginate(10)
+            ->appends($request->query());
+
+        $jurusan = Jurusan::orderBy('nama_jurusan')->get();
+
+        if ($request->ajax()) {
+            return view('admin.spmb.index', compact(
+                'calonSiswa',
+                'jurusan'
+            ));
+        }
+
         return view('admin.spmb.index', compact(
             'calonSiswa',
             'jurusan'
         ));
     }
 
-    return view('admin.spmb.index', compact(
-        'calonSiswa',
-        'jurusan'
-    ));
-}
 
-    
 
     public function create()
     {
@@ -86,7 +86,7 @@ class SpmbController extends Controller
         );
     }
 
-   
+
     public function store(Request $request)
     {
         try {
@@ -205,7 +205,7 @@ class SpmbController extends Controller
             );
     }
 
-    
+
 
     public function show($id)
     {
@@ -220,7 +220,7 @@ class SpmbController extends Controller
         );
     }
 
-    
+
     public function edit($id)
     {
         $calonSiswa = CalonSiswa::with('jurusan')
@@ -235,7 +235,7 @@ class SpmbController extends Controller
         ));
     }
 
-    
+
     public function update(Request $request, $id)
     {
         $calonSiswa = CalonSiswa::findOrFail($id);
@@ -358,7 +358,7 @@ class SpmbController extends Controller
             );
     }
 
-    
+
     public function destroy($id)
     {
         $calonSiswa = CalonSiswa::with('dokumen')
@@ -389,44 +389,44 @@ class SpmbController extends Controller
     }
 
 
- 
+
     public function verifikasiSemuaDokumen(Request $request, $id)
-{
-    $request->validate([
-        'dokumen' => 'required|array',
-        'dokumen.*.status' => 'required|in:Belum Diverifikasi,Valid,Tidak Valid',
-        'dokumen.*.catatan' => 'nullable|string|max:1000',
-    ]);
+    {
+        $request->validate([
+            'dokumen' => 'required|array',
+            'dokumen.*.status' => 'required|in:Belum Diverifikasi,Valid,Tidak Valid',
+            'dokumen.*.catatan' => 'nullable|string|max:1000',
+        ]);
 
-    DB::transaction(function () use ($request, $id) {
-        $calonSiswa = CalonSiswa::with('dokumen')->findOrFail($id);
+        DB::transaction(function () use ($request, $id) {
+            $calonSiswa = CalonSiswa::with('dokumen')->findOrFail($id);
 
-        foreach ($request->dokumen as $dokumenId => $data) {
-            $dokumen = DokumenCalonSiswa::where('id', $dokumenId)
-                ->where('calon_siswa_id', $calonSiswa->id)
-                ->first();
+            foreach ($request->dokumen as $dokumenId => $data) {
+                $dokumen = DokumenCalonSiswa::where('id', $dokumenId)
+                    ->where('calon_siswa_id', $calonSiswa->id)
+                    ->first();
 
-            if (!$dokumen) {
-                continue;
+                if (!$dokumen) {
+                    continue;
+                }
+
+                $dokumen->update([
+                    'status' => $data['status'],
+                    'catatan' => $data['catatan'] ?? null,
+                    'verifikator_id' => auth()->id(),
+                    'tanggal_verifikasi' => now(),
+                ]);
             }
 
-            $dokumen->update([
-                'status' => $data['status'],
-                'catatan' => $data['catatan'] ?? null,
-                'verifikator_id' => auth()->id(),
-                'tanggal_verifikasi' => now(),
-            ]);
-        }
+            $this->updateStatusDaftarUlang($calonSiswa->fresh('dokumen'));
+        });
 
-        $this->updateStatusDaftarUlang($calonSiswa->fresh('dokumen'));
-    });
+        return redirect()
+            ->route('admin.spmb.show', $id)
+            ->with('success', 'Verifikasi seluruh dokumen berhasil disimpan.');
+    }
 
-    return redirect()
-        ->route('admin.spmb.show', $id)
-        ->with('success', 'Verifikasi seluruh dokumen berhasil disimpan.');
-}
 
-   
     public function verifikasiDaftarUlang($id)
     {
         $calonSiswa = CalonSiswa::with('dokumen')
@@ -464,7 +464,7 @@ class SpmbController extends Controller
         );
     }
 
-   
+
 
     private function updateStatusDaftarUlang(
         CalonSiswa $calonSiswa

@@ -145,7 +145,7 @@
                 <div class="penilaian-filter mb-3">
                     <label for="judul_tugas" class="form-label fw-semibold">Judul Tugas</label>
                     <input type="text" name="judul_tugas" id="judul_tugas" class="form-control"
-                        value="{{ old('judul_tugas') }}" placeholder="Contoh: Tugas 1, Ulangan Harian 1, Quiz Materi..." required>
+                        value="{{ old('judul_tugas') }}" placeholder="Contoh: Tugas 1, Ulangan Harian 1, Quiz Materi...">
                 </div>
 
                 <div class="penilaian-filter mb-4">

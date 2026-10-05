@@ -396,16 +396,16 @@
 
     <div class="page-card">
 
-        <a
-            href="{{ route('admin.penilaian.mapel.mapel', [
-                'kelasId' => $kelas->id,
-                'mapelId' => $mataPelajaran->id
-            ]) }}"
-            class="btn-back"
-        >
-            <i class="bi bi-arrow-left"></i>
-            Kembali ke Jenis Penilaian
-        </a>
+    <a
+        href="{{ route('admin.penilaian.mapel.mapel', [
+            'kelasId' => $kelas->id,
+            'mapelId' => $mataPelajaran->id
+        ]) }}"
+        class="btn-back-link"
+    >
+        <i class="bi bi-arrow-left"></i>
+        Kembali ke Jenis Penilaian
+    </a>
 
         <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -421,106 +421,44 @@
                     {{ $kelas->tingkat }}
                     {{ $kelas->nama_kelas }}
 
-                    @if($kelas->jurusan)
-                        — {{ $kelas->jurusan->nama_jurusan }}
-                    @endif
-                </p>
+                @if($kelas->jurusan)
+                    — {{ $kelas->jurusan->nama_jurusan }}
+                @endif
+            </p>
 
             </div>
 
-            <a
-                href="{{ route('admin.penilaian.mapel.create', [
-                    'kelasId' => $kelas->id,
-                    'mapelId' => $mataPelajaran->id,
-                    'jenis_nilai' => 'harian'
-                ]) }}"
-                class="btn btn-primary"
+        <a
+            href="{{ route('admin.penilaian.mapel.create', [
+                'kelasId' => $kelas->id,
+                'mapelId' => $mataPelajaran->id,
+                'jenis_nilai' => 'harian'
+            ]) }}"
+            class="btn-action-primary"
+        >
+            <i class="bi bi-plus-lg"></i>
+            Tambah Penilaian
+        </a>
+
+        </div>
+
+    <div class="academic-card">
+        <label for="searchHarian" class="form-label fw-semibold text-secondary">
+            Cari Siswa
+        </label>
+        <div class="input-group">
+            <span class="input-group-text bg-white">
+                <i class="bi bi-search text-muted"></i>
+            </span>
+            <input
+                type="search"
+                id="searchHarian"
+                class="form-control"
+                placeholder="Nama, NIS, atau NISN"
+                autocomplete="off"
             >
-                + Tambah Penilaian
-            </a>
-
         </div>
-
-        <div class="card mb-4">
-
-            <div class="card-body">
-
-                <div class="row">
-
-                    <div class="col-md-4">
-
-                        <span class="info-label">
-                            Mata Pelajaran
-                        </span>
-
-                        <div class="info-value">
-                            {{ $mataPelajaran->nama_mapel }}
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-4">
-
-                        <span class="info-label">
-                            Kelas
-                        </span>
-
-                        <div class="info-value">
-                            {{ $kelas->tingkat }}
-                            {{ $kelas->jurusan?->kode_jurusan ?? '' }}
-                            {{ $kelas->nama_kelas }}
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-4">
-
-                        <span class="info-label">
-                            Jenis Penilaian
-                        </span>
-
-                        <div class="info-value">
-                            Penilaian Harian
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="card search-card">
-
-            <div class="card-body">
-
-                <label
-                    for="searchHarian"
-                    class="search-label"
-                >
-                    Cari Siswa
-                </label>
-
-                <div class="search-wrapper">
-
-                    <span class="search-icon">
-                        <i class="bi bi-search"></i>
-                    </span>
-
-                    <input
-                        type="search"
-                        id="searchHarian"
-                        class="search-input"
-                        placeholder="Nama, NIS, atau NISN"
-                        autocomplete="off"
-                    >
-
-                </div>
-
-            </div>
-
-        </div>
+    </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
 
@@ -546,52 +484,16 @@
 
                             <tr>
 
-                                <th width="60">
-                                    NO
-                                </th>
+                <thead class="bg-light">
 
-                                <th width="120">
-                                    NIS
-                                </th>
+                    <tr>
 
-                                <th style="min-width: 220px; text-align: left;">
-                                    NAMA SISWA
-                                </th>
-
-                                @foreach($jenisPenilaian as $jenis)
-
-                                    @php
-                                        $tanggalJenis = $jenis->tanggal_penilaian
-                                            ? \Carbon\Carbon::parse($jenis->tanggal_penilaian)->format('d-m-Y')
-                                            : '-';
-
-                                        $judulJenis = $jenis->judul_tugas
-                                            ?: ucfirst($jenis->jenis_nilai ?? 'Penilaian')
-                                                . ' '
-                                                . ($jenis->penilaian_ke ?? '');
-                                    @endphp
-
-                                    <th style="min-width: 150px;">
-
-                                        <div class="assessment-header">
-
-                                            <span class="assessment-header-title">
-                                                {{ trim($judulJenis) }}
-                                            </span>
-
-                                            <span class="assessment-header-date">
-                                                {{ $tanggalJenis }}
-                                            </span>
-
-                                        </div>
-
-                                    </th>
-
-                                @endforeach
-
-                                <th width="170">
-                                    AKSI
-                                </th>
+                        <th class="ps-4">No</th>
+                        <th>NIS</th>
+                        <th>Siswa</th>
+                        <th>Nilai</th>
+                        <th>Tanggal</th>
+                        <th class="text-end pe-4">Aksi</th>
 
                             </tr>
 
@@ -599,128 +501,114 @@
 
                         <tbody id="harianTableBody">
 
-                            @forelse($siswa as $index => $item)
+                    @forelse($penilaian as $item)
 
-                                <tr
-                                    class="student-row"
-                                    data-search="{{ strtolower(
-                                        ($item->nama ?? '')
-                                        . ' '
-                                        . ($item->nis ?? '')
-                                        . ' '
-                                        . ($item->nisn ?? '')
-                                    ) }}"
-                                >
+                        <tr class="assessment-row" data-search="{{ strtolower(($item->siswa?->nama ?? '') . ' ' . ($item->siswa?->nis ?? '') . ' ' . ($item->siswa?->nisn ?? '')) }}">
 
-                                    <td class="text-center">
-                                        {{ $index + 1 }}
-                                    </td>
+                            <td class="ps-4">
+                                {{ $loop->iteration }}
+                            </td>
 
-                                    <td class="text-center">
-                                        {{ $item->nis ?? $item->nisn ?? '-' }}
-                                    </td>
+                            <td>
+                                {{ $item->siswa?->nis ?? '-' }}
+                            </td>
 
-                                    <td>
-                                        <span class="student-name">
-                                            {{ $item->nama ?? '-' }}
-                                        </span>
-                                    </td>
+                            <td class="fw-semibold">
+                                {{ $item->siswa?->nama ?? '-' }}
+                            </td>
 
-                                    @foreach($jenisPenilaian as $jenis)
+                            <td>
+                                <strong>
+                                    {{ $item->nilai }}
+                                </strong>
+                            </td>
 
-                                        @php
-                                            $nilai = $penilaian
-                                                ->where('siswa_id', $item->id)
-                                                ->first(function ($data) use ($jenis) {
-                                                    return
-                                                        $data->jenis_nilai === $jenis->jenis_nilai &&
-                                                        $data->tanggal_penilaian == $jenis->tanggal_penilaian &&
-                                                        $data->judul_tugas === $jenis->judul_tugas &&
-                                                        $data->penilaian_ke == $jenis->penilaian_ke;
-                                                });
-                                        @endphp
+                            <td>
 
-                                        <td class="nilai">
-                                            {{ $nilai->nilai ?? '-' }}
-                                        </td>
+                                {{
+                                    $item->tanggal_penilaian?->format('d/m/Y')
+                                    ?? $item->created_at?->format('d/m/Y')
+                                    ?? '-'
+                                }}
 
-                                    @endforeach
+                            </td>
 
-                                    <td>
+                            <td class="text-end pe-4">
 
-                                        <div class="action-wrapper">
+                                <div class="d-inline-flex gap-2">
 
-                                            @foreach($jenisPenilaian as $jenis)
+                                    <a
+                                        href="{{ route('admin.penilaian.mapel.edit', [
+                                            'kelasId' => $kelas->id,
+                                            'mapelId' => $mataPelajaran->id,
+                                            'id' => $item->id
+                                        ]) }}"
+                                        class="btn-action-edit"
+                                    >
+                                        <i class="bi bi-pencil"></i>
+                                        Edit
+                                    </a>
 
-                                                @php
-                                                    $nilaiItem = $penilaian
-                                                        ->where('siswa_id', $item->id)
-                                                        ->first(function ($data) use ($jenis) {
-                                                            return
-                                                                $data->jenis_nilai === $jenis->jenis_nilai &&
-                                                                $data->tanggal_penilaian == $jenis->tanggal_penilaian &&
-                                                                $data->judul_tugas === $jenis->judul_tugas &&
-                                                                $data->penilaian_ke == $jenis->penilaian_ke;
-                                                        });
-                                                @endphp
-
-                                                @if($nilaiItem)
-
-                                                    <a
-                                                        href="{{ route('admin.penilaian.mapel.edit', [
-                                                            'kelasId' => $kelas->id,
-                                                            'mapelId' => $mataPelajaran->id,
-                                                            'id' => $nilaiItem->id
-                                                        ]) }}"
-                                                        class="btn-action-edit"
-                                                        title="Edit {{ $jenis->judul_tugas ?: 'Penilaian' }}"
-                                                    >
-                                                        Edit
-                                                    </a>
-
-                                                @endif
-
-                                            @endforeach
-
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-
-                            @empty
-
-                                <tr>
-
-                                    <td
-                                        colspan="{{ 4 + $jenisPenilaian->count() }}"
-                                        class="empty-data"
+                                    <form
+                                        action="{{ route('admin.penilaian.mapel.destroy', [
+                                            'kelasId' => $kelas->id,
+                                            'mapelId' => $mataPelajaran->id,
+                                            'id' => $item->id
+                                        ]) }}"
+                                        method="POST"
                                     >
 
-                                        <i class="bi bi-clipboard-x"></i>
+                                        @csrf
+                                        @method('DELETE')
 
-                                        <h6>
-                                            Belum ada penilaian harian
-                                        </h6>
-
-                                        <p>
-                                            Belum ada data nilai harian.
-                                        </p>
-
-                                        <a
-                                            href="{{ route('admin.penilaian.mapel.create', [
-                                                'kelasId' => $kelas->id,
-                                                'mapelId' => $mataPelajaran->id,
-                                                'jenis_nilai' => 'harian'
-                                            ]) }}"
-                                            class="btn btn-primary"
+                                        <button
+                                            type="submit"
+                                            class="btn-action-delete"
+                                            onclick="return confirm('Yakin ingin menghapus nilai ini?')"
                                         >
-                                            + Tambah Penilaian
-                                        </a>
+                                            <i class="bi bi-trash"></i>
+                                            Hapus
+                                        </button>
 
-                                    </td>
+                                    </form>
 
-                                </tr>
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+
+                            <td colspan="6" class="text-center py-5">
+
+                                <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+
+                                <h6 class="mt-3">
+                                    Belum ada penilaian harian
+                                </h6>
+
+                                <p class="text-muted small">
+                                    Belum ada data nilai harian.
+                                </p>
+
+                                <a
+                                    href="{{ route('admin.penilaian.mapel.create', [
+                                        'kelasId' => $kelas->id,
+                                        'mapelId' => $mataPelajaran->id,
+                                        'jenis_nilai' => 'harian'
+                                    ]) }}"
+                                    class="btn-action-primary"
+                                >
+                                    <i class="bi bi-plus-lg"></i>
+                                    Tambah Penilaian
+                                </a>
+
+                            </td>
+
+                        </tr>
 
                             @endforelse
 
@@ -743,7 +631,6 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-
         const searchInput = document.getElementById('searchHarian');
         const tableBody = document.getElementById('harianTableBody');
 
@@ -752,7 +639,6 @@
         }
 
         searchInput.addEventListener('input', function () {
-
             const keyword = searchInput.value.trim().toLowerCase();
 
             const rows = tableBody.querySelectorAll('.student-row');
@@ -760,13 +646,7 @@
             let visibleCount = 0;
 
             rows.forEach(function (row) {
-
-                const searchText = row.dataset.search || '';
-
-                const matches =
-                    !keyword ||
-                    searchText.includes(keyword);
-
+                const matches = !keyword || (row.dataset.search || '').includes(keyword);
                 row.style.display = matches ? '' : 'none';
 
                 if (matches) {
@@ -787,18 +667,7 @@
                 const emptyRow = document.createElement('tr');
 
                 emptyRow.className = 'live-search-empty';
-
-                emptyRow.innerHTML = `
-                    <td
-                        colspan="${tableBody.closest('table').querySelectorAll('thead th').length}"
-                        class="empty-data"
-                    >
-                        <i class="bi bi-search"></i>
-                        <h6>Siswa tidak ditemukan</h6>
-                        <p>Coba kata kunci lain.</p>
-                    </td>
-                `;
-
+                emptyRow.innerHTML = '<td colspan="6" class="text-center py-5"><i class="bi bi-search fs-1 text-muted"></i><h6 class="mt-3">Siswa tidak ditemukan</h6><p class="text-muted small mb-0">Coba kata kunci lain.</p></td>';
                 tableBody.appendChild(emptyRow);
             }
 
