@@ -9,6 +9,7 @@ use App\Models\MataPelajaran;
 use App\Models\PenilaianMapel;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PenilaianMapelController extends Controller
 {
@@ -131,6 +132,7 @@ class PenilaianMapelController extends Controller
             'kelas',
             'mataPelajaran',
             'siswa',
+            'penilaian',
             'jenisPenilaian'
         ));
     }
@@ -351,23 +353,18 @@ class PenilaianMapelController extends Controller
         ]);
 
 
-        return redirect()
-            ->route(
-                'admin.penilaian.mapel.mapel',
-                [
-                    'kelasId' => $kelasId,
-                    'mapelId' => $mapelId
-                ]
-            )
-            ->with(
-                'success',
-                'Penilaian berhasil ditambahkan.'
-            );
+        return $this->redirectAfterSave(
+            $request,
+            $kelasId,
+            $mapelId,
+            'Penilaian berhasil ditambahkan.'
+        );
     }
 
 
 
     public function edit(
+        Request $request,
         $kelasId,
         $mapelId,
         $id
@@ -389,13 +386,40 @@ class PenilaianMapelController extends Controller
             ->values();
 
 
-        $penilaian =
-            PenilaianMapel::with([
+        $bulkEdit = $request->boolean('bulk');
+        $jenisNilai = $request->query('jenis_nilai');
+
+        if ($bulkEdit) {
+            abort_unless(in_array($jenisNilai, ['harian', 'ujian'], true), 404);
+
+            $targetSiswa = Siswa::findOrFail($id);
+
+            $penilaian = PenilaianMapel::with([
+                'siswa',
+                'jadwal.guru',
+                'jadwal.mataPelajaran',
+                'jadwal.kelas'
+            ])
+                ->where('siswa_id', $targetSiswa->id)
+                ->where('jenis_nilai', $jenisNilai)
+                ->whereHas('jadwal', function ($query) use ($kelasId, $mapelId) {
+                    $query->where('kelas_id', $kelasId)
+                        ->where('mata_pelajaran_id', $mapelId);
+                })
+                ->orderBy('tanggal_penilaian')
+                ->orderBy('id')
+                ->get();
+
+            abort_if($penilaian->isEmpty(), 404);
+        } else {
+            $targetSiswa = null;
+            $penilaian = PenilaianMapel::with([
                 'siswa',
                 'jadwal.guru',
                 'jadwal.mataPelajaran',
                 'jadwal.kelas'
             ])->findOrFail($id);
+        }
 
 
         $jadwal = Jadwal_Pelajaran::with([
@@ -418,7 +442,10 @@ class PenilaianMapelController extends Controller
                 'mataPelajaran',
                 'penilaian',
                 'jadwal',
-                'siswa'
+                'siswa',
+                'bulkEdit',
+                'jenisNilai',
+                'targetSiswa'
             )
         );
     }
@@ -431,6 +458,15 @@ class PenilaianMapelController extends Controller
         $mapelId,
         $id
     ) {
+
+        if ($request->boolean('bulk')) {
+            return $this->updateStudentScores(
+                $request,
+                $kelasId,
+                $mapelId,
+                $id
+            );
+        }
 
         $penilaian =
             PenilaianMapel::findOrFail($id);
@@ -448,7 +484,7 @@ class PenilaianMapelController extends Controller
             'required|in:harian,ujian',
 
             'judul_tugas' =>
-             'nullable|string|max:255',
+            'nullable|string|max:255',
 
             'tanggal_penilaian' =>
             'required|date',
@@ -482,6 +518,74 @@ class PenilaianMapelController extends Controller
         ]);
 
 
+        return $this->redirectAfterSave(
+            $request,
+            $kelasId,
+            $mapelId,
+            'Penilaian berhasil diperbarui.'
+        );
+    }
+
+    private function updateStudentScores(
+        Request $request,
+        $kelasId,
+        $mapelId,
+        $siswaId
+    ) {
+        $validated = $request->validate([
+            'jenis_nilai' => 'required|in:harian,ujian',
+            'scores' => 'required|array|min:1',
+            'scores.*' => 'required|numeric|min:0|max:100',
+        ]);
+
+        $scores = $validated['scores'];
+        $records = PenilaianMapel::where('siswa_id', $siswaId)
+            ->where('jenis_nilai', $validated['jenis_nilai'])
+            ->whereIn('id', array_keys($scores))
+            ->whereHas('jadwal', function ($query) use ($kelasId, $mapelId) {
+                $query->where('kelas_id', $kelasId)
+                    ->where('mata_pelajaran_id', $mapelId);
+            })
+            ->get()
+            ->keyBy('id');
+
+        abort_unless($records->count() === count($scores), 404);
+
+        DB::transaction(function () use ($records, $scores) {
+            foreach ($records as $record) {
+                $record->update([
+                    'nilai' => $scores[$record->id],
+                ]);
+            }
+        });
+
+        return $this->redirectAfterSave(
+            $request,
+            $kelasId,
+            $mapelId,
+            'Semua nilai siswa berhasil diperbarui.'
+        );
+    }
+
+    private function redirectAfterSave(
+        Request $request,
+        $kelasId,
+        $mapelId,
+        string $message
+    ) {
+        $returnTo = $request->input('return_to');
+
+        if (
+            is_string($returnTo)
+            && str_starts_with($returnTo, '/')
+            && !str_starts_with($returnTo, '//')
+            && !str_contains($returnTo, '\\')
+            && !str_contains($returnTo, "\r")
+            && !str_contains($returnTo, "\n")
+        ) {
+            return redirect()->to($returnTo)->with('success', $message);
+        }
+
         return redirect()
             ->route(
                 'admin.penilaian.mapel.mapel',
@@ -490,19 +594,46 @@ class PenilaianMapelController extends Controller
                     'mapelId' => $mapelId
                 ]
             )
-            ->with(
-                'success',
-                'Penilaian berhasil diperbarui.'
-            );
+            ->with('success', $message);
     }
 
 
 
     public function destroy(
+        Request $request,
         $kelasId,
         $mapelId,
         $id
     ) {
+
+        if ($request->boolean('bulk')) {
+            $validated = $request->validate([
+                'jenis_nilai' => 'required|in:harian,ujian',
+            ]);
+
+            $records = PenilaianMapel::where('siswa_id', $id)
+                ->where('jenis_nilai', $validated['jenis_nilai'])
+                ->whereHas('jadwal', function ($query) use ($kelasId, $mapelId) {
+                    $query->where('kelas_id', $kelasId)
+                        ->where('mata_pelajaran_id', $mapelId);
+                })
+                ->get();
+
+            abort_if($records->isEmpty(), 404);
+
+            DB::transaction(function () use ($records) {
+                foreach ($records as $record) {
+                    $record->delete();
+                }
+            });
+
+            return $this->redirectAfterSave(
+                $request,
+                $kelasId,
+                $mapelId,
+                'Semua nilai siswa berhasil dihapus.'
+            );
+        }
 
         $penilaian =
             PenilaianMapel::findOrFail($id);
@@ -510,17 +641,11 @@ class PenilaianMapelController extends Controller
         $penilaian->delete();
 
 
-        return redirect()
-            ->route(
-                'admin.penilaian.mapel.mapel',
-                [
-                    'kelasId' => $kelasId,
-                    'mapelId' => $mapelId
-                ]
-            )
-            ->with(
-                'success',
-                'Penilaian berhasil dihapus.'
-            );
+        return $this->redirectAfterSave(
+            $request,
+            $kelasId,
+            $mapelId,
+            'Penilaian berhasil dihapus.'
+        );
     }
 }

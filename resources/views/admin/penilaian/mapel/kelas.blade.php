@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Mata Pelajaran ' . $kelas->tingkat . ' ' . $kelas->nama_kelas)
+@section('title', 'Penilaian')
 
 @push('styles')
     <style>
@@ -9,6 +9,7 @@
             color: #212529;
             background: #f5f6fa;
         }
+
         .academic-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -25,16 +26,16 @@
         }
 
         .academic-header h1 {
-            font-size: 20px;
-            font-weight: 700;
-            color: #0f172a;
-            margin: 0 0 4px 0;
+            font-size: 25px;
+            font-weight: 500;
+            color: #1f2937;
+            margin: 0 0 8px;
         }
 
         .academic-header p {
             font-size: 13px;
             color: #64748b;
-            margin: 0;
+            margin: 0 0 20px;
         }
 
         .btn-back-link {
@@ -53,7 +54,7 @@
             color: #2563eb;
         }
 
-       
+
         .filter-section {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -87,7 +88,7 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-     
+
         .btn-action-primary {
             background: #2563eb;
             color: #ffffff;
@@ -129,7 +130,7 @@
             color: #1e293b;
         }
 
-        
+
         .item-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -196,136 +197,138 @@
 @endpush
 
 @section('content')
-<div class="academic-container">
-    <div class="academic-card">
+    <div class="academic-container">
+        <div class="academic-card">
 
-        
-        <a href="{{ route('admin.penilaian.mapel.index') }}" class="btn-back-link">
-            <i class="bi bi-arrow-left"></i> Kembali ke Kelas
-        </a>
 
-       
-        <div class="academic-header">
-            <h1>Mata Pelajaran {{ $kelas->tingkat }} {{ $kelas->nama_kelas }}</h1>
-            <p>{{ $kelas->jurusan?->nama_jurusan ?? 'Umum' }} — Pilih mata pelajaran untuk mengelola penilaian</p>
-        </div>
-        <div class="filter-section">
-            <form method="GET" action="{{ route('admin.penilaian.mapel.kelas', $kelas->id) }}" class="filter-field" id="mapelSearchForm">
-                <label for="searchMapel">Cari Mata Pelajaran</label>
-                <div class="d-flex gap-2 flex-wrap">
-                    <input type="text" name="search" id="searchMapel" value="{{ request('search') }}" placeholder="Cari nama atau kode mata pelajaran..." autocomplete="off">
-             
-                </div>
-            </form>
-        </div>
+            <a href="{{ route('admin.penilaian.mapel.index') }}" class="btn-back-link">
+                <i class="bi bi-arrow-left"></i> Kembali ke Kelas
+            </a>
 
-        <div class="row g-3" id="mapelList">
-            @forelse($mataPelajaran as $mapel)
-                <div class="col-xl-3 col-lg-4 col-md-6 mapel-item" data-search="{{ strtolower(($mapel->nama_mapel ?? '') . ' ' . ($mapel->kode_mapel ?? '')) }}">
-                    <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mapel->id]) }}" class="item-card">
-                        
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                                <div class="item-subtitle mb-1">Mata Pelajaran</div>
-                                <div class="item-title">{{ $mapel->nama_mapel }}</div>
-                            </div>
-                            <div class="item-icon flex-shrink-0">
-                                <i class="bi bi-book"></i>
-                            </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <span class="badge-academic">
-                                {{ $mapel->kode_mapel ?? '-' }}
-                            </span>
-                        </div>
+            <div class="academic-header">
+                <h1>Penilaian</h1>
+                <p>Mata pelajaran kelas {{ $kelas->tingkat }} {{ $kelas->nama_kelas }} —
+                    {{ $kelas->jurusan?->nama_jurusan ?? 'Umum' }}. Pilih mata pelajaran untuk mengelola penilaian.</p>
+            </div>
+            <div class="filter-section">
+                <form method="GET" action="{{ route('admin.penilaian.mapel.kelas', $kelas->id) }}" class="filter-field"
+                    id="mapelSearchForm">
+                    <label for="searchMapel">Cari Mata Pelajaran</label>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <input type="text" name="search" id="searchMapel" value="{{ request('search') }}"
+                            placeholder="Cari nama atau kode mata pelajaran..." autocomplete="off">
 
-                        <div class="item-footer">
-                            <span>
-                                Data Penilaian: <strong class="text-dark">{{ $mapel->jumlah_penilaian ?? 0 }}</strong>
-                            </span>
-                            <span class="fw-semibold text-primary">
-                                Lihat <i class="bi bi-arrow-right ms-1"></i>
-                            </span>
-                        </div>
-
-                    </a>
-                </div>
-            @empty
-                <div class="col-12" id="mapelEmptyState">
-                    <div class="text-center py-5 border rounded bg-light">
-                        <i class="bi bi-book fs-1 text-muted"></i>
-                        <h5 class="mt-3 text-dark">Belum ada mata pelajaran</h5>
-                        <p class="text-muted mb-0">Belum ada jadwal mata pelajaran untuk kelas ini.</p>
                     </div>
-                </div>
-            @endforelse
-        </div>
+                </form>
+            </div>
 
+            <div class="row g-3" id="mapelList">
+                @forelse($mataPelajaran as $mapel)
+                    <div class="col-xl-3 col-lg-4 col-md-6 mapel-item"
+                        data-search="{{ strtolower(($mapel->nama_mapel ?? '') . ' ' . ($mapel->kode_mapel ?? '')) }}">
+                        <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mapel->id]) }}"
+                            class="item-card">
+
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <div class="item-subtitle mb-1">Mata Pelajaran</div>
+                                    <div class="item-title">{{ $mapel->nama_mapel }}</div>
+                                </div>
+                                <div class="item-icon flex-shrink-0">
+                                    <i class="bi bi-book"></i>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <span class="badge-academic">
+                                    {{ $mapel->kode_mapel ?? '-' }}
+                                </span>
+                            </div>
+
+                            <div class="item-footer">
+                                <span class="fw-semibold text-primary">
+                                    Lihat <i class="bi bi-arrow-right ms-1"></i>
+                                </span>
+                            </div>
+
+                        </a>
+                    </div>
+                @empty
+                    <div class="col-12" id="mapelEmptyState">
+                        <div class="text-center py-5 border rounded bg-light">
+                            <i class="bi bi-book fs-1 text-muted"></i>
+                            <h5 class="mt-3 text-dark">Belum ada mata pelajaran</h5>
+                            <p class="text-muted mb-0">Belum ada jadwal mata pelajaran untuk kelas ini.</p>
+                        </div>
+                    </div>
+                @endforelse
+            </div>
+
+        </div>
     </div>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const searchInput = document.getElementById('searchMapel');
-        const mapelItems = document.querySelectorAll('.mapel-item');
-        const mapelList = document.getElementById('mapelList');
-        const form = document.getElementById('mapelSearchForm');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchMapel');
+            const mapelItems = document.querySelectorAll('.mapel-item');
+            const mapelList = document.getElementById('mapelList');
+            const form = document.getElementById('mapelSearchForm');
 
-        if (!searchInput || !mapelList || mapelItems.length === 0) {
-            return;
-        }
-
-        function escapeHtml(value) {
-            const div = document.createElement('div');
-            div.textContent = value;
-            return div.innerHTML;
-        }
-
-        function updateMapelList() {
-            const keyword = searchInput.value.trim().toLowerCase();
-            let visibleCount = 0;
-
-            mapelItems.forEach(function (item) {
-                const haystack = (item.dataset.search || '').toLowerCase();
-                const matches = !keyword || haystack.includes(keyword);
-
-                item.style.display = matches ? '' : 'none';
-                if (matches) visibleCount++;
-            });
-
-            const existingEmpty = document.getElementById('liveMapelEmpty');
-            if (existingEmpty) {
-                existingEmpty.remove();
+            if (!searchInput || !mapelList || mapelItems.length === 0) {
+                return;
             }
 
-            if (visibleCount === 0) {
-                const empty = document.createElement('div');
-                empty.id = 'liveMapelEmpty';
-                empty.className = 'col-12';
-                empty.innerHTML = `
-                    <div class="text-center py-5 border rounded bg-light">
-                        <i class="bi bi-search fs-1 text-muted"></i>
-                        <h5 class="mt-3 text-dark">Mata pelajaran tidak ditemukan</h5>
-                        <p class="text-muted mb-0">Coba kata kunci lain untuk pencarian mata pelajaran.</p>
-                    </div>
-                `;
-                mapelList.appendChild(empty);
+            function escapeHtml(value) {
+                const div = document.createElement('div');
+                div.textContent = value;
+                return div.innerHTML;
             }
-        }
 
-        searchInput.addEventListener('input', function () {
-            updateMapelList();
-        });
+            function updateMapelList() {
+                const keyword = searchInput.value.trim().toLowerCase();
+                let visibleCount = 0;
 
-        if (form) {
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
+                mapelItems.forEach(function (item) {
+                    const haystack = (item.dataset.search || '').toLowerCase();
+                    const matches = !keyword || haystack.includes(keyword);
+
+                    item.style.display = matches ? '' : 'none';
+                    if (matches) visibleCount++;
+                });
+
+                const existingEmpty = document.getElementById('liveMapelEmpty');
+                if (existingEmpty) {
+                    existingEmpty.remove();
+                }
+
+                if (visibleCount === 0) {
+                    const empty = document.createElement('div');
+                    empty.id = 'liveMapelEmpty';
+                    empty.className = 'col-12';
+                    empty.innerHTML = `
+                        <div class="text-center py-5 border rounded bg-light">
+                            <i class="bi bi-search fs-1 text-muted"></i>
+                            <h5 class="mt-3 text-dark">Mata pelajaran tidak ditemukan</h5>
+                            <p class="text-muted mb-0">Coba kata kunci lain untuk pencarian mata pelajaran.</p>
+                        </div>
+                    `;
+                    mapelList.appendChild(empty);
+                }
+            }
+
+            searchInput.addEventListener('input', function () {
                 updateMapelList();
             });
-        }
 
-        updateMapelList();
-    });
-</script>
+            if (form) {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    updateMapelList();
+                });
+            }
+
+            updateMapelList();
+        });
+    </script>
 @endsection

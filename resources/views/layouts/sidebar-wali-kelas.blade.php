@@ -65,6 +65,12 @@
 
         @if($jadwalSaya->isNotEmpty())
 
+        <div class="menu-title">Jadwal pelajaran</div>
+        <a href="{{ route('guru.jadwal.index') }}" class="{{ request()->routeIs('guru.jadwal.*') ? 'active' : '' }}">
+            <i class="bi bi-calendar3" aria-hidden="true"></i>
+            <span>Lihat Jadwal</span>
+        </a>
+        
         <div class="menu-title">Guru Mata Pelajaran</div>
 
         <a href="{{ route('wali-kelas.kelas-mengajar') }}"

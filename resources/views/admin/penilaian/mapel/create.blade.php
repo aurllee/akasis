@@ -155,6 +155,7 @@
             <form method="POST"
                 action="{{ route('admin.penilaian.mapel.store', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}">
                 @csrf
+                <input type="hidden" name="return_to" value="{{ old('return_to', request('return_to')) }}">
 
                 <div class="form-group-custom">
                     <label for="jadwal_pelajaran_id">Guru / Jadwal <span class="text-danger">*</span></label>
@@ -176,7 +177,7 @@
                     <select name="siswa_id" id="siswa_id" class="form-select" required>
                         <option value="">-- Pilih Siswa --</option>
                         @foreach($siswa as $item)
-                            <option value="{{ $item->id }}" @selected(old('siswa_id') == $item->id)>
+                            <option value="{{ $item->id }}" @selected(old('siswa_id', request('siswa_id')) == $item->id)>
                                 {{ $item->nama }} — NIS: {{ $item->nis ?? '-' }}
                             </option>
                         @endforeach
@@ -190,8 +191,9 @@
                     <label for="jenis_nilai">Jenis Nilai <span class="text-danger">*</span></label>
                     <select name="jenis_nilai" id="jenis_nilai" class="form-select" required>
                         <option value="">-- Pilih Jenis Nilai --</option>
-                        <option value="harian" @selected(old('jenis_nilai') === 'harian')>Harian</option>
-                        <option value="ujian" @selected(old('jenis_nilai') === 'ujian')>Ujian</option>
+                        <option value="harian" @selected(old('jenis_nilai', request('jenis_nilai')) === 'harian')>Harian
+                        </option>
+                        <option value="ujian" @selected(old('jenis_nilai', request('jenis_nilai')) === 'ujian')>Ujian</option>
                     </select>
                     @error('jenis_nilai')
                         <small class="text-danger mt-1 d-block">{{ $message }}</small>

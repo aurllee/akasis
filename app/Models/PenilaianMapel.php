@@ -17,6 +17,7 @@ class PenilaianMapel extends Model
     protected $keyType = 'int';
 
     public $timestamps = true;
+    
 
     protected $fillable = [
         'jadwal_pelajaran_id',

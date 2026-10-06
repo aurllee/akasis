@@ -22,6 +22,15 @@
         padding: 24px;
     }
 
+    .academic-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
     .page-title {
         margin: 0 0 8px;
         font-size: 25px;
@@ -47,6 +56,21 @@
     }
 
     .btn-back:hover {
+        color: #2449a4;
+    }
+
+    .btn-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 20px;
+        color: #64748b;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .btn-back-link:hover {
         color: #2449a4;
     }
 
@@ -158,6 +182,29 @@
         color: #ffffff;
     }
 
+    .btn-action-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 9px 14px;
+        border: 1px solid #2449a4;
+        border-radius: 8px;
+        background: #2449a4;
+        color: #ffffff;
+        font-family: 'Poppins', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .btn-action-primary:hover {
+        border-color: #1a3679;
+        background: #1a3679;
+        color: #ffffff;
+    }
+
     .btn-action-edit {
         display: inline-flex;
         align-items: center;
@@ -204,6 +251,14 @@
         justify-content: center;
         gap: 6px;
         flex-wrap: wrap;
+    }
+
+    .assessment-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        white-space: nowrap;
     }
 
     .search-card {
@@ -372,26 +427,6 @@
 
 @section('content')
 
-@php
-    $siswa = $penilaian
-        ->filter(fn ($item) => $item->siswa)
-        ->groupBy('siswa_id')
-        ->map(fn ($items) => $items->first()->siswa)
-        ->values();
-
-    $jenisPenilaian = $penilaian
-        ->groupBy(function ($item) {
-            return implode('|', [
-                $item->jenis_nilai,
-                $item->tanggal_penilaian,
-                $item->judul_tugas,
-                $item->penilaian_ke
-            ]);
-        })
-        ->map(fn ($items) => $items->first())
-        ->values();
-@endphp
-
 <div class="page-wrap">
 
     <div class="page-card">
@@ -427,18 +462,6 @@
             </p>
 
             </div>
-
-        <a
-            href="{{ route('admin.penilaian.mapel.create', [
-                'kelasId' => $kelas->id,
-                'mapelId' => $mataPelajaran->id,
-                'jenis_nilai' => 'harian'
-            ]) }}"
-            class="btn-action-primary"
-        >
-            <i class="bi bi-plus-lg"></i>
-            Tambah Penilaian
-        </a>
 
         </div>
 
@@ -480,109 +503,98 @@
 
                     <table class="table">
 
-                        <thead>
+                        <thead class="bg-light">
 
                             <tr>
-
-                <thead class="bg-light">
-
-                    <tr>
-
-                        <th class="ps-4">No</th>
-                        <th>NIS</th>
-                        <th>Siswa</th>
-                        <th>Nilai</th>
-                        <th>Tanggal</th>
-                        <th class="text-end pe-4">Aksi</th>
-
+                                <th class="ps-4">No</th>
+                                <th>NIS</th>
+                                <th>Nama Siswa</th>
+                                @foreach($jenisPenilaian as $assessment)
+                                    <th>
+                                        <div class="assessment-header">
+                                            <span class="assessment-header-title">
+                                                {{ $assessment->judul_tugas ?: 'Penilaian ' . $loop->iteration }}
+                                            </span>
+                                            <span class="assessment-header-date">
+                                                {{ $assessment->tanggal_penilaian?->format('d-m-Y') ?? '-' }}
+                                            </span>
+                                        </div>
+                                    </th>
+                                @endforeach
+                                <th class="text-end pe-4">Aksi</th>
                             </tr>
 
                         </thead>
 
                         <tbody id="harianTableBody">
 
-                    @forelse($penilaian as $item)
+                    @forelse($siswa as $student)
+                        <tr class="assessment-row" data-search="{{ strtolower(($student->nama ?? '') . ' ' . ($student->nis ?? '') . ' ' . ($student->nisn ?? '')) }}">
+                            <td class="ps-4">{{ $loop->iteration }}</td>
+                            <td>{{ $student->nis ?? '-' }}</td>
+                            <td class="student-name">{{ $student->nama ?? '-' }}</td>
 
-                        <tr class="assessment-row" data-search="{{ strtolower(($item->siswa?->nama ?? '') . ' ' . ($item->siswa?->nis ?? '') . ' ' . ($item->siswa?->nisn ?? '')) }}">
-
-                            <td class="ps-4">
-                                {{ $loop->iteration }}
-                            </td>
-
-                            <td>
-                                {{ $item->siswa?->nis ?? '-' }}
-                            </td>
-
-                            <td class="fw-semibold">
-                                {{ $item->siswa?->nama ?? '-' }}
-                            </td>
-
-                            <td>
-                                <strong>
-                                    {{ $item->nilai }}
-                                </strong>
-                            </td>
-
-                            <td>
-
-                                {{
-                                    $item->tanggal_penilaian?->format('d/m/Y')
-                                    ?? $item->created_at?->format('d/m/Y')
-                                    ?? '-'
-                                }}
-
-                            </td>
+                            @foreach($jenisPenilaian as $assessment)
+                                @php($score = $assessment->records->firstWhere('siswa_id', $student->id))
+                                <td class="nilai">
+                                    @if($score)
+                                        <strong>{{ $score->nilai }}</strong>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                            @endforeach
 
                             <td class="text-end pe-4">
-
-                                <div class="d-inline-flex gap-2">
-
-                                    <a
-                                        href="{{ route('admin.penilaian.mapel.edit', [
-                                            'kelasId' => $kelas->id,
-                                            'mapelId' => $mataPelajaran->id,
-                                            'id' => $item->id
-                                        ]) }}"
-                                        class="btn-action-edit"
-                                    >
-                                        <i class="bi bi-pencil"></i>
-                                        Edit
-                                    </a>
-
-                                    <form
-                                        action="{{ route('admin.penilaian.mapel.destroy', [
-                                            'kelasId' => $kelas->id,
-                                            'mapelId' => $mataPelajaran->id,
-                                            'id' => $item->id
-                                        ]) }}"
-                                        method="POST"
-                                    >
-
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button
-                                            type="submit"
-                                            class="btn-action-delete"
-                                            onclick="return confirm('Yakin ingin menghapus nilai ini?')"
+                                <div class="assessment-actions">
+                                    @if($penilaian->where('siswa_id', $student->id)->isNotEmpty())
+                                        <a
+                                            href="{{ route('admin.penilaian.mapel.edit', [
+                                                'kelasId' => $kelas->id,
+                                                'mapelId' => $mataPelajaran->id,
+                                                'id' => $student->id,
+                                                'bulk' => 1,
+                                                'jenis_nilai' => 'harian',
+                                                'return_to' => request()->getRequestUri()
+                                            ]) }}"
+                                            class="btn-action-edit"
                                         >
-                                            <i class="bi bi-trash"></i>
-                                            Hapus
-                                        </button>
-
-                                    </form>
-
+                                            <i class="bi bi-pencil"></i>
+                                            Edit
+                                        </a>
+                                    @endif
+                                    @if($penilaian->where('siswa_id', $student->id)->isNotEmpty())
+                                        <form
+                                            action="{{ route('admin.penilaian.mapel.destroy', [
+                                                'kelasId' => $kelas->id,
+                                                'mapelId' => $mataPelajaran->id,
+                                                'id' => $student->id
+                                            ]) }}"
+                                            method="POST"
+                                        >
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="bulk" value="1">
+                                            <input type="hidden" name="jenis_nilai" value="harian">
+                                            <input type="hidden" name="return_to" value="{{ request()->getRequestUri() }}">
+                                            <button
+                                                type="submit"
+                                                class="btn-action-delete"
+                                                onclick="return confirm('Yakin ingin menghapus semua nilai harian siswa ini?')"
+                                            >
+                                                <i class="bi bi-trash"></i>
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
-
                             </td>
-
                         </tr>
-
                     @empty
 
                         <tr>
 
-                            <td colspan="6" class="text-center py-5">
+                            <td colspan="{{ 4 + $jenisPenilaian->count() }}" class="text-center py-5">
 
                                 <i class="bi bi-clipboard-x fs-1 text-muted"></i>
 
@@ -594,23 +606,10 @@
                                     Belum ada data nilai harian.
                                 </p>
 
-                                <a
-                                    href="{{ route('admin.penilaian.mapel.create', [
-                                        'kelasId' => $kelas->id,
-                                        'mapelId' => $mataPelajaran->id,
-                                        'jenis_nilai' => 'harian'
-                                    ]) }}"
-                                    class="btn-action-primary"
-                                >
-                                    <i class="bi bi-plus-lg"></i>
-                                    Tambah Penilaian
-                                </a>
-
                             </td>
 
                         </tr>
-
-                            @endforelse
+                    @endforelse
 
                         </tbody>
 

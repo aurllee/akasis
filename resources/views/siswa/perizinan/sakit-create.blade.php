@@ -342,9 +342,6 @@
                 infoKeluar.classList.remove('d-none');
 
                     }
-
-
-                    // PULANG
                     else if (value === 'pulang') {
 
                 fieldJamMulai.classList.remove('d-none');

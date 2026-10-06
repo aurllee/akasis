@@ -9,6 +9,7 @@
             color: #212529;
             background: #f5f6fa;
         }
+
         .academic-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -133,100 +134,150 @@
 @endpush
 
 @section('content')
-<div class="academic-container">
-    <div class="academic-card">
+    <div class="academic-container">
+        <div class="academic-card">
 
-        <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}" class="btn-back-link">
-            <i class="bi bi-arrow-left"></i> Kembali ke Penilaian
-        </a>
+            <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}"
+                class="btn-back-link">
+                <i class="bi bi-arrow-left"></i> Kembali ke Penilaian
+            </a>
 
-        <div class="academic-header">
-            <h1>Edit Penilaian</h1>
-            <p>{{ $kelas->tingkat }} {{ $kelas->nama_kelas }} — {{ $mataPelajaran->nama_mapel }}</p>
+            <div class="academic-header">
+                <h1>{{ $bulkEdit ? 'Edit Semua Nilai' : 'Edit Penilaian' }}</h1>
+                <p>
+                    {{ $kelas->tingkat }} {{ $kelas->nama_kelas }} — {{ $mataPelajaran->nama_mapel }}
+                    @if($bulkEdit)
+                        — {{ $targetSiswa->nama }}
+                    @endif
+                </p>
+            </div>
+
+            @if($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                    <div class="fw-bold mb-1">Terjadi kesalahan input:</div>
+                    <ul class="mb-0 ps-3">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if($bulkEdit)
+                <form method="POST"
+                    action="{{ route('admin.penilaian.mapel.update', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id, 'id' => $targetSiswa->id]) }}">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="bulk" value="1">
+                    <input type="hidden" name="jenis_nilai" value="{{ $jenisNilai }}">
+                    <input type="hidden" name="return_to" value="{{ old('return_to', request('return_to')) }}">
+
+                    @foreach($penilaian as $score)
+                        <div class="form-group-custom">
+                            <label for="score_{{ $score->id }}">
+                                {{ $score->judul_tugas ?: 'Penilaian ' . $loop->iteration }}
+                                <span class="text-muted fw-normal">
+                                    ({{ $score->tanggal_penilaian?->format('d-m-Y') ?? '-' }})
+                                </span>
+                            </label>
+                            <input type="number" name="scores[{{ $score->id }}]" id="score_{{ $score->id }}" class="form-control"
+                                min="0" max="100" step="0.01" value="{{ old('scores.' . $score->id, $score->nilai) }}" required>
+                            @error('scores.' . $score->id)
+                                <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    @endforeach
+
+                    <div class="d-flex gap-2 justify-content-end pt-3 border-top">
+                        <a href="{{ request('return_to') ?: route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}"
+                            class="btn btn-secondary">
+                            Batal
+                        </a>
+                        <button type="submit" class="btn-action-primary">
+                            Simpan Semua Nilai
+                        </button>
+                    </div>
+                </form>
+            @else
+                <form method="POST"
+                    action="{{ route('admin.penilaian.mapel.update', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id, 'id' => $penilaian->id]) }}">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="return_to" value="{{ old('return_to', request('return_to')) }}">
+
+                    <div class="form-group-custom">
+                        <label for="jadwal_pelajaran_id">Guru / Jadwal <span class="text-danger">*</span></label>
+                        <select name="jadwal_pelajaran_id" id="jadwal_pelajaran_id" class="form-select" required>
+                            @foreach($jadwal as $j)
+                                <option value="{{ $j->id }}" @selected(old('jadwal_pelajaran_id', $penilaian->jadwal_pelajaran_id) == $j->id)>
+                                    {{ $j->guru?->nama ?? '-' }} @if($j->hari) ({{ $j->hari }}) @endif
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('jadwal_pelajaran_id')
+                            <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label for="siswa_id">Siswa <span class="text-danger">*</span></label>
+                        <select name="siswa_id" id="siswa_id" class="form-select" required>
+                            @foreach($siswa as $item)
+                                <option value="{{ $item->id }}" @selected(old('siswa_id', $penilaian->siswa_id) == $item->id)>
+                                    {{ $item->nama }} — NIS: {{ $item->nis ?? '-' }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('siswa_id')
+                            <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label for="jenis_nilai">Jenis Nilai <span class="text-danger">*</span></label>
+                        <select name="jenis_nilai" id="jenis_nilai" class="form-select" required>
+                            <option value="harian" @selected(old('jenis_nilai', $penilaian->jenis_nilai) === 'harian')>Harian
+                            </option>
+                            <option value="ujian" @selected(old('jenis_nilai', $penilaian->jenis_nilai) === 'ujian')>Ujian
+                            </option>
+                        </select>
+                        @error('jenis_nilai')
+                            <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label for="tanggal_penilaian">Tanggal Penilaian <span class="text-danger">*</span></label>
+                        <input type="date" name="tanggal_penilaian" id="tanggal_penilaian" class="form-control"
+                            value="{{ old('tanggal_penilaian', $penilaian->tanggal_penilaian?->format('Y-m-d')) }}" required>
+                        @error('tanggal_penilaian')
+                            <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="form-group-custom mb-4">
+                        <label for="nilai">Nilai <span class="text-danger">*</span></label>
+                        <input type="number" name="nilai" id="nilai" class="form-control" min="0" max="100" step="0.01"
+                            value="{{ old('nilai', $penilaian->nilai) }}" placeholder="Masukkan nilai 0 - 100" required>
+                        @error('nilai')
+                            <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="d-flex gap-2 justify-content-end pt-3 border-top">
+                        <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}"
+                            class="btn btn-secondary">
+                            Batal
+                        </a>
+                        <button type="submit" class="btn-action-primary">
+                            Simpan Perubahan
+                        </button>
+                    </div>
+
+                </form>
+            @endif
+
         </div>
-
-        @if($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-                <div class="fw-bold mb-1">Terjadi kesalahan input:</div>
-                <ul class="mb-0 ps-3">
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        <form method="POST" action="{{ route('admin.penilaian.mapel.update', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id, 'id' => $penilaian->id]) }}">
-            @csrf
-            @method('PUT')
-
-            <div class="form-group-custom">
-                <label for="jadwal_pelajaran_id">Guru / Jadwal <span class="text-danger">*</span></label>
-                <select name="jadwal_pelajaran_id" id="jadwal_pelajaran_id" class="form-select" required>
-                    @foreach($jadwal as $j)
-                        <option value="{{ $j->id }}" @selected(old('jadwal_pelajaran_id', $penilaian->jadwal_pelajaran_id) == $j->id)>
-                            {{ $j->guru?->nama ?? '-' }} @if($j->hari) ({{ $j->hari }}) @endif
-                        </option>
-                    @endforeach
-                </select>
-                @error('jadwal_pelajaran_id')
-                    <small class="text-danger mt-1 d-block">{{ $message }}</small>
-                @enderror
-            </div>
-
-            <div class="form-group-custom">
-                <label for="siswa_id">Siswa <span class="text-danger">*</span></label>
-                <select name="siswa_id" id="siswa_id" class="form-select" required>
-                    @foreach($siswa as $item)
-                        <option value="{{ $item->id }}" @selected(old('siswa_id', $penilaian->siswa_id) == $item->id)>
-                            {{ $item->nama }} — NIS: {{ $item->nis ?? '-' }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('siswa_id')
-                    <small class="text-danger mt-1 d-block">{{ $message }}</small>
-                @enderror
-            </div>
-
-            <div class="form-group-custom">
-                <label for="jenis_nilai">Jenis Nilai <span class="text-danger">*</span></label>
-                <select name="jenis_nilai" id="jenis_nilai" class="form-select" required>
-                    <option value="harian" @selected(old('jenis_nilai', $penilaian->jenis_nilai) === 'harian')>Harian</option>
-                    <option value="ujian" @selected(old('jenis_nilai', $penilaian->jenis_nilai) === 'ujian')>Ujian</option>
-                </select>
-                @error('jenis_nilai')
-                    <small class="text-danger mt-1 d-block">{{ $message }}</small>
-                @enderror
-            </div>
-
-            <div class="form-group-custom">
-                <label for="tanggal_penilaian">Tanggal Penilaian <span class="text-danger">*</span></label>
-                <input type="date" name="tanggal_penilaian" id="tanggal_penilaian" class="form-control" value="{{ old('tanggal_penilaian', $penilaian->tanggal_penilaian?->format('Y-m-d')) }}" required>
-                @error('tanggal_penilaian')
-                    <small class="text-danger mt-1 d-block">{{ $message }}</small>
-                @enderror
-            </div>
-
-            <div class="form-group-custom mb-4">
-                <label for="nilai">Nilai <span class="text-danger">*</span></label>
-                <input type="number" name="nilai" id="nilai" class="form-control" min="0" max="100" step="0.01" value="{{ old('nilai', $penilaian->nilai) }}" placeholder="Masukkan nilai 0 - 100" required>
-                @error('nilai')
-                    <small class="text-danger mt-1 d-block">{{ $message }}</small>
-                @enderror
-            </div>
-
-            <div class="d-flex gap-2 justify-content-end pt-3 border-top">
-                <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}" class="btn btn-secondary">
-                     Batal
-                </a>
-                <button type="submit" class="btn-action-primary">
-                   Simpan Perubahan
-                </button>
-            </div>
-
-        </form>
-
     </div>
-</div>
 @endsection
