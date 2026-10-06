@@ -155,32 +155,35 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
+                            <th>Judul Penilaian</th>
                             <th>Jenis Nilai</th>
                             <th>Tanggal</th>
                             <th>Nilai</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($nilai as $item)
-                            <tr>
-                                <td>{{ ucfirst($item->jenis_nilai) }}</td>
-                                <td>{{ \Carbon\Carbon::parse($item->tanggal_penilaian)->format('d-m-Y') }}</td>
-                                <td>
-                                    <input type="number" name="nilai[{{ $item->id }}]" class="form-control" min="0"
-                                        max="100" step="0.01" value="{{ old('nilai.' . $item->id, $item->nilai) }}">
-                                </td>
-                            </tr>
+                        @forelse($penilaian as $item)
+                        @php($nilaiSiswa = $item->records->firstWhere('siswa_id', $siswa->id))
+                        <tr>
+                            <td>{{ $item->judul_tugas ?: 'Penilaian ' . $loop->iteration }}</td>
+                            <td>{{ ucfirst($item->jenis_nilai) }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->tanggal_penilaian)->format('d-m-Y') }}</td>
+                            <td>
+                                <input type="number" name="nilai[{{ $item->id }}]" class="form-control" min="0"
+                                    max="100" step="0.01" value="{{ old('nilai.' . $item->id, $nilaiSiswa?->nilai) }}">
+                            </td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="3" class="text-center text-muted">
-                                    Belum ada data penilaian untuk siswa ini.
-                                </td>
-                            </tr>
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">
+                                Belum ada data penilaian untuk siswa ini.
+                            </td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
 
-                @if($nilai->isNotEmpty())
+                @if($penilaian->isNotEmpty())
                     <div class="mt-4">
                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                     </div>
