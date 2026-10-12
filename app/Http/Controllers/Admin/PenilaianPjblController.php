@@ -339,14 +339,24 @@ class PenilaianPjblController extends Controller
     }
 
 
-    public function destroy($kelasId, $pjblId, $id)
+    public function destroy(Request $request, $kelasId, $pjblId, $id)
     {
-        $penilaian = PenilaianPjbl::where('id', $id)
-            ->where('pjbl_id', $pjblId)
-            ->firstOrFail();
+        $penilaianQuery = PenilaianPjbl::where('id', $id)
+            ->where('pjbl_id', $pjblId);
 
+        if ($request->filled('siswa_id')) {
+            $penilaianQuery->where('siswa_id', $request->siswa_id);
+        }
 
-        $penilaian->delete();
+        $penilaian = $penilaianQuery->firstOrFail();
+
+        if ($request->filled('siswa_id')) {
+            PenilaianPjbl::where('pjbl_id', $pjblId)
+                ->where('siswa_id', $request->siswa_id)
+                ->delete();
+        } else {
+            $penilaian->delete();
+        }
 
 
         return redirect()

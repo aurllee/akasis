@@ -135,6 +135,13 @@
             line-height: 1.4;
         }
 
+        #searchUjian::placeholder {
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 400;
+            opacity: 1;
+        }
+
         .assessment-header-title {
             display: block;
             font-size: 12px;
@@ -290,7 +297,7 @@
                                 </div>
                             </th>
                         @endforeach
-                        <th class="text-end pe-4">Aksi</th>
+                        <th class="text-center">Aksi</th>
                     </tr>
 
                 </thead>
@@ -309,39 +316,35 @@
                     </td>
                     @endforeach
 
-                    <td class="text-end pe-4">
+                    <td class="text-center">
                         <div class="assessment-actions">
-                            @if($penilaian->where('siswa_id', $student->id)->isNotEmpty())
-                                                    <a href="{{ route('admin.penilaian.mapel.edit', [
-                                    'kelasId' => $kelas->id,
-                                    'mapelId' => $mataPelajaran->id,
-                                    'id' => $student->id,
-                                    'bulk' => 1,
-                                    'jenis_nilai' => 'ujian',
-                                    'return_to' => request()->getRequestUri()
-                                ]) }}" class="btn-action-edit">
-                                                        <i class="bi bi-pencil"></i>
-                                                        Edit
-                                                    </a>
-                            @endif
-                            @if($penilaian->where('siswa_id', $student->id)->isNotEmpty())
-                                                    <form action="{{ route('admin.penilaian.mapel.destroy', [
-                                    'kelasId' => $kelas->id,
-                                    'mapelId' => $mataPelajaran->id,
-                                    'id' => $student->id
-                                ]) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <input type="hidden" name="bulk" value="1">
-                                                        <input type="hidden" name="jenis_nilai" value="ujian">
-                                                        <input type="hidden" name="return_to" value="{{ request()->getRequestUri() }}">
-                                                        <button type="submit" class="btn-action-delete"
-                                                            onclick="return confirm('Yakin ingin menghapus semua nilai ujian siswa ini?')">
-                                                            <i class="bi bi-trash"></i>
-                                                            Hapus
-                                                        </button>
-                                                    </form>
-                            @endif
+                            <a href="{{ route('admin.penilaian.mapel.edit', [
+                                'kelasId' => $kelas->id,
+                                'mapelId' => $mataPelajaran->id,
+                                'id' => $student->id,
+                                'bulk' => 1,
+                                'jenis_nilai' => 'ujian',
+                                'return_to' => request()->getRequestUri()
+                            ]) }}" class="btn-action-edit">
+                                <i class="bi bi-pencil"></i>
+                                Edit
+                            </a>
+                            <form action="{{ route('admin.penilaian.mapel.destroy', [
+                                'kelasId' => $kelas->id,
+                                'mapelId' => $mataPelajaran->id,
+                                'id' => $student->id
+                            ]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="bulk" value="1">
+                                <input type="hidden" name="jenis_nilai" value="ujian">
+                                <input type="hidden" name="return_to" value="{{ request()->getRequestUri() }}">
+                                <button type="submit" class="btn-action-delete"
+                                    onclick="return confirm('Yakin ingin menghapus semua nilai ujian siswa ini?')">
+                                    <i class="bi bi-trash"></i>
+                                    Hapus
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>

@@ -87,6 +87,13 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
+        .form-group-custom .form-control::placeholder {
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 400;
+            opacity: 1;
+        }
+
         .btn-action-primary {
             background: #2563eb;
             color: #ffffff;

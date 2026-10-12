@@ -44,21 +44,6 @@
         font-size: 13px;
     }
 
-    .btn-back {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        margin-bottom: 20px;
-        color: #64748b;
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 500;
-    }
-
-    .btn-back:hover {
-        color: #2449a4;
-    }
-
     .btn-back-link {
         display: inline-flex;
         align-items: center;
@@ -222,6 +207,7 @@
 
     .btn-action-edit:hover {
         background: #1a3679;
+        border-color: #1a3679;
         color: #ffffff;
     }
 
@@ -243,6 +229,7 @@
 
     .btn-action-delete:hover {
         background: #f8fafc;
+        border-color: #94a3b8;
     }
 
     .action-wrapper {
@@ -301,6 +288,13 @@
     .search-input:focus {
         outline: none;
         box-shadow: none;
+    }
+
+    #searchHarian::placeholder {
+        color: #94a3b8;
+        font-size: 13px;
+        font-weight: 400;
+        opacity: 1;
     }
 
     .badge-blue {
@@ -381,6 +375,10 @@
         font-weight: 500;
     }
 
+    .nilai-empty {
+        color: #94a3b8;
+    }
+
     .empty-data {
         padding: 50px 20px !important;
         text-align: center;
@@ -402,6 +400,12 @@
         font-size: 13px;
     }
 
+    .live-search-empty td {
+        padding: 50px 20px !important;
+        text-align: center;
+        color: #64748b;
+    }
+
     @media (max-width: 768px) {
         .page-card {
             padding: 18px;
@@ -418,6 +422,10 @@
             gap: 12px;
         }
 
+        .assessment-actions {
+            justify-content: center;
+        }
+
         .table {
             min-width: 850px;
         }
@@ -425,23 +433,27 @@
 </style>
 @endpush
 
+
 @section('content')
 
 <div class="page-wrap">
 
     <div class="page-card">
 
-    <a
-        href="{{ route('admin.penilaian.mapel.mapel', [
-            'kelasId' => $kelas->id,
-            'mapelId' => $mataPelajaran->id
-        ]) }}"
-        class="btn-back-link"
-    >
-        <i class="bi bi-arrow-left"></i>
-        Kembali ke Jenis Penilaian
-    </a>
+        {{-- KEMBALI --}}
+        <a
+            href="{{ route('admin.penilaian.mapel.mapel', [
+                'kelasId' => $kelas->id,
+                'mapelId' => $mataPelajaran->id
+            ]) }}"
+            class="btn-back-link"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Kembali ke Jenis Penilaian
+        </a>
 
+
+        {{-- HEADER --}}
         <div class="d-flex justify-content-between align-items-center mb-4">
 
             <div>
@@ -451,38 +463,55 @@
                 </h1>
 
                 <p class="page-subtitle">
+
                     {{ $mataPelajaran->nama_mapel }}
+
                     —
+
                     {{ $kelas->tingkat }}
                     {{ $kelas->nama_kelas }}
 
-                @if($kelas->jurusan)
-                    — {{ $kelas->jurusan->nama_jurusan }}
-                @endif
-            </p>
+                    @if($kelas->jurusan)
+                        — {{ $kelas->jurusan->nama_jurusan }}
+                    @endif
+
+                </p>
 
             </div>
 
         </div>
 
-    <div class="academic-card">
-        <label for="searchHarian" class="form-label fw-semibold text-secondary">
-            Cari Siswa
-        </label>
-        <div class="input-group">
-            <span class="input-group-text bg-white">
-                <i class="bi bi-search text-muted"></i>
-            </span>
-            <input
-                type="search"
-                id="searchHarian"
-                class="form-control"
-                placeholder="Nama, NIS, atau NISN"
-                autocomplete="off"
-            >
-        </div>
-    </div>
 
+        {{-- SEARCH SISWA --}}
+        <div class="academic-card">
+
+            <label
+                for="searchHarian"
+                class="form-label fw-semibold text-secondary"
+            >
+                Cari Siswa
+            </label>
+
+            <div class="input-group">
+
+                <span class="input-group-text bg-white">
+                    <i class="bi bi-search text-muted"></i>
+                </span>
+
+                <input
+                    type="search"
+                    id="searchHarian"
+                    class="form-control"
+                    placeholder="Nama, NIS, atau NISN"
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </div>
+
+
+        {{-- JUDUL TABEL --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
 
             <h5 class="fw-bold mb-0">
@@ -495,6 +524,8 @@
 
         </div>
 
+
+        {{-- TABEL --}}
         <div class="card">
 
             <div class="card-body p-0">
@@ -506,110 +537,206 @@
                         <thead class="bg-light">
 
                             <tr>
-                                <th class="ps-4">No</th>
-                                <th>NIS</th>
-                                <th>Nama Siswa</th>
+
+                                <th class="ps-4">
+                                    No
+                                </th>
+
+                                <th>
+                                    NIS
+                                </th>
+
+                                <th>
+                                    Nama Siswa
+                                </th>
+
+                                {{-- SEMUA JENIS PENILAIAN --}}
                                 @foreach($jenisPenilaian as $assessment)
+
                                     <th>
+
                                         <div class="assessment-header">
+
                                             <span class="assessment-header-title">
                                                 {{ $assessment->judul_tugas ?: 'Penilaian ' . $loop->iteration }}
                                             </span>
+
                                             <span class="assessment-header-date">
                                                 {{ $assessment->tanggal_penilaian?->format('d-m-Y') ?? '-' }}
                                             </span>
+
                                         </div>
+
                                     </th>
+
                                 @endforeach
-                                <th class="text-end pe-4">Aksi</th>
+
+                                <th class="text-center">
+                                    Aksi
+                                </th>
+
                             </tr>
 
                         </thead>
 
+
                         <tbody id="harianTableBody">
 
-                    @forelse($siswa as $student)
-                        <tr class="assessment-row" data-search="{{ strtolower(($student->nama ?? '') . ' ' . ($student->nis ?? '') . ' ' . ($student->nisn ?? '')) }}">
-                            <td class="ps-4">{{ $loop->iteration }}</td>
-                            <td>{{ $student->nis ?? '-' }}</td>
-                            <td class="student-name">{{ $student->nama ?? '-' }}</td>
+                            @forelse($siswa as $student)
 
-                            @foreach($jenisPenilaian as $assessment)
-                                @php($score = $assessment->records->firstWhere('siswa_id', $student->id))
-                                <td class="nilai">
-                                    @if($score)
-                                        <strong>{{ $score->nilai }}</strong>
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-                            @endforeach
+                                <tr
+                                    class="assessment-row"
+                                    data-search="{{ strtolower(
+                                        ($student->nama ?? '') . ' ' .
+                                        ($student->nis ?? '') . ' ' .
+                                        ($student->nisn ?? '')
+                                    ) }}"
+                                >
 
-                            <td class="text-end pe-4">
-                                <div class="assessment-actions">
-                                    @if($penilaian->where('siswa_id', $student->id)->isNotEmpty())
-                                        <a
-                                            href="{{ route('admin.penilaian.mapel.edit', [
-                                                'kelasId' => $kelas->id,
-                                                'mapelId' => $mataPelajaran->id,
-                                                'id' => $student->id,
-                                                'bulk' => 1,
-                                                'jenis_nilai' => 'harian',
-                                                'return_to' => request()->getRequestUri()
-                                            ]) }}"
-                                            class="btn-action-edit"
-                                        >
-                                            <i class="bi bi-pencil"></i>
-                                            Edit
-                                        </a>
-                                    @endif
-                                    @if($penilaian->where('siswa_id', $student->id)->isNotEmpty())
-                                        <form
-                                            action="{{ route('admin.penilaian.mapel.destroy', [
-                                                'kelasId' => $kelas->id,
-                                                'mapelId' => $mataPelajaran->id,
-                                                'id' => $student->id
-                                            ]) }}"
-                                            method="POST"
-                                        >
-                                            @csrf
-                                            @method('DELETE')
-                                            <input type="hidden" name="bulk" value="1">
-                                            <input type="hidden" name="jenis_nilai" value="harian">
-                                            <input type="hidden" name="return_to" value="{{ request()->getRequestUri() }}">
-                                            <button
-                                                type="submit"
-                                                class="btn-action-delete"
-                                                onclick="return confirm('Yakin ingin menghapus semua nilai harian siswa ini?')"
+                                    {{-- NO --}}
+                                    <td class="ps-4">
+                                        {{ $loop->iteration }}
+                                    </td>
+
+
+                                    {{-- NIS --}}
+                                    <td>
+                                        {{ $student->nis ?? '-' }}
+                                    </td>
+
+
+                                    {{-- NAMA --}}
+                                    <td class="student-name">
+                                        {{ $student->nama ?? '-' }}
+                                    </td>
+
+
+                                    {{-- NILAI --}}
+                                    @foreach($jenisPenilaian as $assessment)
+
+                                        @php
+                                            $score = $assessment->records
+                                                ->firstWhere('siswa_id', $student->id);
+                                        @endphp
+
+                                        <td class="nilai">
+
+                                            @if($score)
+
+                                                <strong>
+                                                    {{ $score->nilai }}
+                                                </strong>
+
+                                            @else
+
+                                                <span class="nilai-empty">
+                                                    -
+                                                </span>
+
+                                            @endif
+
+                                        </td>
+
+                                    @endforeach
+
+
+                                    {{-- AKSI --}}
+                                    <td class="text-center">
+
+                                        <div class="assessment-actions">
+
+                                            {{-- EDIT --}}
+                                            <a
+                                                href="{{ route('admin.penilaian.mapel.edit', [
+                                                    'kelasId' => $kelas->id,
+                                                    'mapelId' => $mataPelajaran->id,
+                                                    'id' => $student->id,
+                                                    'bulk' => 1,
+                                                    'jenis_nilai' => 'harian',
+                                                    'return_to' => request()->getRequestUri()
+                                                ]) }}"
+                                                class="btn-action-edit"
+                                                title="Edit penilaian {{ $student->nama }}"
                                             >
-                                                <i class="bi bi-trash"></i>
-                                                Hapus
-                                            </button>
-                                        </form>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
+                                                <i class="bi bi-pencil"></i>
+                                                Edit
+                                            </a>
 
-                        <tr>
 
-                            <td colspan="{{ 4 + $jenisPenilaian->count() }}" class="text-center py-5">
+                                            {{-- HAPUS SELALU TAMPIL --}}
+                                            <form
+                                                action="{{ route('admin.penilaian.mapel.destroy', [
+                                                    'kelasId' => $kelas->id,
+                                                    'mapelId' => $mataPelajaran->id,
+                                                    'id' => $student->id
+                                                ]) }}"
+                                                method="POST"
+                                                style="display: inline;"
+                                            >
 
-                                <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+                                                @csrf
+                                                @method('DELETE')
 
-                                <h6 class="mt-3">
-                                    Belum ada penilaian harian
-                                </h6>
+                                                <input
+                                                    type="hidden"
+                                                    name="bulk"
+                                                    value="1"
+                                                >
 
-                                <p class="text-muted small">
-                                    Belum ada data nilai harian.
-                                </p>
+                                                <input
+                                                    type="hidden"
+                                                    name="jenis_nilai"
+                                                    value="harian"
+                                                >
 
-                            </td>
+                                                <input
+                                                    type="hidden"
+                                                    name="return_to"
+                                                    value="{{ request()->getRequestUri() }}"
+                                                >
 
-                        </tr>
-                    @endforelse
+                                                <button
+                                                    type="submit"
+                                                    class="btn-action-delete"
+                                                    title="Hapus semua nilai harian {{ $student->nama }}"
+                                                    onclick="return confirm('Yakin ingin menghapus semua nilai harian siswa ini?')"
+                                                >
+                                                    <i class="bi bi-trash"></i>
+                                                    Hapus
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            @empty
+
+                                <tr>
+
+                                    <td
+                                        colspan="{{ 4 + $jenisPenilaian->count() }}"
+                                        class="empty-data"
+                                    >
+
+                                        <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+
+                                        <h6>
+                                            Belum ada siswa
+                                        </h6>
+
+                                        <p>
+                                            Belum ada siswa yang terdaftar pada kelas ini.
+                                        </p>
+
+                                    </td>
+
+                                </tr>
+
+                            @endforelse
 
                         </tbody>
 
@@ -627,51 +754,122 @@
 
 @endsection
 
+
 @push('scripts')
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const searchInput = document.getElementById('searchHarian');
-        const tableBody = document.getElementById('harianTableBody');
 
-        if (!searchInput || !tableBody) {
-            return;
-        }
+document.addEventListener('DOMContentLoaded', function () {
 
-        searchInput.addEventListener('input', function () {
-            const keyword = searchInput.value.trim().toLowerCase();
+    const searchInput =
+        document.getElementById('searchHarian');
 
-            const rows = tableBody.querySelectorAll('.student-row');
+    const tableBody =
+        document.getElementById('harianTableBody');
 
-            let visibleCount = 0;
 
-            rows.forEach(function (row) {
-                const matches = !keyword || (row.dataset.search || '').includes(keyword);
-                row.style.display = matches ? '' : 'none';
+    if (!searchInput || !tableBody) {
+        return;
+    }
 
-                if (matches) {
-                    visibleCount++;
-                }
 
-            });
+    searchInput.addEventListener('input', function () {
 
-            const oldEmpty =
-                tableBody.querySelector('.live-search-empty');
+        const keyword =
+            searchInput.value
+                .trim()
+                .toLowerCase();
 
-            if (oldEmpty) {
-                oldEmpty.remove();
-            }
 
-            if (rows.length > 0 && visibleCount === 0) {
+        /*
+         * PENTING:
+         * Class row di HTML adalah assessment-row,
+         * bukan student-row.
+         */
+        const rows =
+            tableBody.querySelectorAll('.assessment-row');
 
-                const emptyRow = document.createElement('tr');
 
-                emptyRow.className = 'live-search-empty';
-                emptyRow.innerHTML = '<td colspan="6" class="text-center py-5"><i class="bi bi-search fs-1 text-muted"></i><h6 class="mt-3">Siswa tidak ditemukan</h6><p class="text-muted small mb-0">Coba kata kunci lain.</p></td>';
-                tableBody.appendChild(emptyRow);
+        let visibleCount = 0;
+
+
+        rows.forEach(function (row) {
+
+            const searchData =
+                (row.dataset.search || '')
+                    .toLowerCase();
+
+
+            const matches =
+                keyword === '' ||
+                searchData.includes(keyword);
+
+
+            row.style.display =
+                matches ? '' : 'none';
+
+
+            if (matches) {
+                visibleCount++;
             }
 
         });
 
+
+        /*
+         * Hapus pesan pencarian sebelumnya
+         */
+        const oldEmpty =
+            tableBody.querySelector('.live-search-empty');
+
+
+        if (oldEmpty) {
+            oldEmpty.remove();
+        }
+
+
+        /*
+         * Jika pencarian tidak menemukan siswa
+         */
+        if (rows.length > 0 && visibleCount === 0) {
+
+            const emptyRow =
+                document.createElement('tr');
+
+
+            emptyRow.className =
+                'live-search-empty';
+
+
+            const colspan =
+                document.querySelectorAll(
+                    '#harianTableBody tr.assessment-row:first-child td'
+                ).length || 6;
+
+
+            emptyRow.innerHTML = `
+                <td colspan="${colspan}">
+                    <i class="bi bi-search fs-1 text-muted"></i>
+
+                    <h6 class="mt-3">
+                        Siswa tidak ditemukan
+                    </h6>
+
+                    <p class="text-muted small mb-0">
+                        Coba gunakan nama, NIS, atau NISN yang lain.
+                    </p>
+                </td>
+            `;
+
+
+            tableBody.appendChild(emptyRow);
+
+        }
+
     });
+
+});
+
 </script>
+
 @endpush

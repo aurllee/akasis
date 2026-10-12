@@ -90,6 +90,13 @@
         box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
 
+    .form-group-custom .form-control::placeholder {
+        color: #94a3b8;
+        font-size: 13px;
+        font-weight: 400;
+        opacity: 1;
+    }
+
     .btn-action-primary,
     .btn-action-secondary {
         display: inline-flex;
@@ -277,7 +284,7 @@
                 @foreach ($siswa as $item)
                     <option
                         value="{{ $item->id }}"
-                        @selected(old('siswa_id') == $item->id)
+                        @selected(old('siswa_id', request('siswa_id')) == $item->id)
                     >
                         {{ $item->nama }}
                         @if (!empty($item->nis))
