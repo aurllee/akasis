@@ -511,6 +511,8 @@
         @include('layouts.sidebar-siswa')
         @elseif($currentUser && $currentRole == 3)
         @include('layouts.sidebar-wali-kelas')
+        @elseif($currentUser && $currentRole == 7)
+        @include('layouts.sidebar-tatib')
         @elseif($currentUser && $currentRole == 2)
         @include('layouts.sidebar-guru')
         @elseif($currentUser && $currentRole == 1)

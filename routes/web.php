@@ -51,6 +51,12 @@ Route::get('/siswa/dashboard', [SiswaDashboardController::class, 'index'])
     ->middleware('auth')
     ->name('siswa.dashboard');
 
+Route::middleware('auth')->prefix('tatib')->name('tatib.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('tatib.dashboard');
+    })->name('dashboard');
+});
+
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::get('/ganti-password', [AuthController::class, 'showChangePassword'])->middleware('auth')->name('password.change');

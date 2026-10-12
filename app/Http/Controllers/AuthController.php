@@ -40,6 +40,10 @@ class AuthController extends Controller
                 return redirect()->route('wali-kelas.dashboard');
             }
 
+            if (auth()->user()->role_id == 7) {
+                return redirect()->route('tatib.dashboard');
+            }
+
             if (auth()->user()->role_id == 5) {
                 return redirect()->route('siswa.dashboard');
             }
