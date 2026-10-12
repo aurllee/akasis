@@ -431,9 +431,6 @@
 
 <style>
 
-    .spmb-page {
-        width: 100%;
-    }
 
     .page-header {
         display: flex;

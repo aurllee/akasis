@@ -70,13 +70,13 @@
             <i class="bi bi-calendar3" aria-hidden="true"></i>
             <span>Lihat Jadwal</span>
         </a>
-        
+
         <div class="menu-title">Guru Mata Pelajaran</div>
 
-        <a href="{{ route('wali-kelas.kelas-mengajar') }}"
-            class="{{ request()->routeIs('wali-kelas.kelas-mengajar', 'wali-kelas.input-nilai') ? 'active' : '' }}">
-            <i class="bi bi-clipboard2-check" aria-hidden="true"></i>
-            <span>Nilai Harian</span>
+         <a href="{{ route('guru.penilaian.index') }}"
+            class="{{ request()->routeIs('guru.penilaian.*') ? 'active' : '' }}">
+            <i class="bi bi-pencil-square" aria-hidden="true"></i>
+            <span>Input Nilai</span>
         </a>
 
         <a href="{{ route('guru.penilaian-pjbl.index') }}"

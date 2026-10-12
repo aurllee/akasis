@@ -117,7 +117,7 @@ class PenilaianController extends Controller
             ->where('guru_id', $guru->id)
             ->firstOrFail();
 
-        
+
         $jadwalIds = Jadwal_pelajaran::where('guru_id', $guru->id)
             ->where('kelas_id', $jadwal->kelas_id)
             ->where('mata_pelajaran_id', $jadwal->mata_pelajaran_id)
@@ -198,17 +198,42 @@ class PenilaianController extends Controller
             ->firstOrFail();
 
         $siswa = Siswa::findOrFail($siswaId);
+        abort_unless($jadwal->kelas->siswaKelas->contains('siswa_id', $siswa->id), 404);
 
-        $nilai = Penilaian::where('jadwal_pelajaran_id', $jadwal->id)
-            ->where('siswa_id', $siswa->id)
+        $jadwalIds = Jadwal_pelajaran::where('guru_id', $guru->id)
+            ->where('kelas_id', $jadwal->kelas_id)
+            ->where('mata_pelajaran_id', $jadwal->mata_pelajaran_id)
+            ->pluck('id');
+
+        $nilai = Penilaian::whereIn('jadwal_pelajaran_id', $jadwalIds)
+            ->where('jenis_nilai', '!=', '')
             ->orderBy('tanggal_penilaian')
-            ->orderBy('jenis_nilai')
+            ->orderBy('id')
             ->get();
+
+        $penilaian = $nilai
+            ->groupBy(fn($item) => $item->jenis_nilai . '|' . ($item->tanggal_penilaian ? \Carbon\Carbon::parse($item->tanggal_penilaian)->format('Y-m-d') : 'tanpa-tanggal-' . $item->id) . '|' . ($item->judul_tugas ?? ''))
+            ->sortKeys()
+            ->values()
+            ->map(function ($records, $index) {
+                $first = $records->first();
+
+                return (object) [
+                    'id' => $first->id,
+                    'jenis_nilai' => $first->jenis_nilai,
+                    'tanggal_penilaian' => $first->tanggal_penilaian,
+                    'judul_tugas' => $first->judul_tugas,
+                    'penilaian_ke' => $index + 1,
+                    'records' => $records,
+                ];
+            });
 
         return view('guru.penilaian.edit', compact(
             'jadwal',
             'siswa',
-            'nilai'
+            'nilai',
+            'penilaian',
+            'jadwalIds'
         ));
     }
 
@@ -221,25 +246,56 @@ class PenilaianController extends Controller
             ->firstOrFail();
 
         $siswa = Siswa::findOrFail($siswaId);
+        abort_unless($jadwal->kelas->siswaKelas()->where('siswa_id', $siswa->id)->exists(), 404);
+
+        $jadwalIds = Jadwal_pelajaran::where('guru_id', $guru->id)
+            ->where('kelas_id', $jadwal->kelas_id)
+            ->where('mata_pelajaran_id', $jadwal->mata_pelajaran_id)
+            ->pluck('id');
 
         $request->validate([
             'nilai' => 'required|array',
             'nilai.*' => 'nullable|numeric|min:0|max:100',
         ]);
 
-        foreach ($request->input('nilai', []) as $penilaianId => $nilai) {
-            $penilaian = Penilaian::where('id', $penilaianId)
-                ->where('jadwal_pelajaran_id', $jadwal->id)
-                ->where('siswa_id', $siswa->id)
-                ->first();
+        $nilaiInputs = $request->input('nilai', []);
+        $referensi = Penilaian::whereIn('jadwal_pelajaran_id', $jadwalIds)
+            ->whereIn('id', array_keys($nilaiInputs))
+            ->get()
+            ->keyBy('id');
 
-            if (!$penilaian) {
-                continue;
+        abort_unless($referensi->count() === count($nilaiInputs), 404);
+
+        foreach ($referensi as $reference) {
+            $value = $nilaiInputs[$reference->id] ?? null;
+
+            $existingQuery = Penilaian::whereIn('jadwal_pelajaran_id', $jadwalIds)
+                ->where('siswa_id', $siswa->id)
+                ->where('jenis_nilai', $reference->jenis_nilai)
+                ->where('judul_tugas', $reference->judul_tugas);
+
+            if ($reference->tanggal_penilaian) {
+                $existingQuery->whereDate('tanggal_penilaian', $reference->tanggal_penilaian);
+            } else {
+                $existingQuery->whereNull('tanggal_penilaian');
             }
 
-            $penilaian->update([
-                'nilai' => $nilai === '' || $nilai === null ? null : $nilai,
-            ]);
+            $existing = $existingQuery->first();
+
+            if ($existing) {
+                $existing->update([
+                    'nilai' => $value === '' ? null : $value,
+                ]);
+            } elseif ($value !== null && $value !== '') {
+                Penilaian::create([
+                    'jadwal_pelajaran_id' => $reference->jadwal_pelajaran_id,
+                    'siswa_id' => $siswa->id,
+                    'jenis_nilai' => $reference->jenis_nilai,
+                    'judul_tugas' => $reference->judul_tugas,
+                    'tanggal_penilaian' => $reference->tanggal_penilaian,
+                    'nilai' => $value,
+                ]);
+            }
         }
 
         return redirect()

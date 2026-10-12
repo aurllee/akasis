@@ -305,8 +305,6 @@
         function updateForm() {
 
             const value = jenis.value;
-
-            // Reset
             fieldJamMulai.classList.add('d-none');
             fieldJamSelesai.classList.add('d-none');
             fieldJpPulang.classList.add('d-none');
@@ -317,23 +315,18 @@
             infoKeluar.classList.add('d-none');
             infoPulang.classList.add('d-none');
 
-
-            // SAKIT
             if (value === 'sakit') {
 
                 infoSakit.classList.remove('d-none');
 
             }
 
-            // IZIN
             else if (value === 'izin') {
 
                 infoIzin.classList.remove('d-none');
 
             }
 
-
-            // KELUAR
             else if (value === 'keluar') {
 
                 fieldJamMulai.classList.remove('d-none');
