@@ -17,11 +17,11 @@ class Siswatatib extends Model
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'siswa_id');
+        return $this->belongsTo(Siswa::class, 'id_siswa');
     }
 
     public function tatib()
     {
-        return $this->belongsTo(Tatib::class, 'tatib_id');
+        return $this->belongsTo(Tatib::class, 'id_tatib');
     }
 }

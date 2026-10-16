@@ -20,11 +20,11 @@
         </a>
 
         <div class="menu-title">Tatib</div>
-        <a href="{{ route('tatib.dashboard') }}" class="{{ request()->routeIs('tatib.dashboard') ? 'active' : '' }}">
+        <a href="{{ route('tatib.datapelanggaran') }}" class="{{ request()->routeIs('tatib.datapelanggaran') ? 'active' : '' }}">
             <i class="bi bi-person-lines-fill" aria-hidden="true"></i>
             <span>Daftar Pelanggaran</span>
         </a>
-        <a href="{{ route('tatib.dashboard') }}" class="{{ request()->routeIs('tatib.dashboard') ? 'active' : '' }}">
+        <a href="{{ route('tatib.riwayat') }}" class="{{ request()->routeIs('tatib.riwayat') ? 'active' : '' }}">
             <i class="bi bi-clipboard-check" aria-hidden="true"></i>
             <span>Riwayat Siswa</span>
         </a>

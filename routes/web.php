@@ -25,6 +25,7 @@ use App\Http\Controllers\Guru\JadwalController;
 use App\Http\Controllers\Guru\SesiAbsensiController;
 use App\Http\Controllers\Siswa\PerizinanController;
 use App\Http\Controllers\Siswa\DispenController as SiswaDispenController;
+use App\Http\Controllers\Tatib\TatibController;
 use App\Http\Controllers\Walikelas\SakitController as WaliKelasSakitController;
 use App\Http\Controllers\Walikelas\AbsenController as WaliKelasAbsenController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
@@ -53,8 +54,14 @@ Route::get('/siswa/dashboard', [SiswaDashboardController::class, 'index'])
 
 Route::middleware('auth')->prefix('tatib')->name('tatib.')->group(function () {
     Route::get('/dashboard', function () {
-        return view('tatib.dashboard');
+        return view('Tatib.Dashboard');
     })->name('dashboard');
+
+    Route::get('/data-pelanggaran', [TatibController::class, 'index'])->name('datapelanggaran');
+    Route::get('/data-pelanggaran/create', [TatibController::class, 'create'])->name('datapelanggaran.create');
+    Route::post('/data-pelanggaran', [TatibController::class, 'store'])->name('datapelanggaran.store');
+    Route::get('/siswa/search', [TatibController::class, 'searchSiswa'])->name('siswa.search');
+    Route::get('/riwayat', [TatibController::class, 'riwayat'])->name('riwayat');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
