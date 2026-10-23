@@ -11,26 +11,29 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Tanggal</th>
-                        <th>Siswa</th>
-                        <th>Pelanggaran</th>
-                        <th>Poin</th>
-                        <th>Keterangan</th>
+                        <th>Nama</th>
+                        <th>NIS</th>
+                        <th>Total Poin</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($riwayat as $item)
                         <tr>
                             <td>{{ $riwayat->firstItem() + $loop->index }}</td>
-                            <td>{{ $item->tanggal ?? '-' }}</td>
-                            <td>{{ $item->siswa?->nama ?? 'Siswa tidak ditemukan' }}</td>
-                            <td>{{ $item->tatib?->jenis_pelanggaran ?? 'Pelanggaran tidak ditemukan' }}</td>
-                            <td>{{ $item->tatib?->poin_pelanggaran ?? '-' }}</td>
-                            <td>{{ $item->keterangan ?: '-' }}</td>
+                            <td>{{ $item->nama }}</td>
+                            <td>{{ $item->nis ?? '-' }}</td>
+                            <td>{{ $item->total_poin ?? 0 }}</td>
+                            <td>
+                                <a href="{{ route('tatib.riwayat.detail', $item->siswa_id) }}"
+                                    class="btn btn-sm btn-primary">
+                                    Detail
+                                </a>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center">Belum ada riwayat pelanggaran siswa.</td>
+                            <td colspan="5" class="text-center">Belum ada riwayat pelanggaran siswa.</td>
                         </tr>
                     @endforelse
                 </tbody>

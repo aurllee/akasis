@@ -74,6 +74,11 @@
             <span>Kelas</span>
         </a>
 
+        <a href="{{ route('admin.tatib.index') }}" class="{{ request()->routeIs('admin.tatib.*') ? 'active' : '' }}">
+            <i class="bi bi-list-check"></i>
+            <span>Jenis Pelanggaran</span>
+        </a>
+
 
 
         <div class="menu-title">
@@ -114,6 +119,20 @@
             <span>Pengajuan Izin</span>
         </a>
 
+        <div class="menu-title">
+            Tatib
+        </div>
+
+        <a href="{{ route('tatib.datapelanggaran.create') }}"
+            class="{{ request()->routeIs('tatib.datapelanggaran.create') ? 'active' : '' }}">
+            <i class="bi bi-journal-check"></i>
+            <span>Pencatatan Pelanggaran</span>
+        </a>
+
+        <a href="{{ route('tatib.riwayat') }}" class="{{ request()->routeIs('tatib.riwayat') ? 'active' : '' }}">
+            <i class="bi bi-clock-history"></i>
+            <span>Rekap Pelanggaran</span>
+        </a>
 
         <div class="menu-title">
             Penilaian
@@ -130,10 +149,7 @@
             <i class="bi bi-clipboard-check"></i>
             <span>Penilaian PJBL</span>
         </a>
-
     </div>
-
-
 
 
     <form action="{{ route('logout') }}" method="POST" class="logout-form">

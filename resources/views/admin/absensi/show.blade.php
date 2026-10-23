@@ -13,14 +13,22 @@ font-family: 'Poppins', sans-serif;
     }
 
     .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
         margin-bottom: 24px;
+        padding: 20px 22px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
     }
 
     .btn-back {
         display: inline-flex;
         align-items: center;
         gap: 7px;
-        margin-bottom: 14px;
         padding: 8px 14px;
         border: 1px solid #cbd5e1;
         border-radius: 7px;
@@ -193,6 +201,17 @@ font-family: 'Poppins', sans-serif;
         color: #94a3b8;
     }
 
+    @media (max-width: 576px) {
+        .page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .btn-back {
+            align-self: flex-end;
+        }
+    }
+
     @media (max-width: 768px) {
         .academic-container {
             padding: 24px 16px;
@@ -200,13 +219,13 @@ font-family: 'Poppins', sans-serif;
 
         .page-header {
             margin-bottom: 24px;
+            padding: 18px;
         }
 
         .btn-back {
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            margin-bottom: 14px;
             padding: 8px 14px;
             border: 1px solid #cbd5e1;
             border-radius: 7px;
@@ -419,18 +438,14 @@ font-family: 'Poppins', sans-serif;
 <div class="academic-container">
 
     <div class="page-header">
-
+        <div>
+            <h3>Detail Absensi</h3>
+            <p>Informasi lengkap data kehadiran siswa.</p>
+        </div>
         <a href="{{ route('admin.absensi.index') }}" class="btn-back">
             <i class="bi bi-arrow-left"></i>
             Kembali
         </a>
-
-        <h3>Detail Absensi</h3>
-
-        <p>
-            Informasi lengkap data kehadiran siswa.
-        </p>
-
     </div>
 
     <div class="row g-4">

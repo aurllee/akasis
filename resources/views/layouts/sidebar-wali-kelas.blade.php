@@ -47,6 +47,12 @@
             <span>Izin Tidak Masuk</span>
         </a>
 
+        <a href="{{ route('wali-kelas.sakit.index') }}"
+            class="{{ request()->routeIs(['wali-kelas.sakit.index', 'wali-kelas.sakit.setujui', 'wali-kelas.sakit.tolak', 'wali-kelas.sakit.*']) ? 'active' : '' }}">
+            <i class="bi bi-calendar-x" aria-hidden="true"></i>
+            <span>Rekap pelanggaran siswa</span>
+        </a>
+
 
         @php
         $jadwalSaya = collect();

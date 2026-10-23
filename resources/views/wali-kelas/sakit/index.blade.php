@@ -453,7 +453,7 @@
                         <div class="empty-state-icon">
                             <i class="bi bi-inbox"></i>
                         </div>
-                        <div>Belum ada pengajuan izin atau Dispen siswa.</div>
+                        <div>Belum ada pengajuan izin tidak masuk siswa.</div>
                     </td>
                 </tr>
                 @endforelse
@@ -461,7 +461,7 @@
         </table>
     </div>
 
-    @if ($data->hasPages())
+    @if ($data instanceof \Illuminate\Contracts\Pagination\Paginator && $data->hasPages())
     <div class="px-3 py-3 border-top">
         {{ $data->links() }}
     </div>

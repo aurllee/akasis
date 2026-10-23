@@ -91,7 +91,7 @@ class TatibController extends Controller
                 'nullable',
                 'integer',
                 Rule::exists($tatibTable, 'id'),
-],
+            ],
             'siswa' => ['required', 'array', 'min:1'],
             'siswa.*.id' => [
                 'required',
@@ -120,17 +120,17 @@ class TatibController extends Controller
         ]);
 
         foreach ($validated['siswa'] as $index => $dataSiswa) {
-    $ids = array_map('strval', $dataSiswa['pelanggaran']);
+            $ids = array_map('strval', $dataSiswa['pelanggaran']);
 
-    if (count($ids) !== count(array_unique($ids))) {
-        return back()
-            ->withErrors([
-                "siswa.{$index}.pelanggaran" =>
-                    'Pelanggaran yang sama tidak boleh dipilih dua kali untuk siswa yang sama.',
-            ])
-            ->withInput();
-    }
-}
+            if (count($ids) !== count(array_unique($ids))) {
+                return back()
+                    ->withErrors([
+                        "siswa.{$index}.pelanggaran" =>
+                        'Pelanggaran yang sama tidak boleh dipilih dua kali untuk siswa yang sama.',
+                    ])
+                    ->withInput();
+            }
+        }
 
         $siswaIds = collect($validated['siswa'])->pluck('id')->all();
         $tatibIds = collect($validated['siswa'])
@@ -175,7 +175,7 @@ class TatibController extends Controller
                         'id_siswa' => $siswaId,
                         'id_tatib' => $tatibId,
                         'tanggal' => $validated['tanggal'],
-                        'keterangan' => null,
+                        'keterangan' => '',
                     ]);
 
                     $jumlahCatatan++;
@@ -193,10 +193,29 @@ class TatibController extends Controller
 
     public function riwayat()
     {
-        $riwayat = Siswatatib::with(['siswa', 'tatib'])
-            ->orderByDesc('tanggal')
+        $riwayat = Siswatatib::query()
+            ->join('datasiswa', 'siswa_tatib.id_siswa', '=', 'datasiswa.id')
+            ->join('tatib', 'siswa_tatib.id_tatib', '=', 'tatib.id')
+            ->select(
+                'datasiswa.id as siswa_id',
+                'datasiswa.nama',
+                'datasiswa.nis',
+                DB::raw('SUM(tatib.poin_pelanggaran) as total_poin')
+            )
+            ->groupBy('datasiswa.id', 'datasiswa.nama', 'datasiswa.nis')
+            ->orderBy('datasiswa.nama')
             ->paginate(15);
 
         return view('Tatib.riwayat.index', compact('riwayat'));
+    }
+
+    public function detailRiwayat(Siswa $siswa)
+    {
+        $riwayat = Siswatatib::with('tatib')
+            ->where('id_siswa', $siswa->id)
+            ->orderByDesc('tanggal')
+            ->paginate(15);
+
+        return view('Tatib.riwayat.detail', compact('siswa', 'riwayat'));
     }
 }

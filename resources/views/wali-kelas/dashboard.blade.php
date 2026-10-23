@@ -173,7 +173,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($jadwal as $item)
+                        @forelse (($jadwal ?? collect()) as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->hari ?? '-' }}</td>
