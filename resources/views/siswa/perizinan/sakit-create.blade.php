@@ -248,24 +248,22 @@
                     @enderror
 
                 </div>
-                <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
 
-                    <a href="{{ route('siswa.perizinan.index') }}" class="btn btn-secondary">
-                        Kembali
-                    </a>
+                    <i class="fas fa-paper-plane me-1"></i>
+                    {{ isset($perizinan) ? 'Simpan Perubahan' : 'Kirim Pengajuan' }}
 
-                    <button type="submit" class="btn btn-primary">
-
-                        <i class="fas fa-paper-plane me-1"></i>
-                        {{ isset($perizinan) ? 'Simpan Perubahan' : 'Kirim Pengajuan' }}
-
-                    </button>
-
-                </div>
+                </button>
 
             </form>
 
         </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="{{ route('siswa.perizinan.index') }}" class="btn btn-secondary">
+            Kembali
+        </a>
     </div>
 
 </div>
@@ -333,6 +331,24 @@
                 fieldJamSelesai.classList.remove('d-none');
 
                 infoKeluar.classList.remove('d-none');
+
+                    }
+
+                    // IZIN
+                    else if (value === 'izin') {
+
+                        infoIzin.classList.remove('d-none');
+
+                    }
+
+
+                    // KELUAR
+                    else if (value === 'keluar') {
+
+                        fieldJamMulai.classList.remove('d-none');
+                        fieldJamSelesai.classList.remove('d-none');
+
+                        infoKeluar.classList.remove('d-none');
 
                     }
                     else if (value === 'pulang') {

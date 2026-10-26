@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TahunAjaran;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class TahunAjaranController extends Controller
@@ -33,7 +34,10 @@ class TahunAjaranController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate($this->rules());
+        $validated = $request->validate(
+            $this->rules($request),
+            $this->messages()
+        );
 
         TahunAjaran::create([
             'tahun_ajaran' => $validated['tahun_ajaran'],
@@ -47,9 +51,12 @@ class TahunAjaranController extends Controller
 
     public function update(Request $request, $id): RedirectResponse
     {
-        $validated = $request->validate($this->rules());
-
         $tahun = TahunAjaran::findOrFail($id);
+        $validated = $request->validate(
+            $this->rules($request, $tahun->id),
+            $this->messages()
+        );
+
         $tahun->update([
             'tahun_ajaran' => $validated['tahun_ajaran'],
             'semester' => $validated['semester'],
@@ -69,11 +76,25 @@ class TahunAjaranController extends Controller
             ->with('success', 'Data tahun ajaran berhasil dihapus');
     }
 
-    protected function rules(): array
+    protected function rules(Request $request, ?int $ignoreId = null): array
     {
         return [
-            'tahun_ajaran' => ['required', 'string', 'max:9'],
+            'tahun_ajaran' => [
+                'required',
+                'string',
+                'max:9',
+                Rule::unique('tahun_ajaran', 'tahun_ajaran')
+                    ->where('semester', $request->input('semester'))
+                    ->ignore($ignoreId),
+            ],
             'semester' => ['required', 'in:Ganjil,Genap'],
+        ];
+    }
+
+    protected function messages(): array
+    {
+        return [
+            'tahun_ajaran.unique' => 'Tahun ajaran dan semester tersebut sudah terdaftar.',
         ];
     }
 }

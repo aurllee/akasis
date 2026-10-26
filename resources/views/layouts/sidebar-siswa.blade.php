@@ -21,6 +21,10 @@
             class="{{ request()->routeIs('siswa.jadwal.*') ? 'active' : '' }}">
             <i class="bi bi-calendar3" aria-hidden="true"></i><span>Jadwal</span>
         </a>
+        <a href="{{ route('siswa.tatib.index') }}"
+            class="{{ request()->routeIs('siswa.tatib.*') ? 'active' : '' }}">
+            <i class="bi bi-clipboard-check" aria-hidden="true"></i><span>Rekap Pelanggaran</span>
+        </a>
 
         <div class="menu-title">Perizinan</div>
         <a href="{{ route('siswa.absensi.index') }}"

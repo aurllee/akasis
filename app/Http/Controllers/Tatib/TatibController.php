@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Tatib;
 use App\Http\Controllers\Controller;
 use App\Models\Siswatatib;
 use App\Models\Siswa;
+use App\Models\SiswaKelas;
 use App\Models\Tatib;
+use App\Models\WaliKelas;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -193,7 +196,9 @@ class TatibController extends Controller
 
     public function riwayat()
     {
-        $riwayat = Siswatatib::query()
+        $isWaliKelas = (int) auth()->user()->role_id === 3;
+
+        $query = Siswatatib::query()
             ->join('datasiswa', 'siswa_tatib.id_siswa', '=', 'datasiswa.id')
             ->join('tatib', 'siswa_tatib.id_tatib', '=', 'tatib.id')
             ->select(
@@ -202,20 +207,51 @@ class TatibController extends Controller
                 'datasiswa.nis',
                 DB::raw('SUM(tatib.poin_pelanggaran) as total_poin')
             )
-            ->groupBy('datasiswa.id', 'datasiswa.nama', 'datasiswa.nis')
+            ->groupBy('datasiswa.id', 'datasiswa.nama', 'datasiswa.nis');
+
+        if ($isWaliKelas) {
+            $query->whereIn('datasiswa.id', $this->siswaIdsWaliKelas());
+        }
+
+        $riwayat = $query
             ->orderBy('datasiswa.nama')
             ->paginate(15);
 
-        return view('Tatib.riwayat.index', compact('riwayat'));
+        $view = $isWaliKelas
+            ? 'wali-kelas.tatib.index'
+            : 'Tatib.riwayat.index';
+
+        return view($view, compact('riwayat'));
     }
 
     public function detailRiwayat(Siswa $siswa)
     {
+        if ((int) auth()->user()->role_id === 3) {
+            abort_unless(
+                $this->siswaIdsWaliKelas()->where('siswa_id', $siswa->id)->exists(),
+                403
+            );
+        }
+
         $riwayat = Siswatatib::with('tatib')
             ->where('id_siswa', $siswa->id)
             ->orderByDesc('tanggal')
             ->paginate(15);
 
         return view('Tatib.riwayat.detail', compact('siswa', 'riwayat'));
+    }
+
+    private function siswaIdsWaliKelas(): Builder
+    {
+        $guruId = auth()->user()->guru_id ?? 0;
+
+        return SiswaKelas::query()
+            ->select('siswa_id')
+            ->whereIn(
+                'kelas_id',
+                WaliKelas::query()
+                    ->select('kelas_id')
+                    ->where('guru_id', $guruId)
+            );
     }
 }

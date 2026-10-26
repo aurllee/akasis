@@ -20,8 +20,8 @@
         </a>
 
         <div class="menu-title">Tatib</div>
-        <a href="{{ route('admin.tatib.index') }}"
-            class="{{ request()->routeIs('admin.tatib.index') ? 'active' : '' }}">
+        <a href="{{ route('tatib.datapelanggaran') }}"
+            class="{{ request()->routeIs('tatib.datapelanggaran') ? 'active' : '' }}">
             <i class="bi bi-person-lines-fill" aria-hidden="true"></i>
             <span>Daftar Pelanggaran</span>
         </a>

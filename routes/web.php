@@ -32,6 +32,7 @@ use App\Http\Controllers\Walikelas\AbsenController as WaliKelasAbsenController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
+use App\Http\Controllers\Siswa\TatibController as SiswaTatibController;
 
 
 
@@ -457,6 +458,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth'])->prefix('siswa')->name('siswa.')->group(function () {
+
+    Route::get('/tatib', [SiswaTatibController::class, 'index'])
+        ->name('tatib.index');
 
     Route::get('/perizinan', [PerizinanController::class, 'index'])
         ->name('perizinan.index');

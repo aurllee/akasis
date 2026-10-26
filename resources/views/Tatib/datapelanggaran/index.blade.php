@@ -4,17 +4,12 @@
 
 @push('styles')
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
+        .tatib-list-page {
             color: #1f2937;
-            background: #f4f7fb;
-        }
-
-        .page-wrap {
             width: 100%;
         }
 
-        .page-card {
+        .tatib-list-page .page-card {
             background: #ffffff;
             border: 1px solid #e5e7eb;
             border-radius: 12px;
@@ -22,13 +17,14 @@
             padding: 24px;
         }
 
-        .page-title {
+        .tatib-list-page .page-title {
             margin: 0 0 8px;
             font-size: 25px;
-            font-weight: 500;
+            font-weight: 600;
+            color: #2449a4;
         }
 
-        .page-heading {
+        .tatib-list-page .page-heading {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -36,12 +32,12 @@
             margin-bottom: 20px;
         }
 
-        .page-subtitle {
+        .tatib-list-page .page-subtitle {
             margin: 0;
             color: #64748b;
         }
 
-        .academic-btn {
+        .tatib-list-page .academic-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -56,47 +52,38 @@
             transition: background-color 0.2s ease;
         }
 
-        .academic-btn:hover {
+        .tatib-list-page .academic-btn:hover {
             background: #1d3f8c;
             color: #ffffff;
         }
 
-        @media (max-width: 576px) {
-            .page-heading {
-                align-items: flex-start;
-                flex-direction: column;
-            }
+        .tatib-list-page .table-responsive {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
         }
 
-        .table th {
+        .tatib-list-page .table {
+            margin-bottom: 0;
+            min-width: 620px;
+        }
+
+        .tatib-list-page .table th {
             background: #eff6ff;
             color: #1e40af;
             font-size: 0.82rem;
             vertical-align: middle;
+            white-space: nowrap;
         }
 
-        .table td {
+        .tatib-list-page .table td {
             vertical-align: middle;
         }
 
-        .btn-primary {
-            display: inline-block;
-            padding: 8px 12px;
-            border-radius: 8px;
-            background: #2449a4;
-            border: none;
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 500;
+        .tatib-list-page .table tbody tr:last-child td {
+            border-bottom: 0;
         }
 
-        .btn-primary:hover {
-            opacity: 0.95;
-            color: #ffffff;
-            text-decoration: none;
-        }
-
-        .empty-state {
+        .tatib-list-page .empty-state {
             padding: 20px;
             border-radius: 10px;
             background: #f8fafc;
@@ -104,14 +91,25 @@
             text-align: center;
         }
 
-        .fs-12 {
-            font-size: 13px;
+        .tatib-list-page .pagination {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 576px) {
+            .tatib-list-page .page-card {
+                padding: 18px 14px;
+            }
+
+            .tatib-list-page .page-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
         }
     </style>
 @endpush
 
 @section('content')
-    <div class="page-wrap">
+    <div class="page-wrap tatib-list-page">
         <div class="page-card">
             <div class="page-heading">
                 <div>
