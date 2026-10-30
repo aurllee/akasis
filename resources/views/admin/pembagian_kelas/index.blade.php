@@ -24,7 +24,7 @@
     .header h1 {
         font-size: 24px;
         font-weight: 600;
-        color: #1e293b;
+        color: #2449a4;
         margin: 0;
     }
 

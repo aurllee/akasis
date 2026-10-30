@@ -247,9 +247,134 @@
             flex-direction: column;
         }
 
+<<<<<<< Updated upstream
         .academic-header .btn-action-primary {
             width: 100%;
             justify-content: center;
+=======
+        .academic-header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2449a4;
+            margin: 0 0 4px 0;
+        }
+
+        .academic-header p {
+            font-size: 13px;
+            color: #64748b;
+            margin: 0;
+        }
+
+        .btn-back-link {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            transition: color 0.2s;
+        }
+
+        .btn-back-link:hover {
+            color: #2563eb;
+        }
+
+        .btn-action-primary {
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+
+        .btn-action-primary:hover {
+            background: #1d4ed8;
+            color: #ffffff;
+        }
+
+
+        .filter-section {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .filter-field label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .live-search {
+            display: flex;
+            align-items: center;
+            min-height: 46px;
+            padding: 0 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: #ffffff;
+            color: #64748b;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .live-search:focus-within {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .live-search i {
+            flex: 0 0 auto;
+            margin-right: 10px;
+            font-size: 15px;
+        }
+
+        .live-search input {
+            width: 100%;
+            min-width: 0;
+            padding: 10px 0;
+            border: 0;
+            background: transparent;
+            font-size: 14px;
+            color: #1e293b;
+            outline: none;
+        }
+
+        .sub-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            background-color: #ffffff;
+        }
+
+        .sub-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .sub-card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+>>>>>>> Stashed changes
         }
 
         .academic-table {
@@ -376,7 +501,20 @@
 
                             </tr>
 
+<<<<<<< Updated upstream
                         @empty
+=======
+            <div class="filter-section">
+                <div class="filter-field">
+                        <label for="liveSearchSiswa">Cari Siswa</label>
+                        <div class="live-search">
+                            <i class="bi bi-search" aria-hidden="true"></i>
+                            <input type="text" id="liveSearchSiswa"
+                                placeholder="Cari nama, NIS, atau NISN..." autocomplete="off">
+                        </div>
+                </div>
+            </div>
+>>>>>>> Stashed changes
 
                             <tr>
 
@@ -746,6 +884,13 @@
 
 
 @push('scripts')
+<<<<<<< Updated upstream
+=======
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('liveSearchSiswa');
+            const rows = document.querySelectorAll('.siswa-row');
+>>>>>>> Stashed changes
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -800,6 +945,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 visibleCount++;
             }
 
+<<<<<<< Updated upstream
+=======
+            if (searchInput) {
+                searchInput.addEventListener('input', filterSiswa);
+            }
+>>>>>>> Stashed changes
         });
 
 

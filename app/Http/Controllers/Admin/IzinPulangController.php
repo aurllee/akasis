@@ -86,7 +86,7 @@ class IzinPulangController extends Controller
             })->values();
         }
 
-        $perPage = 20;
+        $perPage = 10;
         $currentPage = $request->input('page', 1);
         $items = $data->forPage($currentPage, $perPage);
 

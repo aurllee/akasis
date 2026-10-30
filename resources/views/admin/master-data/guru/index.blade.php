@@ -564,8 +564,8 @@
             }
 
             if (pagination) {
-                pagination.style.display = visible <= 10 ? 'none' : 'flex';
-            }
+    pagination.style.display = keyword !== '' ? 'none' : 'flex';
+}
         };
 
         searchInput.addEventListener('input', applySearch);

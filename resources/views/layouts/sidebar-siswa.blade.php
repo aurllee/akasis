@@ -39,6 +39,13 @@
             <i class="bi bi-file-earmark-text" aria-hidden="true"></i><span>Dispensasi</span>
         </a>
 
+        <div class="menu-title">Rapor</div>
+<a href="{{ route('siswa.rapor.index') }}">
+    <i class="bi bi-journal-text"></i>
+    <span>Rapor Saya</span>
+</a>
+
+
         <form action="{{ route('logout') }}" method="POST" class="logout-form">
             @csrf
             <button type="submit"><i class="bi bi-box-arrow-right" aria-hidden="true"></i><span>Logout</span></button>

@@ -3,6 +3,7 @@
 @section('title', 'Penilaian Ujian ' . $mataPelajaran->nama_mapel)
 
 @push('styles')
+<<<<<<< Updated upstream
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -272,13 +273,319 @@
             <span class="badge-green">
                 Penilaian Ujian
             </span>
+=======
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        color: #1f2937;
+        background: #f4f7fb;
+    }
 
+    .page-wrap {
+        width: 100%;
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .page-card {
+        padding: 24px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+    }
+
+    .page-title {
+        margin: 0 0 8px;
+        color: #2449a4;
+        font-size: 25px;
+        font-weight: 600;
+    }
+
+    .page-subtitle {
+        margin: 0;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 20px;
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .btn-back:hover {
+        color: #2449a4;
+    }
+
+    .card {
+        overflow: hidden;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-body.p-0 {
+        padding: 0;
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+    .justify-content-between {
+        justify-content: space-between;
+    }
+
+    .align-items-center {
+        align-items: center;
+    }
+
+    .fw-bold {
+        font-weight: 700;
+    }
+
+    .text-muted {
+        color: #64748b;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-end {
+        text-align: right;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 9px 14px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        color: #ffffff;
+        background: #2449a4;
+        border-color: #2449a4;
+    }
+
+    .btn-primary:hover {
+        color: #ffffff;
+        background: #1a3679;
+    }
+
+    .btn-action-edit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 7px 11px;
+        color: #ffffff;
+        background: #2449a4;
+        border: 1px solid #2449a4;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .btn-action-edit:hover {
+        color: #ffffff;
+        background: #1a3679;
+    }
+
+    .btn-action-delete {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 7px 11px;
+        color: #475569;
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .btn-action-delete:hover {
+        background: #f8fafc;
+    }
+
+    .action-wrapper {
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .search-card {
+        margin-bottom: 20px;
+    }
+
+    .search-label {
+        display: block;
+        margin-bottom: 7px;
+        color: #475569;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .badge-blue {
+        display: inline-block;
+        padding: 5px 10px;
+        color: #2449a4;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        min-width: 850px;
+        margin: 0;
+        border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+        padding: 10px 12px;
+        border: 1px solid #dbe3ef;
+        vertical-align: middle;
+    }
+
+    .table th {
+        color: #2449a4;
+        background: #eff6ff;
+        font-size: 12px;
+        font-weight: 600;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .table td {
+        color: #1f2937;
+        background: #ffffff;
+        font-size: 13px;
+    }
+
+    .table tbody tr:hover td {
+        background: #f8fafc;
+    }
+
+    .student-name {
+        color: #111827;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+        .page-card {
+            padding: 18px;
+        }
+
+        .d-flex {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 12px;
+        }
+    }
+</style>
+@endpush
+
+@section('content')
+<div class="page-wrap">
+    <div class="page-card">
+        <a
+            href="{{ route('admin.penilaian.mapel.mapel', [
+                'kelasId' => $kelas->id,
+                'mapelId' => $mataPelajaran->id
+            ]) }}"
+            class="btn-back"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Kembali ke Jenis Penilaian
+        </a>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="page-title">Penilaian Ujian</h1>
+                <p class="page-subtitle">
+                    {{ $mataPelajaran->nama_mapel }} - {{ $kelas->tingkat }} {{ $kelas->nama_kelas }}
+                    @if ($kelas->jurusan)
+                        - {{ $kelas->jurusan->nama_jurusan }}
+                    @endif
+                </p>
+            </div>
+>>>>>>> Stashed changes
+
+            <a
+                href="{{ route('admin.penilaian.mapel.create', [
+                    'kelasId' => $kelas->id,
+                    'mapelId' => $mataPelajaran->id,
+                    'jenis_nilai' => 'ujian'
+                ]) }}"
+                class="btn btn-primary"
+            >
+                <i class="bi bi-plus-lg"></i>
+                Tambah Penilaian
+            </a>
         </div>
 
-        <div class="table-responsive">
+        <div class="card search-card">
+            <div class="card-body">
+                <label for="searchUjian" class="search-label">Cari Siswa</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white">
+                        <i class="bi bi-search text-muted"></i>
+                    </span>
+                    <input
+                        type="search"
+                        id="searchUjian"
+                        class="form-control"
+                        placeholder="Nama, NIS, atau NISN"
+                        autocomplete="off"
+                    >
+                </div>
+            </div>
+        </div>
 
-            <table class="table table-hover align-middle mb-0">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Daftar Nilai Siswa</h5>
+            <span class="badge-blue">Penilaian Ujian</span>
+        </div>
 
+<<<<<<< Updated upstream
                 <thead class="bg-light">
 
                     <tr>
@@ -361,15 +668,98 @@
 
             </table>
 
+=======
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>NIS</th>
+                                <th>Siswa</th>
+                                <th>Nilai</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ujianTableBody">
+                            @forelse ($penilaian as $item)
+                                <tr class="assessment-row" data-search="{{ strtolower(($item->siswa?->nama ?? '') . ' ' . ($item->siswa?->nis ?? '') . ' ' . ($item->siswa?->nisn ?? '')) }}">
+                                    <td class="text-center">{{ $loop->iteration }}</td>
+                                    <td>{{ $item->siswa?->nis ?? '-' }}</td>
+                                    <td class="student-name">{{ $item->siswa?->nama ?? '-' }}</td>
+                                    <td class="text-center">{{ $item->nilai }}</td>
+                                    <td class="text-center">
+                                        {{ $item->tanggal_penilaian?->format('d/m/Y') ?? $item->created_at?->format('d/m/Y') ?? '-' }}
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="action-wrapper">
+                                            <a
+                                                href="{{ route('admin.penilaian.mapel.edit', [
+                                                    'kelasId' => $kelas->id,
+                                                    'mapelId' => $mataPelajaran->id,
+                                                    'id' => $item->id
+                                                ]) }}"
+                                                class="btn-action-edit"
+                                            >
+                                                <i class="bi bi-pencil"></i>
+                                                Edit
+                                            </a>
+                                            <form
+                                                action="{{ route('admin.penilaian.mapel.destroy', [
+                                                    'kelasId' => $kelas->id,
+                                                    'mapelId' => $mataPelajaran->id,
+                                                    'id' => $item->id
+                                                ]) }}"
+                                                method="POST"
+                                            >
+                                                @csrf
+                                                @method('DELETE')
+                                                <button
+                                                    type="submit"
+                                                    class="btn-action-delete"
+                                                    onclick="return confirm('Yakin ingin menghapus nilai ini?')"
+                                                >
+                                                    <i class="bi bi-trash"></i>
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center py-5">
+                                        <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+                                        <h6 class="mt-3">Belum ada penilaian ujian</h6>
+                                        <p class="text-muted small">Belum ada data nilai ujian.</p>
+                                        <a
+                                            href="{{ route('admin.penilaian.mapel.create', [
+                                                'kelasId' => $kelas->id,
+                                                'mapelId' => $mataPelajaran->id,
+                                                'jenis_nilai' => 'ujian'
+                                            ]) }}"
+                                            class="btn btn-primary"
+                                        >
+                                            <i class="bi bi-plus-lg"></i>
+                                            Tambah Penilaian
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+>>>>>>> Stashed changes
         </div>
-
     </div>
-
 </div>
-
 @endsection
 
 @push('scripts')
+<<<<<<< Updated upstream
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const searchInput = document.getElementById('searchUjian');
@@ -399,6 +789,41 @@
                     tableBody.appendChild(emptyRow);
                 }
             });
+=======
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchUjian');
+        const tableBody = document.getElementById('ujianTableBody');
+
+        if (!searchInput || !tableBody) {
+            return;
+        }
+
+        searchInput.addEventListener('input', function () {
+            const keyword = searchInput.value.trim().toLowerCase();
+            const rows = tableBody.querySelectorAll('.assessment-row');
+            let visibleCount = 0;
+
+            rows.forEach(function (row) {
+                const matches = !keyword || (row.dataset.search || '').includes(keyword);
+                row.style.display = matches ? '' : 'none';
+                if (matches) {
+                    visibleCount++;
+                }
+            });
+
+            const oldEmpty = tableBody.querySelector('.live-search-empty');
+            if (oldEmpty) {
+                oldEmpty.remove();
+            }
+
+            if (rows.length > 0 && visibleCount === 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.className = 'live-search-empty';
+                emptyRow.innerHTML = '<td colspan="6" class="text-center py-5"><i class="bi bi-search fs-1 text-muted"></i><h6 class="mt-3">Siswa tidak ditemukan</h6><p class="text-muted small mb-0">Coba kata kunci lain.</p></td>';
+                tableBody.appendChild(emptyRow);
+            }
+>>>>>>> Stashed changes
         });
     </script>
 @endpush

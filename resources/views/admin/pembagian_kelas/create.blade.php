@@ -22,7 +22,7 @@
 
     .academic-create h1 {
         margin: 0 0 6px;
-        color: #1e293b;
+        color: #2449a4;
         font-size: 24px;
         font-weight: 600;
     }

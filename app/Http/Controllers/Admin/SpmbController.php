@@ -387,44 +387,42 @@ class SpmbController extends Controller
                 'Data calon siswa berhasil dihapus.'
             );
     }
-
-
-
+ 
     public function verifikasiSemuaDokumen(Request $request, $id)
-    {
-        $request->validate([
-            'dokumen' => 'required|array',
-            'dokumen.*.status' => 'required|in:Belum Diverifikasi,Valid,Tidak Valid',
-            'dokumen.*.catatan' => 'nullable|string|max:1000',
-        ]);
+{
+    $request->validate([
+        'dokumen' => 'required|array',
+        'dokumen.*.status' => 'required|in:Belum Diverifikasi,Valid,Tidak Valid',
+        'dokumen.*.catatan' => 'nullable|string|max:1000',
+    ]);
 
-        DB::transaction(function () use ($request, $id) {
-            $calonSiswa = CalonSiswa::with('dokumen')->findOrFail($id);
+    DB::transaction(function () use ($request, $id) {
+        $calonSiswa = CalonSiswa::with('dokumen')->findOrFail($id);
 
-            foreach ($request->dokumen as $dokumenId => $data) {
-                $dokumen = DokumenCalonSiswa::where('id', $dokumenId)
-                    ->where('calon_siswa_id', $calonSiswa->id)
-                    ->first();
+        foreach ($request->dokumen as $dokumenId => $data) {
+            $dokumen = DokumenCalonSiswa::where('id', $dokumenId)
+                ->where('calon_siswa_id', $calonSiswa->id)
+                ->first();
 
-                if (!$dokumen) {
-                    continue;
-                }
-
-                $dokumen->update([
-                    'status' => $data['status'],
-                    'catatan' => $data['catatan'] ?? null,
-                    'verifikator_id' => auth()->id(),
-                    'tanggal_verifikasi' => now(),
-                ]);
+            if (!$dokumen) {
+                continue;
             }
 
-            $this->updateStatusDaftarUlang($calonSiswa->fresh('dokumen'));
-        });
+            $dokumen->update([
+                'status' => $data['status'],
+                'catatan' => $data['catatan'] ?? null,
+                'verifikator_id' => auth()->id(),
+                'tanggal_verifikasi' => now(),
+            ]);
+        }
 
-        return redirect()
-            ->route('admin.spmb.show', $id)
-            ->with('success', 'Verifikasi seluruh dokumen berhasil disimpan.');
-    }
+        $this->updateStatusDaftarUlang($calonSiswa->fresh('dokumen'));
+    });
+
+    return redirect()
+        ->route('admin.spmb.show', $id)
+        ->with('success', 'Verifikasi seluruh dokumen berhasil disimpan.');
+}
 
 
     public function verifikasiDaftarUlang($id)

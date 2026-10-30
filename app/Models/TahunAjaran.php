@@ -14,10 +14,19 @@ class TahunAjaran extends Model
     protected $fillable = [
         'tahun_ajaran',
         'semester',
+        'tanggal_mulai',
+        'tanggal_selesai',
         'status',
     ];
 
     protected $casts = [
+        'tanggal_mulai' => 'date',
+        'tanggal_selesai' => 'date',
         'status' => 'boolean',
     ];
+
+     public function raporSiswa()
+    {
+        return $this->hasMany(RaporSiswa::class, 'tahun_ajaran_id');
+    }
 }

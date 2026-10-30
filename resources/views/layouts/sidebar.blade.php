@@ -149,6 +149,20 @@
             <i class="bi bi-clipboard-check"></i>
             <span>Penilaian PJBL</span>
         </a>
+<<<<<<< Updated upstream
+=======
+
+        <div class="menu-title">
+            Rapor
+        </div>
+
+        <a href="{{ route('admin.rapor.index') }}"
+    class="{{ request()->routeIs('admin.rapor.*') ? 'active' : '' }}">
+    <i class="bi bi-file-earmark-text"></i>
+    <span>Monitoring Rapor</span>
+</a>
+
+>>>>>>> Stashed changes
     </div>
 
 

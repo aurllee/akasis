@@ -19,7 +19,7 @@
         }
 
         .page-header h3 {
-            color: #0f172a;
+            color: #2449a4;
             font-size: 22px;
             font-weight: 700;
             margin-bottom: 4px;

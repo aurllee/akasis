@@ -316,109 +316,16 @@
 
         <div class="data-card-body">
 
-            $jenisText = match ($jenisValue) {
-                'sakit' => 'Sakit',
-                'izin' => 'Izin',
-                'pulang' => 'Izin Pulang',
-                'keluar' => 'Izin Keluar',
-                'dispen' => 'Dispen',
-                default => ucfirst($jenisValue ?: '-'),
-            };
-
-            $jenisClass = match ($jenisValue) {
-                'sakit' => 'type-sakit',
-                'izin' => 'type-izin',
-                'pulang' => 'type-pulang',
-                'keluar' => 'type-keluar',
-                'dispen' => 'type-dispen',
-                default => '',
-            };
-
-            $statusValue = $izinPulang->status ?? 'menunggu';
-
-                <tr>
-                    <th>Jenis</th>
-                    <td>
-                        <span class="type-badge {{ $jenisClass }}">
-                            {{ $jenisText }}
-                        </span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th>Tanggal</th>
-                    <td>
-                        {{ $izinPulang->tanggal?->format('d-m-Y') ?? '-' }}
-                        @if ($izinPulang->tanggal_selesai ?? null)
-                        @if ($izinPulang->tanggal_selesai->format('Y-m-d') !== $izinPulang->tanggal?->format('Y-m-d'))
-                        - {{ $izinPulang->tanggal_selesai->format('d-m-Y') }}
-                        @endif
-                        @endif
-                    </td>
-                </tr>
-
-                <tr>
-                    <th>Jam</th>
-                    <td>
-                        @if (in_array($jenisValue, ['sakit', 'izin', 'dispen'], true))
-                        <span class="text-muted">-</span>
-                        @else
-                        {{ $izinPulang->jam_mulai
-                                ? \Carbon\Carbon::parse($izinPulang->jam_mulai)->format('H:i')
-                                : '-' }}
-                        <span class="text-muted mx-1">-</span>
-                        @if ($izinPulang->jam_selesai)
-                        {{ \Carbon\Carbon::parse($izinPulang->jam_selesai)->format('H:i') }}
-                        @else
-                        <span class="text-muted">pulang</span>
-                        @endif
-                        @endif
-                    </td>
-                </tr>
-
-                <tr>
-                    <th>JP Pulang</th>
-                    <td>
-                        @if ($jenisValue === 'pulang' && ($izinPulang->jp_pulang ?? null))
-                        JP {{ $izinPulang->jp_pulang }}
-                        @else
-                        <span class="text-muted">-</span>
-                        @endif
-                    </td>
-                </tr>
-
-                <tr>
-                    <th>Alasan</th>
-                    <td>
-                        {{ $izinPulang->alasan ?? '-' }}
-                    </td>
-                </tr>
-
-            <div class="data-card-header">
-                <div class="data-card-icon">
-                    <i class="bi bi-calendar-check"></i>
-                </div>
-
-                        @if ($izinPulang->dokumen)
-
-                        <a href="{{ asset('storage/' . $izinPulang->dokumen) }}" target="_blank" class="document-btn">
-                            <i class="bi bi-file-earmark-text"></i>
-                            Lihat Surat
-                        </a>
-
-                <table class="detail-table">
-
-                        <span class="no-document">
-                            Tidak ada dokumen
-                        </span>
-
+            <table class="detail-table">
+                <tbody>
                     <tr>
                         <th>NIS</th>
-                        <td>
-                            {{ $izinPulang->siswa->nis ?? '-' }}
-                        </td>
+                        <td>{{ $izinPulang->siswa?->nis ?? '-' }}</td>
                     </tr>
-
+                    <tr>
+                        <th>Nama Siswa</th>
+                        <td class="student-name">{{ $izinPulang->siswa?->nama ?? '-' }}</td>
+                    </tr>
                     <tr>
                         <th>Jenis</th>
                         <td>
@@ -427,7 +334,6 @@
                             </span>
                         </td>
                     </tr>
-
                     <tr>
                         <th>Tanggal</th>
                         <td>
@@ -439,32 +345,56 @@
                             @endif
                         </td>
                     </tr>
-
                     <tr>
                         <th>Jam</th>
                         <td>
                             @if (in_array($jenisValue, ['sakit', 'izin', 'dispen'], true))
                                 <span class="text-muted">-</span>
                             @else
-                                                {{ $izinPulang->jam_mulai
-                                ? \Carbon\Carbon::parse($izinPulang->jam_mulai)->format('H:i')
-                                : '-' }}
-                                                <span class="text-muted mx-1">-</span>
-                                                @if ($izinPulang->jam_selesai)
-                                                    {{ \Carbon\Carbon::parse($izinPulang->jam_selesai)->format('H:i') }}
-                                                @else
-                                                    <span class="text-muted">pulang</span>
-                                                @endif
+                                {{ $izinPulang->jam_mulai
+                                    ? \Carbon\Carbon::parse($izinPulang->jam_mulai)->format('H:i')
+                                    : '-' }}
+                                <span class="text-muted mx-1">-</span>
+                                @if ($izinPulang->jam_selesai)
+                                    {{ \Carbon\Carbon::parse($izinPulang->jam_selesai)->format('H:i') }}
+                                @else
+                                    <span class="text-muted">pulang</span>
+                                @endif
                             @endif
                         </td>
                     </tr>
-
                     <tr>
-                        <th>Alasan</th>
+                        <th>JP Pulang</th>
                         <td>
-                            {{ $izinPulang->alasan ?? '-' }}
+                            @if ($jenisValue === 'pulang' && ($izinPulang->jp_pulang ?? null))
+                                JP {{ $izinPulang->jp_pulang }}
+                            @else
+                                <span class="text-muted">-</span>
+                            @endif
                         </td>
                     </tr>
+                    <tr>
+                        <th>Alasan</th>
+                        <td>{{ $izinPulang->alasan ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Dokumen</th>
+                        <td>
+                            @if ($izinPulang->dokumen)
+                                <a href="{{ asset('storage/' . $izinPulang->dokumen) }}" target="_blank" rel="noopener" class="document-btn">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                    Lihat Surat
+                                </a>
+                            @else
+                                <span class="no-document">Tidak ada dokumen</span>
+                            @endif
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 
     <div class="data-card">
 

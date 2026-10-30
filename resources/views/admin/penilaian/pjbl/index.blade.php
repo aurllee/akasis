@@ -32,7 +32,7 @@
         .academic-header h1 {
             font-size: 20px;
             font-weight: 700;
-            color: #0f172a;
+            color: #2449a4;
             margin: 0 0 4px 0;
         }
 
@@ -119,6 +119,85 @@
         .filter-field input:focus {
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .search-input-group {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            min-height: 42px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-input-group:focus-within {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .search-input-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 12px;
+            color: #64748b;
+        }
+
+        .filter-search .search-input-group input {
+            min-height: 40px;
+            padding-left: 0;
+            border: 0;
+            box-shadow: none;
+        }
+
+        .filter-search .search-input-group input:focus {
+            border: 0;
+            box-shadow: none;
+        }
+
+        .search-results {
+            display: block;
+            margin: 0 0 12px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .live-search-empty {
+            display: none;
+            margin-top: 16px;
+            padding: 28px 16px;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            background: #f8fafc;
+            color: #64748b;
+            text-align: center;
+        }
+
+        .live-search-empty-icon {
+            display: inline-flex;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            border-radius: 50%;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 18px;
+        }
+
+        .live-search-empty h5 {
+            margin: 0 0 5px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .live-search-empty p {
+            margin: 0;
+            font-size: 12px;
         }
 
         .filter-row {

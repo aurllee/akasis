@@ -30,6 +30,21 @@
             <i class="bi bi-journal-check" aria-hidden="true"></i>
             <span>Penilaian PjBL</span>
         </a>
+      
+
+<a href="{{ route('guru.rapor-mapel.index') }}"
+    class="{{ request()->routeIs('guru.rapor-mapel.index') ? 'active' : '' }}">
+    <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
+    <span>Nilai Rapor</span>
+</a>
+
+<a href="{{ route('guru.rapor-mapel.permintaan-revisi') }}"
+    class="{{ request()->routeIs('guru.rapor-mapel.permintaan-revisi*') ? 'active' : '' }}">
+    <i class="bi bi-arrow-repeat" aria-hidden="true"></i>
+    <span>Permintaan Revisi Rapor</span>
+</a>
+
+
 
         <div class="menu-title">Jadwal pelajaran</div>
         <a href="{{ route('guru.jadwal.index') }}" class="{{ request()->routeIs('guru.jadwal.*') ? 'active' : '' }}">

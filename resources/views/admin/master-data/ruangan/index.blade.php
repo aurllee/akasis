@@ -2,387 +2,393 @@
 
 @section('title', 'Master Ruangan')
 
-@section('content')
-
+@push('styles')
 <style>
     body {
         font-family: 'Poppins', sans-serif;
-    }
-    
-    .ruangan-page {
-        padding: 24px 0;
+        background: #f5f7fb;
+        color: #1f2937;
     }
 
-    .page-header {
-        margin-bottom: 24px;
+    .room-page {
+        padding: 8px 0;
     }
 
-    .page-title {
-        margin: 0;
-        font-size: 26px;
-        font-weight: 700;
-        color: #1e293b;
-    }
-
-    .page-subtitle {
-        margin: 6px 0 0;
-        color: #64748b;
-        font-size: 14px;
-    }
-
-    .btn-add {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 40px;
-        padding: 9px 18px;
-        border-radius: 8px;
-        background: #2563eb;
-        color: #ffffff;
-        font-size: 14px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: 0.2s ease;
-    }
-
-    .btn-add:hover {
-        background: #1d4ed8;
-        color: #ffffff;
-    }
-
-    .page-header-content {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 20px;
-    }
-
-    .data-card {
+    .room-card {
         background: #ffffff;
-        border: 1px solid #e8edf5;
-        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
         box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
         overflow: hidden;
     }
 
-    .data-card-header {
-        padding: 20px 24px;
-        border-bottom: 1px solid #e8edf5;
+    .room-card-header {
+        padding: 22px 24px;
+        border-bottom: 1px solid #eef0f4;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
     }
 
-    .data-card-title {
+    .room-header-title {
         margin: 0;
-        font-size: 17px;
-        font-weight: 600;
-        color: #1e293b;
+        color: #2449a4;
+        font-size: 22px;
+        font-weight: 700;
     }
 
-    .table-wrapper {
+    .room-header-subtitle {
+        margin: 5px 0 0;
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    .room-add-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 15px;
+        border-radius: 8px;
+        background: #2563eb;
+        border: 1px solid #2563eb;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .room-add-btn:hover {
+        background: #1d4ed8;
+        border-color: #1d4ed8;
+        color: #ffffff;
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
+
+    .room-card-body {
+        padding: 0;
+    }
+
+    .room-table-wrapper {
         width: 100%;
         overflow-x: auto;
     }
 
-    .ruangan-table {
+    .room-table {
         width: 100%;
+        min-width: 720px;
+        margin: 0;
         border-collapse: collapse;
-        min-width: 680px;
     }
 
-    .ruangan-table th {
-        padding: 13px 18px;
+    .room-table thead th {
+        padding: 14px 18px;
         background: #f8fafc;
-        border-bottom: 1px solid #e8edf5;
-        color: #475569;
-        font-size: 13px;
-        font-weight: 600;
-        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
         white-space: nowrap;
     }
 
-    .ruangan-table td {
+    .room-table tbody td {
         padding: 14px 18px;
-        border-bottom: 1px solid #eef2f7;
-        color: #334155;
-        font-size: 14px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #374151;
+        font-size: 13px;
         vertical-align: middle;
     }
 
-    .ruangan-table tbody tr:last-child td {
+    .room-table tbody tr {
+        transition: background 0.2s ease;
+    }
+
+    .room-table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+    .room-table tbody tr:last-child td {
         border-bottom: none;
     }
 
-    .ruangan-table tbody tr {
-        transition: 0.2s ease;
-    }
-
-    .ruangan-table tbody tr:hover {
-        background: #f8fafc;
-    }
-
-    .number-cell {
+    .room-number {
         width: 60px;
-        color: #64748b;
-        text-align: center;
+        color: #64748b !important;
+        font-weight: 500;
     }
 
-    .kode-cell {
+    .room-code {
+        color: #2563eb !important;
+        font-weight: 700;
+    }
+
+    .room-name {
+        color: #1f2937 !important;
         font-weight: 600;
-        color: #2563eb;
+    }
+
+    .room-capacity {
+        color: #475569 !important;
+        font-weight: 500;
+    }
+
+    .room-status {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 10px;
+        border-radius: 20px;
+        background: #ecfdf5;
+        color: #047857;
+        font-size: 11px;
+        font-weight: 700;
         white-space: nowrap;
     }
 
-    .nama-cell {
-        font-weight: 600;
-        color: #1e293b;
-    }
-
-    .status-badge {
-        display: inline-block;
-        padding: 5px 10px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 600;
-        background: #ecfdf5;
-        color: #047857;
-    }
-
-    .status-badge.is-inactive {
+    .room-status.is-inactive {
         background: #f1f5f9;
         color: #64748b;
     }
 
-    .action-wrapper {
+    .room-action {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 7px;
         white-space: nowrap;
     }
 
-    .btn-action {
+    .room-edit,
+    .room-delete {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 34px;
-        padding: 7px 12px;
-        border-radius: 7px;
-        font-size: 13px;
+        min-width: 52px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 11px;
         font-weight: 600;
         text-decoration: none;
-        border: 1px solid transparent;
         cursor: pointer;
-        transition: 0.2s ease;
+        transition: all 0.2s ease;
     }
 
-    .btn-edit {
+    .room-edit {
         background: #eff6ff;
+        border: 1px solid #bfdbfe;
         color: #2563eb;
-        border-color: #dbeafe;
     }
 
-    .btn-edit:hover {
+    .room-edit:hover {
         background: #dbeafe;
+        border-color: #93c5fd;
         color: #1d4ed8;
+        text-decoration: none;
     }
 
-    .btn-delete {
+    .room-delete {
         background: #fef2f2;
+        border: 1px solid #fecaca;
         color: #dc2626;
-        border-color: #fee2e2;
     }
 
-    .btn-delete:hover {
+    .room-delete:hover {
         background: #fee2e2;
+        border-color: #fca5a5;
         color: #b91c1c;
     }
 
-    .delete-form {
-        margin: 0;
-    }
-
-    .empty-state {
-        padding: 40px 20px !important;
-        text-align: center;
+    .room-empty {
+        padding: 45px 20px !important;
+        text-align: center !important;
         color: #94a3b8 !important;
+        font-size: 13px !important;
     }
 
-    .room-pagination {
+    .room-pagination-wrapper {
+        padding: 18px 24px;
+        border-top: 1px solid #eef0f4;
         display: flex;
         justify-content: center;
-        margin-top: 20px;
-        padding: 0 24px 24px;
     }
 
-    .room-pagination nav {
-        display: flex;
-    }
-
-    .room-pagination ul.pagination {
-        align-items: center;
-        display: flex;
-        gap: 6px;
+    .room-pagination-wrapper nav {
         margin: 0;
     }
 
-    .room-pagination .page-item {
+    .room-pagination-wrapper .pagination {
+        margin: 0;
+        gap: 5px;
+    }
+
+    .room-pagination-wrapper .page-item {
         margin: 0;
     }
 
-    .room-pagination .page-link {
-        align-items: center;
-        background: #fff;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        color: #475569;
-        display: flex;
-        font-size: 13px;
-        height: 34px;
-        justify-content: center;
+    .room-pagination-wrapper .page-link {
         min-width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         padding: 0 10px;
+        border: 1px solid #dbe1e8;
+        border-radius: 7px !important;
+        background: #ffffff;
+        color: #64748b;
+        font-size: 12px;
+        box-shadow: none;
     }
 
-    .room-pagination .page-link:hover {
+    .room-pagination-wrapper .page-link:hover {
         background: #eff6ff;
         border-color: #93c5fd;
-        color: #1d4ed8;
+        color: #2563eb;
     }
 
-    .room-pagination .page-item.active .page-link {
-        background: #2449a4;
-        border-color: #2449a4;
-        color: #fff;
+    .room-pagination-wrapper .page-item.active .page-link {
+        background: #2563eb;
+        border-color: #2563eb;
+        color: #ffffff;
     }
 
-    .room-pagination .page-item.disabled .page-link {
+    .room-pagination-wrapper .page-item.disabled .page-link {
         background: #f8fafc;
-        border-color: #e2e8f0;
-        color: #94a3b8;
+        border-color: #e5e7eb;
+        color: #cbd5e1;
     }
 
     @media (max-width: 768px) {
-        .ruangan-page {
-            padding: 16px 0;
-        }
-
-        .page-header-content {
+        .room-card-header {
             align-items: flex-start;
             flex-direction: column;
-        }
-
-        .page-title {
-            font-size: 22px;
-        }
-
-        .btn-add {
-            width: 100%;
-        }
-
-        .data-card-header {
             padding: 18px;
         }
 
-        .ruangan-table th,
-        .ruangan-table td {
-            padding: 12px 14px;
+        .room-add-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .room-pagination-wrapper {
+            padding: 16px;
+            overflow-x: auto;
+            justify-content: flex-start;
         }
     }
 </style>
+@endpush
 
-<div class="ruangan-page">
+@section('content')
+<div class="container-fluid py-4">
+    <div class="room-page">
 
-    <div class="page-header">
-        <div class="page-header-content">
-            <div>
-                <h1 class="page-title">Master Ruangan</h1>
-                <p class="page-subtitle">
-                    Kelola data ruangan sekolah.
-                </p>
+        <div class="room-card">
+
+            <div class="room-card-header">
+                <div>
+                    <h1 class="room-header-title">Master Ruangan</h1>
+                    <p class="room-header-subtitle">
+                        Kelola data ruangan yang digunakan dalam kegiatan pembelajaran.
+                    </p>
+                </div>
+
+                <a href="{{ route('ruangan.create') }}" class="room-add-btn">
+                    <i class="bi bi-plus-lg"></i>
+                    Tambah Ruangan
+                </a>
             </div>
 
-            <a href="{{ route('ruangan.create') }}" class="btn-add">
-                Tambah Ruangan
-            </a>
+            <div class="room-card-body">
+                <div class="room-table-wrapper">
+                    <table class="room-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Kode Ruang</th>
+                                <th>Nama Ruang</th>
+                                <th>Kapasitas</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @forelse($ruangan as $item)
+                                <tr>
+                                    <td class="room-number">
+                                        {{ $ruangan->firstItem() + $loop->index }}
+                                    </td>
+
+                                    <td class="room-code">
+                                        {{ $item->kode_ruang }}
+                                    </td>
+
+                                    <td class="room-name">
+                                        {{ $item->nama_ruang }}
+                                    </td>
+
+                                    <td class="room-capacity">
+                                        {{ $item->kapasitas }}
+                                    </td>
+
+                                    <td>
+                                        <span class="room-status {{ $item->status ? '' : 'is-inactive' }}">
+                                            {{ $item->status ? 'Aktif' : 'Tidak Aktif' }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <div class="room-action">
+                                            <a
+                                                href="{{ route('ruangan.edit', $item->id) }}"
+                                                class="room-edit"
+                                            >
+                                                Edit
+                                            </a>
+
+                                            <form
+                                                action="{{ route('ruangan.destroy', $item->id) }}"
+                                                method="POST"
+                                                class="d-inline"
+                                            >
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button
+                                                    type="submit"
+                                                    class="room-delete"
+                                                    onclick="return confirm('Hapus ruangan?')"
+                                                >
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="room-empty">
+                                        Belum ada data ruangan.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                @if ($ruangan->hasPages())
+                    <div class="room-pagination-wrapper">
+                        {{ $ruangan->links('pagination::bootstrap-5') }}
+                    </div>
+                @endif
+            </div>
+
         </div>
 
     </div>
-
-    <div class="data-card">
-
-        <div class="data-card-header">
-            <h2 class="data-card-title">Data Ruangan</h2>
-        </div>
-
-        <div class="table-wrapper">
-            <table class="ruangan-table">
-                <thead>
-                    <tr>
-                        <th class="number-cell">No</th>
-                        <th>Kode Ruang</th>
-                        <th>Nama Ruang</th>
-                        <th>Kapasitas</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @forelse($ruangan as $item)
-                        <tr>
-                            <td class="number-cell">
-                                {{ $ruangan->firstItem() + $loop->index }}
-                            </td>
-
-                            <td class="kode-cell">
-                                {{ $item->kode_ruang }}
-                            </td>
-
-                            <td class="nama-cell">
-                                {{ $item->nama_ruang }}
-                            </td>
-
-                            <td>
-                                {{ $item->kapasitas }}
-                            </td>
-
-                            <td>
-                                <span class="status-badge {{ $item->status ? '' : 'is-inactive' }}">
-                                    {{ $item->status ? 'Aktif' : 'Tidak Aktif' }}
-                                </span>
-                            </td>
-
-                            <td>
-                                <div class="action-wrapper">
-                                    <a href="{{ route('ruangan.edit', $item->id) }}" class="btn-action btn-edit">
-                                        Edit
-                                    </a>
-
-                                    <form action="{{ route('ruangan.destroy', $item->id) }}" method="POST" class="delete-form">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button type="submit" class="btn-action btn-delete" onclick="return confirm('Hapus ruangan?')">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="empty-state">
-                                Belum ada data ruangan.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-
-        <div class="room-pagination">
-            {{ $ruangan->links('pagination::bootstrap-5') }}
-        </div>
-    </div>
-
 </div>
-
 @endsection

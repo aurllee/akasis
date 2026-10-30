@@ -346,11 +346,6 @@
 
         </div>
 
-        <div class="mt-3 d-flex gap-2">
-            <a href="{{ route('admin.izin-pulang.index') }}" class="btn btn-light border">
-                Reset
-            </a>
-        </div>
     </div>
 </form>
 

@@ -13,14 +13,34 @@ use Illuminate\Support\Str;
 class GuruController extends Controller
 {
 
-    public function index()
-    {
-        $gurus = Guru::with('mataPelajaran')
-            ->latest('id')
-            ->paginate(10);
+    
+public function index()
+{
+    $search = trim((string) request('search', ''));
 
-        return view('admin.master-data.guru.index', compact('gurus'));
-    }
+    $gurus = Guru::with('mataPelajaran')
+        ->when($search !== '', function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nip', 'like', "%{$search}%")
+                    ->orWhere('nama', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('alamat', 'like', "%{$search}%")
+                    ->orWhere('no_hp', 'like', "%{$search}%")
+                    ->orWhere('jk', 'like', "%{$search}%")
+                    ->orWhere('agama', 'like', "%{$search}%")
+                    ->orWhere('status_kepegawaian', 'like', "%{$search}%")
+                    ->orWhere('jabatan', 'like', "%{$search}%")
+                    ->orWhereHas('mataPelajaran', function ($mapel) use ($search) {
+                        $mapel->where('nama_mapel', 'like', "%{$search}%");
+                    });
+            });
+        })
+        ->latest('id')
+        ->paginate(10)
+        ->appends(request()->query());
+
+    return view('admin.master-data.guru.index', compact('gurus', 'search'));
+}
 
 
     public function create()
@@ -36,6 +56,11 @@ class GuruController extends Controller
         $data = $request->validate($this->guruRules());
 
         [$guru, $passwordAwal] = DB::transaction(function () use ($data) {
+            do {
+                $kodeGuru = 'GR' . strtoupper(Str::random(8));
+            } while (Guru::where('kode_guru', $kodeGuru)->exists());
+
+            $data['kode_guru'] = $kodeGuru;
             $guru = Guru::create($data);
             $passwordAwal = Str::random(8);
 

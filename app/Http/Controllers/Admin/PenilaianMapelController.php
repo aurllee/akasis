@@ -50,11 +50,10 @@ class PenilaianMapelController extends Controller
     }
 
     public function mapel($kelasId, $mapelId)
-    {
-        $kelas = Kelas::with('jurusan')
-            ->findOrFail($kelasId);
+{
+    $kelas = Kelas::with('jurusan')->findOrFail($kelasId);
 
-        $mataPelajaran = MataPelajaran::findOrFail($mapelId);
+    $mataPelajaran = MataPelajaran::findOrFail($mapelId);
 
         return view(
             'admin.penilaian.mapel.mapel',
@@ -156,16 +155,13 @@ class PenilaianMapelController extends Controller
                 ];
             });
 
-        return view(
-            'admin.penilaian.mapel.' . $jenis,
-            compact(
-                'kelas',
-                'mataPelajaran',
-                'siswa',
-                'penilaian',
-                'jenisPenilaian'
-            )
-        );
+        return view('admin.penilaian.mapel.' . $jenis, compact(
+            'kelas',
+            'mataPelajaran',
+            'siswa',
+            'jenisPenilaian',
+            'penilaian'
+        ));
     }
 
     public function nilai(Request $request, $kelasId, $mapelId)
@@ -222,8 +218,10 @@ class PenilaianMapelController extends Controller
         );
     }
 
-    public function create($kelasId, $mapelId)
+    public function create(Request $request, $kelasId, $mapelId)
     {
+        $jenisNilai = $request->query('jenis_nilai') === 'ujian' ? 'ujian' : 'harian';
+
         $kelas = Kelas::with([
             'jurusan',
             'tahunAjaran',
@@ -256,7 +254,8 @@ class PenilaianMapelController extends Controller
                 'kelas',
                 'mataPelajaran',
                 'jadwal',
-                'siswa'
+                'siswa',
+                'jenisNilai'
             )
         );
     }
@@ -353,7 +352,8 @@ class PenilaianMapelController extends Controller
 
         abort_unless($siswaValid, 404);
 
-        PenilaianMapel::create([
+        $penilaian = PenilaianMapel::create([
+
             'jadwal_pelajaran_id' =>
                 $jadwal->id,
 
@@ -373,12 +373,19 @@ class PenilaianMapelController extends Controller
                 $request->nilai,
         ]);
 
-        return $this->redirectAfterSave(
-            $request,
-            $kelasId,
-            $mapelId,
-            'Penilaian berhasil ditambahkan.'
-        );
+
+        return redirect()
+            ->route(
+                'admin.penilaian.mapel.' . $penilaian->jenis_nilai,
+                [
+                    'kelasId' => $kelasId,
+                    'mapelId' => $mapelId
+                ]
+            )
+            ->with(
+                'success',
+                'Penilaian berhasil ditambahkan.'
+            );
     }
 
     /**
@@ -726,6 +733,7 @@ class PenilaianMapelController extends Controller
             $request,
             $kelasId,
             $mapelId,
+            $request->input('jenis_nilai'),
             'Penilaian berhasil diperbarui.'
         );
     }
@@ -927,6 +935,7 @@ class PenilaianMapelController extends Controller
             $request,
             $kelasId,
             $mapelId,
+            $validated['jenis_nilai'],
             'Semua nilai siswa berhasil diperbarui.'
         );
     }
@@ -935,6 +944,7 @@ class PenilaianMapelController extends Controller
         Request $request,
         $kelasId,
         $mapelId,
+        string $jenisNilai,
         string $message
     ) {
         $returnTo =
@@ -958,7 +968,7 @@ class PenilaianMapelController extends Controller
 
         return redirect()
             ->route(
-                'admin.penilaian.mapel.mapel',
+                'admin.penilaian.mapel.' . $jenisNilai,
                 [
                     'kelasId' => $kelasId,
                     'mapelId' => $mapelId,
@@ -1022,6 +1032,7 @@ class PenilaianMapelController extends Controller
                 $request,
                 $kelasId,
                 $mapelId,
+                $validated['jenis_nilai'],
                 'Semua nilai siswa berhasil dihapus.'
             );
         }
@@ -1049,6 +1060,7 @@ class PenilaianMapelController extends Controller
             $request,
             $kelasId,
             $mapelId,
+            $penilaian->jenis_nilai,
             'Penilaian berhasil dihapus.'
         );
     }

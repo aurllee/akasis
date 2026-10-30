@@ -32,11 +32,18 @@ use App\Http\Controllers\Walikelas\AbsenController as WaliKelasAbsenController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
+<<<<<<< Updated upstream
 use App\Http\Controllers\Siswa\TatibController as SiswaTatibController;
 
 
 
 
+=======
+use App\Http\Controllers\WaliKelas\RaporController;
+use App\Http\Controllers\Guru\RaporMapelController;
+use App\Http\Controllers\Admin\MonitoringRaporController;
+use App\Http\Controllers\Siswa\RaporSayaController;
+>>>>>>> Stashed changes
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 
@@ -84,8 +91,15 @@ Route::middleware(['auth'])
             'index'
         ])->name('dashboard');
 
+<<<<<<< Updated upstream
         Route::get('/tatib', [AdminTatibController::class, 'index'])
             ->name('tatib.index');
+=======
+        Route::get('/rapor', [
+    MonitoringRaporController::class,
+    'index'
+])->name('rapor.index');
+>>>>>>> Stashed changes
     });
 
 
@@ -159,6 +173,55 @@ Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(func
     Route::patch('/izin-tidak-masuk/{sakit}/tolak', [WaliKelasSakitController::class, 'tolak'])->name('sakit.tolak');
 });
 
+Route::prefix('wali-kelas/rapor')
+    ->name('wali-kelas.rapor.')
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('/', [RaporController::class, 'index'])
+            ->name('index');
+
+        Route::get('/kelas/{kelasId}/tahun-ajaran/{tahunAjaranId}', [
+            RaporController::class,
+            'daftarSiswa'
+        ])->name('siswa');
+
+        Route::post(
+            '/kelas/{kelasId}/tahun-ajaran/{tahunAjaranId}/siswa/{siswaId}/generate',
+            [RaporController::class, 'generate']
+        )->name('generate');
+
+        Route::get(
+    '/kelas/{kelasId}/tahun-ajaran/{tahunAjaranId}/siswa/{siswaId}',
+    [RaporController::class, 'detail']
+)->name('detail');
+
+Route::put(
+    '/kelas/{kelasId}/tahun-ajaran/{tahunAjaranId}/siswa/{siswaId}',
+    [RaporController::class, 'updateDetail']
+)->name('detail.update');
+
+Route::post(
+    '/kelas/{kelasId}/tahun-ajaran/{tahunAjaranId}/siswa/{siswaId}/finalisasi',
+    [RaporController::class, 'finalisasi']
+)->name('finalisasi');
+
+Route::post(
+    '/kelas/{kelasId}/tahun-ajaran/{tahunAjaranId}/siswa/{siswaId}/minta-revisi',
+    [RaporController::class, 'mintaRevisi']
+)->name('minta-revisi');
+
+Route::get(
+    '/kelas/{kelasId}/tahun-ajaran/{tahunAjaranId}/siswa/{siswaId}/cetak',
+    [RaporController::class, 'cetak']
+)->name('cetak');
+
+Route::post(
+    '/kelas/{kelasId}/tahun-ajaran/{tahunAjaranId}/siswa/{siswaId}/publikasi',
+    [RaporController::class, 'publikasikan']
+)->name('publikasi');
+
+    });
+
 Route::prefix('admin')->group(function () {
     Route::get('/spmb/calon-siswa', [SpmbController::class, 'index'])->name('admin.spmb.index');
     Route::get('/spmb/calon-siswa/create', [SpmbController::class, 'create'])->name('admin.spmb.create');
@@ -168,9 +231,9 @@ Route::prefix('admin')->group(function () {
     Route::put('/spmb/calon-siswa/{id}', [SpmbController::class, 'update'])->name('admin.spmb.update');
     Route::delete('/spmb/calon-siswa/{id}', [SpmbController::class, 'destroy'])->name('admin.spmb.destroy');
     Route::put(
-        '/admin/spmb/{id}/dokumen/verifikasi-semua',
-        [SpmbController::class, 'verifikasiSemuaDokumen']
-    )->name('admin.spmb.dokumen.verifikasi-semua');
+    '/admin/spmb/{id}/dokumen/verifikasi-semua',
+    [SpmbController::class, 'verifikasiSemuaDokumen']
+)->name('admin.spmb.dokumen.verifikasi-semua');
     Route::put('/spmb/calon-siswa/{id}/verifikasi-daftar-ulang', [SpmbController::class, 'verifikasiDaftarUlang'])->name('admin.spmb.daftar-ulang.verifikasi');
 });
 
@@ -207,6 +270,39 @@ Route::middleware('auth')->group(function () {
         [PenilaianController::class, 'updateSiswa']
     )->name('guru.penilaian.updateSiswa');
 });
+
+Route::prefix('guru/rapor-mapel')
+    ->name('guru.rapor-mapel.')
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('/', [RaporMapelController::class, 'index'])
+            ->name('index');
+
+        Route::get('/{jadwalId}/input', [RaporMapelController::class, 'input'])
+            ->name('input');
+
+        Route::post('/{jadwalId}/simpan', [RaporMapelController::class, 'store'])
+            ->name('store');
+
+        Route::get('/{jadwalId}/detail', [RaporMapelController::class, 'detail'])
+            ->name('detail');    
+
+         Route::get('/{jadwalId}/deskripsi', [RaporMapelController::class, 'deskripsi'])
+    ->name('deskripsi');
+
+Route::post('/{jadwalId}/deskripsi/simpan', [RaporMapelController::class, 'storeDeskripsi'])
+    ->name('store-deskripsi');   
+
+    Route::get('/permintaan-revisi', [
+    RaporMapelController::class,
+    'permintaanRevisi'
+])->name('permintaan-revisi');
+
+Route::put('/permintaan-revisi/{id}', [
+    RaporMapelController::class,
+    'simpanRevisi'
+])->name('permintaan-revisi.update');
+    });
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -435,6 +531,17 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+Route::middleware('auth')
+    ->prefix('siswa/rapor')
+    ->name('siswa.rapor.')
+    ->group(function () {
+        Route::get('/', [RaporSayaController::class, 'index'])
+            ->name('index');
+
+        Route::get('/{raporId}', [RaporSayaController::class, 'detail'])
+            ->whereNumber('raporId')
+            ->name('detail');
+    });
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/siswa/jadwal', [SiswaJadwalPelajaranController::class, 'index'])

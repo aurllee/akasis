@@ -131,7 +131,7 @@
     <div class="academic-container">
         <div class="academic-card">
 
-            <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}"
+            <a href="{{ route('admin.penilaian.mapel.' . $jenisNilai, ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}"
                 class="btn-back-link">
                 <i class="bi bi-arrow-left"></i> Kembali ke Penilaian
             </a>
@@ -191,9 +191,14 @@
                     <label for="jenis_nilai">Jenis Nilai <span class="text-danger">*</span></label>
                     <select name="jenis_nilai" id="jenis_nilai" class="form-select" required>
                         <option value="">-- Pilih Jenis Nilai --</option>
+<<<<<<< Updated upstream
                         <option value="harian" @selected(old('jenis_nilai', request('jenis_nilai')) === 'harian')>Harian
                         </option>
                         <option value="ujian" @selected(old('jenis_nilai', request('jenis_nilai')) === 'ujian')>Ujian</option>
+=======
+                        <option value="harian" @selected(old('jenis_nilai', $jenisNilai) === 'harian')>Harian</option>
+                        <option value="ujian" @selected(old('jenis_nilai', $jenisNilai) === 'ujian')>Ujian</option>
+>>>>>>> Stashed changes
                     </select>
                     @error('jenis_nilai')
                         <small class="text-danger mt-1 d-block">{{ $message }}</small>
@@ -228,7 +233,7 @@
                 </div>
 
                 <div class="d-flex gap-2 justify-content-end pt-3 border-top">
-                    <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}"
+                    <a href="{{ route('admin.penilaian.mapel.' . $jenisNilai, ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}"
                         class="btn btn-secondary">
                         Batal
                     </a>

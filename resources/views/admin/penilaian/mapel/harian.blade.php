@@ -12,6 +12,9 @@
 
     .page-wrap {
         width: 100%;
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 20px;
     }
 
     .page-card {
@@ -35,7 +38,7 @@
         margin: 0 0 8px;
         font-size: 25px;
         font-weight: 600;
-        color: #111827;
+        color: #2449a4;
     }
 
     .page-subtitle {
@@ -440,6 +443,7 @@
 
     <div class="page-card">
 
+<<<<<<< Updated upstream
         {{-- KEMBALI --}}
         <a
             href="{{ route('admin.penilaian.mapel.mapel', [
@@ -451,6 +455,18 @@
             <i class="bi bi-arrow-left"></i>
             Kembali ke Jenis Penilaian
         </a>
+=======
+    <a
+        href="{{ route('admin.penilaian.mapel.mapel', [
+            'kelasId' => $kelas->id,
+            'mapelId' => $mataPelajaran->id
+        ]) }}"
+        class="btn-back"
+    >
+        <i class="bi bi-arrow-left"></i>
+        Kembali ke Jenis Penilaian
+    </a>
+>>>>>>> Stashed changes
 
 
         {{-- HEADER --}}
@@ -479,6 +495,7 @@
 
             </div>
 
+<<<<<<< Updated upstream
         </div>
 
 
@@ -488,6 +505,36 @@
             <label
                 for="searchHarian"
                 class="form-label fw-semibold text-secondary"
+=======
+        <a
+            href="{{ route('admin.penilaian.mapel.create', [
+                'kelasId' => $kelas->id,
+                'mapelId' => $mataPelajaran->id,
+                'jenis_nilai' => 'harian'
+            ]) }}"
+            class="btn btn-primary"
+        >
+            <i class="bi bi-plus-lg"></i>
+            Tambah Penilaian
+        </a>
+
+        </div>
+
+    <div class="card card-body search-card">
+        <label for="searchHarian" class="search-label">
+            Cari Siswa
+        </label>
+        <div class="input-group">
+            <span class="input-group-text bg-white">
+                <i class="bi bi-search text-muted"></i>
+            </span>
+            <input
+                type="search"
+                id="searchHarian"
+                class="form-control"
+                placeholder="Nama, NIS, atau NISN"
+                autocomplete="off"
+>>>>>>> Stashed changes
             >
                 Cari Siswa
             </label>
@@ -535,6 +582,7 @@
                     <table class="table">
 
                         <thead class="bg-light">
+<<<<<<< Updated upstream
 
                             <tr>
 
@@ -545,6 +593,9 @@
                                 <th>
                                     NIS
                                 </th>
+=======
+                    <tr>
+>>>>>>> Stashed changes
 
                                 <th>
                                     Nama Siswa
@@ -584,6 +635,7 @@
 
                             @forelse($siswa as $student)
 
+<<<<<<< Updated upstream
                                 <tr
                                     class="assessment-row"
                                     data-search="{{ strtolower(
@@ -591,6 +643,106 @@
                                         ($student->nis ?? '') . ' ' .
                                         ($student->nisn ?? '')
                                     ) }}"
+=======
+                        <tr class="assessment-row" data-search="{{ strtolower(($item->siswa?->nama ?? '') . ' ' . ($item->siswa?->nis ?? '') . ' ' . ($item->siswa?->nisn ?? '')) }}">
+
+                            <td class="ps-4">
+                                {{ $loop->iteration }}
+                            </td>
+
+                            <td>
+                                {{ $item->siswa?->nis ?? '-' }}
+                            </td>
+
+                            <td class="student-name">
+                                {{ $item->siswa?->nama ?? '-' }}
+                            </td>
+
+                            <td>
+                                <strong>
+                                    {{ $item->nilai }}
+                                </strong>
+                            </td>
+
+                            <td>
+
+                                {{
+                                    $item->tanggal_penilaian?->format('d/m/Y')
+                                    ?? $item->created_at?->format('d/m/Y')
+                                    ?? '-'
+                                }}
+
+                            </td>
+
+                            <td class="text-end pe-4">
+
+                                <div class="d-inline-flex gap-2">
+
+                                    <a
+                                        href="{{ route('admin.penilaian.mapel.edit', [
+                                            'kelasId' => $kelas->id,
+                                            'mapelId' => $mataPelajaran->id,
+                                            'id' => $item->id
+                                        ]) }}"
+                                        class="btn-action-edit"
+                                    >
+                                        <i class="bi bi-pencil"></i>
+                                        Edit
+                                    </a>
+
+                                    <form
+                                        action="{{ route('admin.penilaian.mapel.destroy', [
+                                            'kelasId' => $kelas->id,
+                                            'mapelId' => $mataPelajaran->id,
+                                            'id' => $item->id
+                                        ]) }}"
+                                        method="POST"
+                                    >
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button
+                                            type="submit"
+                                            class="btn-action-delete"
+                                            onclick="return confirm('Yakin ingin menghapus nilai ini?')"
+                                        >
+                                            <i class="bi bi-trash"></i>
+                                            Hapus
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+
+                            <td colspan="6" class="text-center py-5">
+
+                                <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+
+                                <h6 class="mt-3">
+                                    Belum ada penilaian harian
+                                </h6>
+
+                                <p class="text-muted small">
+                                    Belum ada data nilai harian.
+                                </p>
+
+                                <a
+                                    href="{{ route('admin.penilaian.mapel.create', [
+                                        'kelasId' => $kelas->id,
+                                        'mapelId' => $mataPelajaran->id,
+                                        'jenis_nilai' => 'harian'
+                                    ]) }}"
+                                    class="btn btn-primary"
+>>>>>>> Stashed changes
                                 >
 
                                     {{-- NO --}}
@@ -764,8 +916,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchInput =
         document.getElementById('searchHarian');
 
+<<<<<<< Updated upstream
     const tableBody =
         document.getElementById('harianTableBody');
+=======
+            const rows = tableBody.querySelectorAll('.assessment-row');
+>>>>>>> Stashed changes
 
 
     if (!searchInput || !tableBody) {
