@@ -373,6 +373,7 @@
                             @endif
                         </td>
                     </tr>
+
                     <tr>
                         <th>Alasan</th>
                         <td>{{ $izinPulang->alasan ?? '-' }}</td>
@@ -394,6 +395,7 @@
             </table>
 
         </div>
+
     </div>
 
     <div class="data-card">

@@ -149,9 +149,6 @@
             <i class="bi bi-clipboard-check"></i>
             <span>Penilaian PJBL</span>
         </a>
-<<<<<<< Updated upstream
-=======
-
         <div class="menu-title">
             Rapor
         </div>
@@ -162,7 +159,6 @@
     <span>Monitoring Rapor</span>
 </a>
 
->>>>>>> Stashed changes
     </div>
 
 

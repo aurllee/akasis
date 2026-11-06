@@ -32,18 +32,11 @@ use App\Http\Controllers\Walikelas\AbsenController as WaliKelasAbsenController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
-<<<<<<< Updated upstream
 use App\Http\Controllers\Siswa\TatibController as SiswaTatibController;
-
-
-
-
-=======
 use App\Http\Controllers\WaliKelas\RaporController;
 use App\Http\Controllers\Guru\RaporMapelController;
 use App\Http\Controllers\Admin\MonitoringRaporController;
 use App\Http\Controllers\Siswa\RaporSayaController;
->>>>>>> Stashed changes
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 
@@ -91,15 +84,13 @@ Route::middleware(['auth'])
             'index'
         ])->name('dashboard');
 
-<<<<<<< Updated upstream
         Route::get('/tatib', [AdminTatibController::class, 'index'])
             ->name('tatib.index');
-=======
+
         Route::get('/rapor', [
-    MonitoringRaporController::class,
-    'index'
-])->name('rapor.index');
->>>>>>> Stashed changes
+            MonitoringRaporController::class,
+            'index'
+        ])->name('rapor.index');
     });
 
 

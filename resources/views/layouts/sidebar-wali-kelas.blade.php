@@ -46,19 +46,16 @@
             <span>Izin Tidak Masuk</span>
         </a>
 
-<<<<<<< Updated upstream
         <a href="{{ route('tatib.riwayat') }}" class="{{ request()->routeIs('tatib.riwayat') ? 'active' : '' }}">
             <i class="bi bi-clock-history"></i>
             <span>Rekap Pelanggaran</span>
         </a>
 
-=======
           <a href="{{ route('wali-kelas.rapor.index') }}"
             class="{{ request()->routeIs('wali-kelas.rapor.index', 'wali-kelas.rapor.siswa') ? 'active' : '' }}">
             <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
             <span>Rapor Kelas</span>
         </a>
->>>>>>> Stashed changes
 
         @php
         $jadwalSaya = collect();

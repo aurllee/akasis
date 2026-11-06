@@ -2,806 +2,311 @@
 
 @section('title', 'Data Calon Siswa')
 
-@section('content')
-
-<div class="page-header">
-
-    <div class="page-title">
-        <div>
-            <h4>Data Calon Siswa</h4>
-            <p>Pengelolaan data calon siswa SPMB berdasarkan jurusan.</p>
-        </div>
-    </div>
-
-    <a href="{{ route('admin.spmb.create') }}" class="btn-add">
-        <i class="bi bi-plus-lg"></i>
-        <span>Tambah Calon Siswa</span>
-    </a>
-
-</div>
-
-@endsection
-
 @push('styles')
-
 <style>
-    body {
-        font-family: 'Poppins', sans-serif;
-    }
-
     .spmb-page {
-        width: 100%;
-        padding: 6px 2px 30px;
         color: #1e293b;
+        padding: 6px 0 30px;
     }
 
-    .page-header {
-        display: flex;
-        justify-content: space-between;
+    .spmb-header {
         align-items: center;
+        display: flex;
         gap: 20px;
+        justify-content: space-between;
         margin-bottom: 24px;
     }
 
-    .page-title {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-    }
-
-    .page-title h4 {
-        margin: 0 0 5px;
+    .spmb-header h1 {
+        color: #172033;
         font-size: 23px;
         font-weight: 700;
-        color: #172033;
-        letter-spacing: -.2px;
+        margin: 0 0 5px;
     }
 
-    .page-title p {
-        margin: 0;
-        font-size: 13px;
+    .spmb-header p {
         color: #718096;
+        font-size: 13px;
+        margin: 0;
     }
 
-    .btn-add {
-        display: inline-flex;
+    .spmb-add-button {
         align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 11px 17px;
-        border-radius: 9px;
         background: #2563eb;
+        border: 1px solid #2563eb;
+        border-radius: 9px;
         color: #fff;
-        text-decoration: none;
+        display: inline-flex;
         font-size: 13px;
         font-weight: 600;
-        border: 1px solid #2563eb;
-        box-shadow: 0 5px 14px rgba(37, 99, 235, .16);
-        transition: .2s ease;
+        gap: 8px;
+        justify-content: center;
+        padding: 11px 17px;
+        text-decoration: none;
         white-space: nowrap;
     }
 
-    .btn-add:hover {
+    .spmb-add-button:hover {
         background: #1d4ed8;
-        border-color: #1d4ed8;
         color: #fff;
-        transform: translateY(-1px);
-        box-shadow: 0 7px 18px rgba(37, 99, 235, .22);
     }
 
-    .btn-add i {
-        font-size: 15px;
-    }
-
-    .alert-custom {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 13px 15px;
-        border-radius: 10px;
-        margin-bottom: 18px;
-        border: 1px solid;
-    }
-
-    .alert-success-custom {
-        background: #f0fdf4;
-        border-color: #bbf7d0;
-        color: #166534;
-    }
-
-    .alert-danger-custom {
-        background: #fef2f2;
-        border-color: #fecaca;
-        color: #991b1b;
-    }
-
-    .alert-icon {
-        font-size: 18px;
-        flex-shrink: 0;
-    }
-
-    .alert-content {
-        display: flex;
-        flex-direction: column;
-        gap: 1px;
-        flex: 1;
-    }
-
-    .alert-content strong {
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-    .alert-content span {
-        font-size: 12px;
-    }
-
-    .alert-close {
-        border: 0;
-        background: transparent;
-        color: inherit;
-        opacity: .65;
-        padding: 4px;
-        cursor: pointer;
-    }
-
-    .alert-close:hover {
-        opacity: 1;
-    }
-
-    .filter-card {
+    .spmb-card {
         background: #fff;
         border: 1px solid #e8edf5;
         border-radius: 12px;
+        box-shadow: 0 3px 12px rgba(15, 23, 42, .04);
         margin-bottom: 20px;
         overflow: hidden;
-        box-shadow: 0 3px 12px rgba(15, 23, 42, .04);
     }
 
-    .filter-header {
-        display: flex;
+    .spmb-card-header {
         align-items: center;
+        background: #fbfcfe;
+        border-bottom: 1px solid #edf1f6;
+        display: flex;
         justify-content: space-between;
         padding: 17px 20px;
-        border-bottom: 1px solid #edf1f6;
-        background: #fbfcfe;
     }
 
-    .filter-title {
-        display: flex;
-        align-items: center;
-        gap: 11px;
-    }
-
-    .filter-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 9px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #eef4ff;
-        color: #2563eb;
-        font-size: 15px;
-    }
-
-    .filter-title h5 {
-        margin: 0 0 2px;
-        font-size: 14px;
-        font-weight: 700;
+    .spmb-card-header h2 {
         color: #263247;
+        font-size: 15px;
+        font-weight: 700;
+        margin: 0 0 3px;
     }
 
-    .filter-title span {
-        font-size: 11px;
+    .spmb-card-header p {
         color: #8792a5;
+        font-size: 11px;
+        margin: 0;
     }
 
-    .btn-reset {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 11px;
-        border-radius: 7px;
+    .spmb-card-body {
+        padding: 19px 20px 20px;
+    }
+
+    .spmb-label {
+        color: #475569;
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .spmb-control {
+        background-color: #fff;
+        border: 1px solid #dfe5ed;
+        border-radius: 8px;
+        color: #334155;
+        font-size: 12px;
+        min-height: 40px;
+        width: 100%;
+    }
+
+    .spmb-control:focus {
+        border-color: #7aa2ef;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .08);
+        outline: 0;
+    }
+
+    .spmb-reset {
         background: #fff;
         border: 1px solid #dfe5ed;
+        border-radius: 7px;
         color: #64748b;
         font-size: 12px;
         font-weight: 600;
-        cursor: pointer;
-        transition: .2s ease;
+        min-height: 40px;
+        padding: 7px 12px;
+        width: 100%;
     }
 
-    .btn-reset:hover {
+    .spmb-reset:hover {
         border-color: #2563eb;
         color: #2563eb;
-        background: #f8faff;
     }
 
-    .filter-body {
-        padding: 19px 20px 20px;
-        font-weight: 600;
-        color: #374151;
-    }
-
-    .input-wrapper,
-    .select-wrapper {
-    }
-
-    .input-wrapper > i {
-        position: absolute;
-        top: 50%;
-        left: 13px;
-        z-index: 2;
-        color: #94a3b8;
-        font-size: 14px;
-        transform: translateY(-50%);
-        pointer-events: none;
-    }
-
-    .custom-input {
-        min-height: 42px;
-        border: 1px solid #dbe2ea;
-        border-radius: 9px;
-        background: #ffffff;
-        color: #374151;
-        font-size: 13px;
-        box-shadow: none;
-        transition: 0.2s ease;
-    }
-
-    .input-wrapper .custom-input {
-        padding-left: 38px;
-    }
-
-    .custom-input:focus {
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
-    }
-
-    .select-wrapper::after {
-        position: absolute;
-        top: 50%;
-        right: 13px;
-        color: #94a3b8;
-        font-family: "bootstrap-icons";
-        font-size: 12px;
-        content: "\f282";
-        transform: translateY(-50%);
-        pointer-events: none;
-    }
-
-    .select-wrapper .custom-input {
-        padding-right: 35px;
-        appearance: none;
-    }
-
-    .data-card {
-        overflow: hidden;
-        border: 1px solid #e5e7eb;
-        border-radius: 14px;
-        background: #ffffff;
-        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
-    }
-
-    .data-card-header {
-        padding: 18px 20px;
-        border-bottom: 1px solid #eef0f3;
-    }
-
-    .data-card-header h5 {
-        margin: 0 0 4px;
-        font-size: 15px;
-        font-weight: 700;
-        color: #1f2937;
-    }
-
-    .data-card-header span {
-        color: #475569;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .input-wrapper {
-        position: relative;
-    }
-
-    .input-wrapper>i {
-        position: absolute;
-        top: 50%;
-        left: 13px;
-        transform: translateY(-50%);
-        color: #94a3b8;
-        font-size: 14px;
-        z-index: 2;
-    }
-
-    .custom-input {
-        height: 40px;
-        border-radius: 8px !important;
-        border: 1px solid #dfe5ed !important;
-        color: #334155;
-        background-color: #fff;
-        font-size: 12px;
-        box-shadow: none !important;
-        transition: .2s ease;
-    }
-
-    .input-wrapper .custom-input {
-        padding-left: 37px;
-    }
-
-    .custom-input::placeholder {
-        color: #a0aabd;
-    }
-
-    .custom-input:hover {
-        border-color: #c8d2df !important;
-    }
-
-    .custom-input:focus {
-        border-color: #7aa2ef !important;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, .08) !important;
-    }
-
-    .select-wrapper select {
-        cursor: pointer;
-    }
-
-    .data-card {
-        background: #fff;
-        border: 1px solid #e8edf5;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 3px 12px rgba(15, 23, 42, .04);
-        position: relative;
-    }
-
-    .data-card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 18px 20px;
-        border-bottom: 1px solid #edf1f6;
-    }
-
-    .data-card-header h5 {
-        margin: 0 0 3px;
-        font-size: 15px;
-        font-weight: 700;
-        color: #263247;
-    }
-
-    .data-card-header span {
-        font-size: 11px;
-        color: #8a95a7;
-    }
-
-    .table-container {
+    .spmb-table-wrap {
+        overflow-x: auto;
         width: 100%;
     }
 
-    .custom-table {
+    .spmb-table {
+        border-collapse: collapse;
+        min-width: 1000px;
         width: 100%;
-        min-width: 1050px;
-}   
+    }
 
-    .custom-table thead th {
-        padding: 13px 14px;
+    .spmb-table th {
         background: #f8fafc;
         border-bottom: 1px solid #e7ecf3;
         color: #64748b;
-        letter-spacing: .25px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .2px;
+        padding: 13px 14px;
+        text-align: left;
         white-space: nowrap;
     }
 
-    .custom-table tbody td {
-        padding: 13px 14px;
+    .spmb-table td {
         border-bottom: 1px solid #edf1f5;
         color: #475569;
         font-size: 12px;
+        padding: 13px 14px;
         vertical-align: middle;
     }
 
-    .custom-table tbody tr:last-child td {
-        border-bottom: 0;
-    }
-
-    .custom-table tbody tr {
-        transition: .15s ease;
-    }
-
-    .custom-table tbody tr:hover {
+    .spmb-table tbody tr:hover {
         background: #fbfdff;
     }
 
-    .number-cell {
-        display: inline-flex;
+    .spmb-number {
         align-items: center;
-        justify-content: center;
-        min-width: 26px;
-        height: 26px;
-        padding: 0 6px;
-        border-radius: 6px;
         background: #f1f5f9;
+        border-radius: 6px;
         color: #64748b;
+        display: inline-flex;
         font-size: 11px;
         font-weight: 600;
+        height: 26px;
+        justify-content: center;
+        min-width: 26px;
+        padding: 0 6px;
     }
 
-    .registration-number {
+    .spmb-registration {
         color: #2563eb;
-        font-size: 12px;
         font-weight: 700;
         white-space: nowrap;
     }
 
-    .student-name {
-        display: flex;
+    .spmb-student {
         align-items: center;
+        display: flex;
         gap: 9px;
-        min-width: 180px;
+        min-width: 190px;
     }
 
-    .student-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        background: #eaf2ff;
-        color: #2563eb;
-        display: flex;
+    .spmb-avatar {
         align-items: center;
-        justify-content: center;
+        background: #eaf2ff;
+        border-radius: 8px;
+        color: #2563eb;
+        display: inline-flex;
+        flex: 0 0 32px;
         font-size: 12px;
         font-weight: 700;
-        flex-shrink: 0;
+        height: 32px;
+        justify-content: center;
     }
 
-    .student-name span:last-child {
+    .spmb-student-name {
         color: #263247;
         font-weight: 600;
     }
 
-    .nisn-text {
+    .spmb-secondary {
         color: #64748b;
-        white-space: nowrap;
-    }
-
-    .jurusan-cell {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-    }
-
-    .jurusan-code {
-        width: fit-content;
-        padding: 3px 7px;
-        border-radius: 5px;
-<<<<<<< Updated upstream
-        background: #eff6ff;
-=======
-        background: #eaf2ff;
-        font-weight: 700;
-
-    .jurusan-name {
-<<<<<<< Updated upstream
-        color: #475569;
-=======
-        color: #64748b;
->>>>>>> Stashed changes
+        display: block;
         font-size: 11px;
+        margin-top: 3px;
     }
 
-    .empty-text {
-        color: #94a3b8;
-<<<<<<< Updated upstream
-        font-size: 12px;
-=======
-        font-size: 11px;
->>>>>>> Stashed changes
-    }
-
-    .jalur-badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 5px 9px;
-<<<<<<< Updated upstream
-        border-radius: 7px;
-        background: #f1f5f9;
-        color: #475569;
-        font-size: 11px;
-=======
+    .spmb-badge {
         border-radius: 6px;
-        background: #f1f5f9;
-        color: #475569;
-        font-size: 10px;
->>>>>>> Stashed changes
-        font-weight: 600;
-        white-space: nowrap;
-    }
-
-    .status-badge {
         display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 5px 9px;
-<<<<<<< Updated upstream
-        border-radius: 7px;
-        font-size: 11px;
-=======
-        border-radius: 6px;
         font-size: 10px;
->>>>>>> Stashed changes
         font-weight: 600;
+        padding: 5px 9px;
         white-space: nowrap;
     }
 
-<<<<<<< Updated upstream
-    .status-verified {
-        background: #ecfdf5;
-        color: #047857;
-=======
-    .status-badge i {
-        font-size: 10px;
-    }
-
-    .status-verified {
+    .spmb-status-verified {
         background: #ecfdf3;
         color: #15803d;
->>>>>>> Stashed changes
     }
 
-    .status-revision {
+    .spmb-status-revision {
         background: #fef2f2;
         color: #dc2626;
     }
 
-    .status-waiting {
+    .spmb-status-waiting {
         background: #fffbeb;
         color: #b45309;
     }
 
-    .status-unregistered {
+    .spmb-status-unregistered {
         background: #f1f5f9;
         color: #64748b;
     }
 
-    .action-buttons {
+    .spmb-actions {
         display: flex;
-        align-items: center;
         gap: 6px;
+        white-space: nowrap;
     }
 
-    .action-btn {
-        display: inline-flex;
+    .spmb-action {
         align-items: center;
-        justify-content: center;
-        gap: 5px;
-<<<<<<< Updated upstream
-        min-height: 32px;
-        padding: 0 9px;
-        border-radius: 7px;
+        border-radius: 6px;
+        display: inline-flex;
         font-size: 11px;
         font-weight: 600;
+        gap: 5px;
+        justify-content: center;
+        min-height: 32px;
+        padding: 0 9px;
         text-decoration: none;
-        white-space: nowrap;
-        transition: 0.2s ease;
     }
 
-    .detail-btn {
-        border: 1px solid #dbeafe;
+    .spmb-action-detail {
         background: #eff6ff;
+        border: 1px solid #dbeafe;
         color: #2563eb;
     }
 
-    .detail-btn:hover {
-        border-color: #bfdbfe;
-=======
-        min-width: 58px;
-        padding: 6px 9px;
-        border-radius: 6px;
-        font-size: 10px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: .2s ease;
-        white-space: nowrap;
-    }
-
-    .action-btn i {
-        font-size: 10px;
-    }
-
-    .detail-btn {
-        background: #eff6ff;
-        color: #2563eb;
-        border: 1px solid #dbeafe;
-    }
-
-    .detail-btn:hover {
->>>>>>> Stashed changes
+    .spmb-action-detail:hover {
         background: #dbeafe;
         color: #1d4ed8;
     }
 
-    .edit-btn {
-<<<<<<< Updated upstream
-        border: 1px solid #e2e8f0;
+    .spmb-action-edit {
         background: #f8fafc;
+        border: 1px solid #e2e8f0;
         color: #475569;
     }
 
-    .edit-btn:hover {
-        border-color: #cbd5e1;
+    .spmb-action-edit:hover {
         background: #f1f5f9;
         color: #1e293b;
-=======
-        background: #fff7ed;
-        color: #c2410c;
-        border: 1px solid #fed7aa;
     }
 
-    .edit-btn:hover {
-        background: #ffedd5;
-        color: #9a3412;
->>>>>>> Stashed changes
-    }
-
-    .empty-state {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-<<<<<<< Updated upstream
-        min-height: 280px;
-        padding: 40px 20px;
-=======
-        min-height: 300px;
-        padding: 35px 20px;
->>>>>>> Stashed changes
+    .spmb-empty {
+        color: #64748b;
+        padding: 48px 20px !important;
         text-align: center;
     }
 
-    .empty-icon {
-<<<<<<< Updated upstream
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 56px;
-        height: 56px;
-        margin-bottom: 14px;
-        border-radius: 14px;
-        background: #f1f5f9;
+    .spmb-empty i {
         color: #94a3b8;
-        font-size: 24px;
+        display: block;
+        font-size: 28px;
+        margin-bottom: 10px;
     }
 
-    .empty-state h6 {
-        margin: 0 0 6px;
-        color: #334155;
-=======
-        width: 62px;
-        height: 62px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 13px;
-        background: #f1f5f9;
-        color: #94a3b8;
-        font-size: 27px;
-    }
-
-    .empty-state h6 {
-        margin: 0 0 5px;
-        color: #475569;
->>>>>>> Stashed changes
-        font-size: 14px;
-        font-weight: 700;
-    }
-
-    .empty-state p {
-<<<<<<< Updated upstream
-        margin: 0 0 16px;
-=======
-        margin: 0 0 15px;
->>>>>>> Stashed changes
-        color: #94a3b8;
-        font-size: 12px;
-    }
-
-    .empty-action {
-        display: inline-flex;
-        align-items: center;
-<<<<<<< Updated upstream
-        justify-content: center;
-        gap: 7px;
-        min-height: 36px;
-        padding: 0 13px;
-        border-radius: 8px;
-        background: #2563eb;
-        color: #ffffff;
-        font-size: 12px;
-        font-weight: 600;
-        text-decoration: none;
-    }
-
-    .empty-action:hover {
-        background: #1d4ed8;
-        color: #ffffff;
-    }
-
-    .pagination-container {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        padding: 16px 20px;
-        border-top: 1px solid #eef0f3;
-=======
-        gap: 6px;
-        padding: 8px 12px;
-        border-radius: 7px;
-        background: #eff6ff;
-        color: #2563eb;
-        border: 1px solid #dbeafe;
-        font-size: 11px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: .2s ease;
-    }
-
-    .empty-action:hover {
-        background: #dbeafe;
-        color: #1d4ed8;
-    }
-
-    .pagination-container {
-        padding: 15px 20px;
-        border-top: 1px solid #edf1f6;
+    .spmb-pagination {
         background: #fbfcfe;
-    }
-
-    .pagination-container nav {
+        border-top: 1px solid #edf1f6;
         display: flex;
         justify-content: flex-end;
->>>>>>> Stashed changes
+        padding: 14px 20px;
     }
 
-    .pagination-container .pagination {
-        margin: 0;
-<<<<<<< Updated upstream
-=======
-        gap: 4px;
-    }
-
-    .pagination-container .page-link {
-        min-width: 31px;
-        height: 31px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px !important;
-        border: 1px solid #e2e8f0;
-        color: #64748b;
-        background: #fff;
-        font-size: 11px;
-        box-shadow: none;
-    }
-
-    .pagination-container .page-link:hover {
-        background: #eff6ff;
-        border-color: #bfdbfe;
-        color: #2563eb;
-    }
-
-    .pagination-container .page-item.active .page-link {
-        background: #2563eb;
-        border-color: #2563eb;
-        color: #fff;
-    }
-
-    .pagination-container .page-item.disabled .page-link {
-        color: #cbd5e1;
-        background: #f8fafc;
+    .spmb-pagination nav {
+        max-width: 100%;
     }
 
     #spmb-search-results.loading {
@@ -810,218 +315,216 @@
         transition: opacity .2s ease;
     }
 
-    @media (max-width: 992px) {
-
-        .page-header {
-            align-items: flex-start;
-        }
-
-        .page-title h4 {
-            font-size: 21px;
-        }
-
-        .filter-header,
-        .data-card-header {
-            padding: 16px;
-        }
-
-        .filter-body {
-            padding: 17px 16px;
-        }
-
->>>>>>> Stashed changes
-    }
-
     @media (max-width: 768px) {
-
-<<<<<<< Updated upstream
-        .page-header {
-            align-items: flex-start;
-            flex-direction: column;
-=======
         .spmb-page {
             padding-top: 2px;
         }
 
-        .page-header {
-            flex-direction: column;
+        .spmb-header {
             align-items: stretch;
->>>>>>> Stashed changes
+            flex-direction: column;
         }
 
-        .btn-add {
+        .spmb-add-button {
             width: 100%;
         }
 
-<<<<<<< Updated upstream
-        .filter-header {
-            align-items: flex-start;
-=======
-        .page-title {
-            align-items: flex-start;
+        .spmb-card-header,
+        .spmb-card-body {
+            padding: 16px;
         }
 
-        .page-title h4 {
-            font-size: 19px;
-        }
-
-        .page-title p {
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
-        .filter-header {
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .filter-title span {
-            display: block;
-            max-width: 220px;
-            line-height: 1.4;
-        }
-
-        .data-card-header {
-            align-items: flex-start;
-        }
-
-        .pagination-container {
+        .spmb-pagination {
+            justify-content: center;
             padding: 13px 15px;
         }
-
-        .pagination-container nav {
-            justify-content: center;
-        }
-
     }
-
-    @media (max-width: 500px) {
-
-        .filter-header {
->>>>>>> Stashed changes
-            flex-direction: column;
-        }
-
-        .btn-reset {
-            width: 100%;
-<<<<<<< Updated upstream
-        }
-
-        .filter-body {
-            padding: 16px;
-        }
-
-        .data-card-header {
-            padding: 16px;
-        }
-
-        .pagination-container {
-            justify-content: center;
-            padding: 14px;
-        }
-
-    }
-
-=======
-            justify-content: center;
-        }
-
-        .alert-custom {
-            align-items: flex-start;
-        }
-
-        .action-buttons {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .action-btn {
-            width: 65px;
-        }
-
-    }
->>>>>>> Stashed changes
 </style>
-
 @endpush
 
-<<<<<<< Updated upstream
+@section('content')
+<div class="spmb-page">
+    <div class="spmb-header">
+        <div>
+            <h1>Data Calon Siswa</h1>
+            <p>Pengelolaan data calon siswa SPMB berdasarkan jurusan.</p>
+        </div>
+        <a href="{{ route('admin.spmb.create') }}" class="spmb-add-button">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            Tambah Calon Siswa
+        </a>
+    </div>
+
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+        </div>
+    @endif
+
+    <form id="spmbFilterForm" action="{{ route('admin.spmb.index') }}" method="GET">
+        <div class="spmb-card">
+            <div class="spmb-card-header">
+                <div>
+                    <h2>Filter Data</h2>
+                    <p>Cari dan saring calon siswa berdasarkan data pendaftaran.</p>
+                </div>
+                <i class="bi bi-funnel text-primary" aria-hidden="true"></i>
+            </div>
+            <div class="spmb-card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-lg-4 col-md-6">
+                        <label for="spmbSearch" class="spmb-label">Cari calon siswa</label>
+                        <input
+                            type="search"
+                            id="spmbSearch"
+                            name="search"
+                            class="form-control spmb-control"
+                            value="{{ request('search') }}"
+                            placeholder="Nama, nomor pendaftaran, NISN, atau NIK"
+                            autocomplete="off"
+                        >
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label for="spmbJurusan" class="spmb-label">Jurusan</label>
+                        <select id="spmbJurusan" name="jurusan_id" class="form-select spmb-control">
+                            <option value="">Semua jurusan</option>
+                            @foreach ($jurusan as $item)
+                                <option value="{{ $item->id }}" @selected((string) request('jurusan_id') === (string) $item->id)>
+                                    {{ $item->nama_jurusan }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label for="spmbJalur" class="spmb-label">Jalur pendaftaran</label>
+                        <select id="spmbJalur" name="jalur_pendaftaran" class="form-select spmb-control">
+                            <option value="">Semua jalur</option>
+                            @foreach (['Domisili', 'Prestasi', 'Afirmasi', 'Mutasi'] as $jalur)
+                                <option value="{{ $jalur }}" @selected(request('jalur_pendaftaran') === $jalur)>
+                                    {{ $jalur }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label for="spmbStatus" class="spmb-label">Status daftar ulang</label>
+                        <select id="spmbStatus" name="status_daftar_ulang" class="form-select spmb-control">
+                            <option value="">Semua status</option>
+                            <option value="belum_daftar_ulang" @selected(request('status_daftar_ulang') === 'belum_daftar_ulang')>Belum daftar ulang</option>
+                            <option value="menunggu_verifikasi" @selected(request('status_daftar_ulang') === 'menunggu_verifikasi')>Menunggu verifikasi</option>
+                            <option value="revisi" @selected(request('status_daftar_ulang') === 'revisi')>Perlu revisi</option>
+                            <option value="terverifikasi" @selected(request('status_daftar_ulang') === 'terverifikasi')>Terverifikasi</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <button type="button" id="resetSpmb" class="spmb-reset">
+                            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+                            Reset filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div id="spmb-search-results" aria-live="polite">
+        <div class="spmb-card">
+            <div class="spmb-card-header">
+                <div>
+                    <h2>Daftar Calon Siswa</h2>
+                    <p>Menampilkan {{ $calonSiswa->count() }} dari {{ $calonSiswa->total() }} calon siswa.</p>
+                </div>
+                <span class="spmb-badge spmb-status-unregistered">
+                    {{ $calonSiswa->total() }} data
+                </span>
+            </div>
+            <div class="spmb-table-wrap">
+                <table class="spmb-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Nomor pendaftaran</th>
+                            <th scope="col">Nama calon siswa</th>
+                            <th scope="col">Jurusan</th>
+                            <th scope="col">Jalur</th>
+                            <th scope="col">Status daftar ulang</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($calonSiswa as $calon)
+                            @php
+                                $statusDaftarUlang = $calon->status_daftar_ulang ?? 'belum_daftar_ulang';
+                                $statusDaftarUlangText = match ($statusDaftarUlang) {
+                                    'terverifikasi' => 'Terverifikasi',
+                                    'menunggu_verifikasi' => 'Menunggu verifikasi',
+                                    'revisi' => 'Perlu revisi',
+                                    default => 'Belum daftar ulang',
+                                };
+                                $statusDaftarUlangClass = match ($statusDaftarUlang) {
+                                    'terverifikasi' => 'spmb-status-verified',
+                                    'menunggu_verifikasi' => 'spmb-status-waiting',
+                                    'revisi' => 'spmb-status-revision',
+                                    default => 'spmb-status-unregistered',
+                                };
+                            @endphp
+                            <tr>
+                                <td><span class="spmb-number">{{ $calonSiswa->firstItem() + $loop->index }}</span></td>
+                                <td class="spmb-registration">{{ $calon->no_pendaftaran ?? '-' }}</td>
+                                <td>
+                                    <div class="spmb-student">
+                                        <span class="spmb-avatar" aria-hidden="true">{{ strtoupper(substr($calon->nama_lengkap ?? '?', 0, 1)) }}</span>
+                                        <span>
+                                            <span class="spmb-student-name">{{ $calon->nama_lengkap }}</span>
+                                            <span class="spmb-secondary">NISN: {{ $calon->nisn ?: '-' }}</span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>{{ $calon->jurusan?->nama_jurusan ?? '-' }}</td>
+                                <td><span class="spmb-badge spmb-status-unregistered">{{ $calon->jalur_pendaftaran ?: '-' }}</span></td>
+                                <td>
+                                    <span class="spmb-badge {{ $statusDaftarUlangClass }}">
+                                        {{ $statusDaftarUlangText }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="spmb-actions">
+                                        <a href="{{ route('admin.spmb.show', $calon->id) }}" class="spmb-action spmb-action-detail">
+                                            <i class="bi bi-eye" aria-hidden="true"></i>
+                                            Detail
+                                        </a>
+                                        <a href="{{ route('admin.spmb.edit', $calon->id) }}" class="spmb-action spmb-action-edit">
+                                            <i class="bi bi-pencil" aria-hidden="true"></i>
+                                            Edit
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="spmb-empty">
+                                    <i class="bi bi-people" aria-hidden="true"></i>
+                                    Tidak ada calon siswa yang cocok dengan filter.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            @if ($calonSiswa->hasPages())
+                <div class="spmb-pagination">
+                    {{ $calonSiswa->links() }}
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+@endsection
 
 @push('scripts')
-
 <script>
-
     document.addEventListener('DOMContentLoaded', function () {
-
-        const form = document.getElementById('spmbFilterForm');
-
-        const searchInput = document.getElementById('spmbSearch');
-
-        const jurusanSelect = document.getElementById('spmbJurusan');
-
-        const jalurSelect = document.getElementById('spmbJalur');
-
-        const statusSelect = document.getElementById('spmbStatus');
-
-        const resetButton = document.getElementById('resetSpmb');
-
-        const results = document.getElementById('spmb-search-results');
-
-        let searchTimer;
-
-
-        function loadData(url) {
-
-            const params = new URLSearchParams(
-                new URL(url, window.location.origin).search
-            );
-
-            const search = params.get('search') || '';
-
-            const jurusanId = params.get('jurusan_id') || '';
-
-            const jalur = params.get('jalur_pendaftaran') || '';
-
-            const status = params.get('status_daftar_ulang') || '';
-
-
-            if (searchInput) {
-                searchInput.value = search;
-            }
-
-            if (jurusanSelect) {
-                jurusanSelect.value = jurusanId;
-            }
-
-            if (jalurSelect) {
-                jalurSelect.value = jalur;
-            }
-
-            if (statusSelect) {
-                statusSelect.value = status;
-            }
-
-
-            results.style.opacity = '0.5';
-
-            results.style.pointerEvents = 'none';
-
-
-            fetch(url, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-                .then(function (response) {
-
-                    if (!response.ok) {
-                        throw new Error('Gagal mengambil data.');
-=======
-@push('scripts')
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-
         const form = document.getElementById('spmbFilterForm');
         const results = document.getElementById('spmb-search-results');
         const searchInput = document.getElementById('spmbSearch');
@@ -1033,331 +536,99 @@
 
         let searchTimeout;
 
-        function loadData(url = null) {
-
-            let targetUrl = url;
-
-            if (!targetUrl) {
-
-                const formData = new FormData(form);
-                const params = new URLSearchParams(formData);
-
-                targetUrl =
-                    "{{ route('admin.spmb.index') }}" +
-                    "?" +
-                    params.toString();
-
-            }
+        async function loadData(url, updateHistory = true) {
+            const targetUrl = url || (() => {
+                const params = new URLSearchParams(new FormData(form));
+                return `${form.action}?${params.toString()}`;
+            })();
 
             results.classList.add('loading');
 
-            fetch(targetUrl, {
-                    method: 'GET',
+            try {
+                const response = await fetch(targetUrl, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
                         'Accept': 'text/html'
                     }
-                })
-                .then(response => {
-
-                    if (!response.ok) {
-                        throw new Error('Gagal memuat data.');
->>>>>>> Stashed changes
-                    }
-
-                    return response.text();
-
-                })
-<<<<<<< Updated upstream
-                .then(function (html) {
-
-                    const parser = new DOMParser();
-
-                    const doc = parser.parseFromString(
-                        html,
-                        'text/html'
-                    );
-
-                    const newResults = doc.getElementById(
-                        'spmb-search-results'
-                    );
-
-
-                    if (newResults) {
-
-                        results.innerHTML = newResults.innerHTML;
-
-                        history.pushState(
-                            {},
-                            '',
-                            url
-=======
-                .then(html => {
-
-                    const parser = new DOMParser();
-
-                    const doc =
-                        parser.parseFromString(
-                            html,
-                            'text/html'
-                        );
-
-                    const newResults =
-                        doc.querySelector(
-                            '#spmb-search-results'
-                        );
-
-                    if (newResults) {
-
-                        results.innerHTML =
-                            newResults.innerHTML;
-
-                        history.pushState({},
-                            '',
-                            targetUrl
->>>>>>> Stashed changes
-                        );
-
-                    }
-
-                })
-<<<<<<< Updated upstream
-                .catch(function (error) {
-
-                    console.error(error);
-
-                })
-                .finally(function () {
-
-                    results.style.opacity = '1';
-
-                    results.style.pointerEvents = 'auto';
-=======
-                .catch(error => {
-
-                    console.error(
-                        'Gagal mengambil data:',
-                        error
-                    );
-
-                })
-                .finally(() => {
-
-                    results.classList.remove('loading');
->>>>>>> Stashed changes
-
                 });
 
-        }
-
-<<<<<<< Updated upstream
-
-        function applyFilter() {
-
-            const formData = new FormData(form);
-
-            const params = new URLSearchParams(formData);
-
-            const url = form.action + '?' + params.toString();
-
-            loadData(url);
-
-        }
-
-
-=======
->>>>>>> Stashed changes
-        if (searchInput) {
-
-            searchInput.addEventListener(
-                'input',
-<<<<<<< Updated upstream
-                function () {
-
-                    clearTimeout(searchTimer);
-
-                    searchTimer = setTimeout(
-                        function () {
-
-                            applyFilter();
-
-=======
-                function() {
-
-                    clearTimeout(searchTimeout);
-
-                    searchTimeout = setTimeout(
-                        function() {
-                            loadData();
->>>>>>> Stashed changes
-                        },
-                        400
-                    );
-
+                if (!response.ok) {
+                    throw new Error(`Permintaan gagal dengan status ${response.status}.`);
                 }
-            );
 
-        }
+                const html = await response.text();
+                const documentFromResponse = new DOMParser().parseFromString(html, 'text/html');
+                const updatedResults = documentFromResponse.querySelector('#spmb-search-results');
 
-<<<<<<< Updated upstream
-
-        if (jurusanSelect) {
-
-            jurusanSelect.addEventListener(
-                'change',
-                function () {
-
-                    applyFilter();
-
+                if (!updatedResults) {
+                    throw new Error('Bagian hasil calon siswa tidak ditemukan pada respons.');
                 }
-            );
 
-        }
+                results.innerHTML = updatedResults.innerHTML;
 
-
-        if (jalurSelect) {
-
-            jalurSelect.addEventListener(
-                'change',
-                function () {
-
-                    applyFilter();
-
-                }
-            );
-
-        }
-
-
-        if (statusSelect) {
-
-            statusSelect.addEventListener(
-                'change',
-                function () {
-
-                    applyFilter();
-
-                }
-            );
-
-        }
-
-=======
-        form.querySelectorAll('select').forEach(
-            function(input) {
-
-                input.addEventListener(
-                    'change',
-                    function() {
-                        loadData();
+                const params = new URL(targetUrl, window.location.origin).searchParams;
+                ['search', 'jurusan_id', 'jalur_pendaftaran', 'status_daftar_ulang'].forEach(function (name) {
+                    const input = form.elements.namedItem(name);
+                    if (input) {
+                        input.value = params.get(name) || '';
                     }
-                );
+                });
 
+                if (updateHistory) {
+                    window.history.pushState({}, '', targetUrl);
+                }
+            } catch (error) {
+                console.error('Gagal memuat daftar calon siswa:', error);
+                results.insertAdjacentHTML(
+                    'afterbegin',
+                    '<div class="alert alert-danger" role="alert">Data calon siswa gagal dimuat. Silakan coba lagi.</div>'
+                );
+            } finally {
+                results.classList.remove('loading');
             }
-        );
->>>>>>> Stashed changes
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                window.clearTimeout(searchTimeout);
+                searchTimeout = window.setTimeout(function () {
+                    loadData();
+                }, 400);
+            });
+        }
+
+        form.querySelectorAll('select').forEach(function (select) {
+            select.addEventListener('change', function () {
+                loadData();
+            });
+        });
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            loadData();
+        });
 
         if (resetButton) {
-
-            resetButton.addEventListener(
-                'click',
-<<<<<<< Updated upstream
-                function () {
-
-                    form.reset();
-
-                    const url = form.action;
-
-                    loadData(url);
-=======
-                function() {
-
-                    form.reset();
-
-                    if (searchInput) {
-                        searchInput.value = '';
-                    }
-
-                    loadData();
->>>>>>> Stashed changes
-
-                }
-            );
-
+            resetButton.addEventListener('click', function () {
+                form.reset();
+                loadData();
+            });
         }
 
-<<<<<<< Updated upstream
+        results.addEventListener('click', function (event) {
+            const link = event.target.closest('.pagination a');
 
-        document.addEventListener(
-            'click',
-            function (event) {
-
-                const link = event.target.closest(
-                    '#spmb-search-results .pagination a'
-                );
-
-=======
-        results.addEventListener(
-            'click',
-            function(event) {
-
-                const link =
-                    event.target.closest(
-                        '.pagination a'
-                    );
->>>>>>> Stashed changes
-
-                if (!link) {
-                    return;
-                }
-
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
-                event.preventDefault();
-
-                loadData(link.href);
-
+            if (!link || link.origin !== window.location.origin) {
+                return;
             }
-        );
 
-<<<<<<< Updated upstream
+            event.preventDefault();
+            loadData(link.href);
+        });
 
-        window.addEventListener(
-            'popstate',
-            function () {
-
-                loadData(window.location.href);
-=======
-        window.addEventListener(
-            'popstate',
-            function() {
-
-                loadData(
-                    window.location.href
-                );
-
-            }
-        );
-
-        form.addEventListener(
-            'submit',
-            function(event) {
-
-                event.preventDefault();
-
-                loadData();
->>>>>>> Stashed changes
-
-            }
-        );
-
+        window.addEventListener('popstate', function () {
+            loadData(window.location.href, false);
+        });
     });
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 </script>
-
 @endpush

@@ -191,14 +191,8 @@
                     <label for="jenis_nilai">Jenis Nilai <span class="text-danger">*</span></label>
                     <select name="jenis_nilai" id="jenis_nilai" class="form-select" required>
                         <option value="">-- Pilih Jenis Nilai --</option>
-<<<<<<< Updated upstream
-                        <option value="harian" @selected(old('jenis_nilai', request('jenis_nilai')) === 'harian')>Harian
-                        </option>
-                        <option value="ujian" @selected(old('jenis_nilai', request('jenis_nilai')) === 'ujian')>Ujian</option>
-=======
                         <option value="harian" @selected(old('jenis_nilai', $jenisNilai) === 'harian')>Harian</option>
                         <option value="ujian" @selected(old('jenis_nilai', $jenisNilai) === 'ujian')>Ujian</option>
->>>>>>> Stashed changes
                     </select>
                     @error('jenis_nilai')
                         <small class="text-danger mt-1 d-block">{{ $message }}</small>

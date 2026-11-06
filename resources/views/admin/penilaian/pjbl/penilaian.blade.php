@@ -247,11 +247,11 @@
             flex-direction: column;
         }
 
-<<<<<<< Updated upstream
         .academic-header .btn-action-primary {
             width: 100%;
             justify-content: center;
-=======
+        }
+
         .academic-header h1 {
             font-size: 20px;
             font-weight: 700;
@@ -374,7 +374,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
->>>>>>> Stashed changes
         }
 
         .academic-table {
@@ -501,20 +500,7 @@
 
                             </tr>
 
-<<<<<<< Updated upstream
                         @empty
-=======
-            <div class="filter-section">
-                <div class="filter-field">
-                        <label for="liveSearchSiswa">Cari Siswa</label>
-                        <div class="live-search">
-                            <i class="bi bi-search" aria-hidden="true"></i>
-                            <input type="text" id="liveSearchSiswa"
-                                placeholder="Cari nama, NIS, atau NISN..." autocomplete="off">
-                        </div>
-                </div>
-            </div>
->>>>>>> Stashed changes
 
                             <tr>
 
@@ -884,14 +870,6 @@
 
 
 @push('scripts')
-<<<<<<< Updated upstream
-=======
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const searchInput = document.getElementById('liveSearchSiswa');
-            const rows = document.querySelectorAll('.siswa-row');
->>>>>>> Stashed changes
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -945,12 +923,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 visibleCount++;
             }
 
-<<<<<<< Updated upstream
-=======
-            if (searchInput) {
-                searchInput.addEventListener('input', filterSiswa);
-            }
->>>>>>> Stashed changes
         });
 
 
