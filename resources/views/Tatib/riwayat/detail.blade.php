@@ -167,7 +167,7 @@
                             <tr>
                                 <td colspan="4">
                                     <div class="empty-state mb-0">
-                                        Belum ada riwayat pelanggaran siswa.
+                                        Belum ada riwayat pelanggaran siswa. smkn 4 malang 
                                     </div>
                                 </td>
                             </tr>
