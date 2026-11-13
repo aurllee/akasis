@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Http\Controllers\Guru;
+
+use App\Http\Controllers\Controller;
+use App\Models\Jadwal_pelajaran;
+
+class JadwalController extends Controller
+{
+    public function index()
+    {
+        $guru = auth()->user()->guru;
+
+        if (!$guru) {
+            abort(403, 'Akun Anda belum terhubung dengan data guru.');
+        }
+
+        $jadwal = Jadwal_pelajaran::with([
+            'kelas',
+            'mapel',
+            'ruangan',
+        ])
+        ->where('guru_id', $guru->id)
+        ->where('is_published', true)
+        ->orderBy('hari')
+        ->get();
+
+        return view('guru.jadwal.index', compact('jadwal'));
+    }
+}

@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.sidebar {
+    width: 250px;
+    background: #2449A4;
+    color: white;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    font-family: 'Poppins', sans-serif;
+    z-index: 1000;
+    box-shadow: 3px 0 16px rgba(15, 23, 42, .08);
+}
+
+.sidebar-header {
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, .22);
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    font-size: 23px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.sidebar-header p {
+    font-size: 12px;
+    color: #A0CAE0;
+    margin-top: 5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.menu {
+    padding: 15px 0;
+}
+
+.menu-title {
+    font-size: 13px;
+    color: #A0CAE0;
+    padding: 15px 20px 8px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    font-family: 'Poppins', sans-serif;
+}
+
+.menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: #fefefe;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.menu a i {
+    font-size: 14px;
+    width: 16px;
+    text-align: center;
+}
+
+.menu a:hover,
+.menu a.active {
+    background: rgba(255, 255, 255, .9);
+    color: #2449A4;
+}
+
+.logout-form {
+    padding: 15px 20px 20px;
+}
+
+.logout-form button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+    border: none;
+    background: #A0CAE0 ;
+    color: #2449A4;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.logout-form button:hover {
+    background: #ffffff;
+    color: #2449A4;
+}
+
+
+.jadwal {
+    padding: 15px 0;
+    border-top: 1px solid #334155;
+}
+
+.jadwal-title {
+    color: #94a3b8;
+    font-size: 11px;
+    padding: 0 20px 8px;
+    text-transform: uppercase;
+    font-family: 'Poppins', sans-serif;
+}
+
+.jadwal a {
+    display: block;
+    padding: 12px 20px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.jadwal a:hover {
+    background: #334155;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 210px;
+    }
+
+    .sidebar-header h2 {
+        font-size: 19px;
+    }
+
+    .menu a {
+        padding: 11px 16px;
+        font-size: 13px;
+    }
+
+    .menu-title {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}

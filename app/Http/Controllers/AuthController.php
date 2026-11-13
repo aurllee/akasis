@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+
+class AuthController extends Controller
+{
+    public function showLogin()
+    {
+        return response()
+            ->view('login')
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache');
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+
+            $request->session()->regenerate();
+
+            $dashboardRoutes = [
+                1 => 'admin.dashboard',
+                2 => 'guru.dashboard',
+                3 => 'wali-kelas.dashboard',
+                5 => 'siswa.dashboard',
+                7 => 'tatib.dashboard',
+                8 => 'kurikulum.dashboard',
+            ];
+            $dashboardRoute = $dashboardRoutes[auth()->user()->role_id] ?? null;
+
+            if ($dashboardRoute) {
+                return redirect()->route($dashboardRoute);
+            }
+
+            Auth::logout();
+
+            return back()->withErrors([
+                'username' => 'Role pengguna tidak dikenali.',
+            ]);
+        }
+
+        return back()->withErrors([
+            'username' => 'Username atau password salah.',
+        ])->onlyInput('username');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
+    }
+
+    public function showChangePassword()
+    {
+        return view('change-password');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = auth()->user();
+
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors([
+                'current_password' => 'Password lama salah.',
+            ]);
+        }
+
+
+        $user = auth()->user();
+
+        if (!$user instanceof User) {
+            abort(401);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return back()->with('success', 'Password berhasil diubah.');
+    }
+}

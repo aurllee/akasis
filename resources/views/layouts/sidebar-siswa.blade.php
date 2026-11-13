@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h2>Sistem Akademik</h2>
+        <p>Panel Siswa</p>
+    </div>
+
+    <nav class="menu">
+        <div class="menu-title">Menu Utama</div>
+        <a href="{{ route('siswa.dashboard') }}" class="{{ request()->routeIs('siswa.dashboard') ? 'active' : '' }}">
+            <i class="bi bi-house-door" aria-hidden="true"></i><span>Dashboard</span>
+        </a>
+
+        <div class="menu-title">Informasi</div>
+        <a href="{{ route('siswa.nilai.index') }}"
+            class="{{ request()->routeIs('siswa.nilai.*') ? 'active' : '' }}">
+            <i class="bi bi-bar-chart" aria-hidden="true"></i><span>Nilai</span>
+        </a>
+        <a href="{{ route('siswa.jadwal.index') }}"
+            class="{{ request()->routeIs('siswa.jadwal.*') ? 'active' : '' }}">
+            <i class="bi bi-calendar3" aria-hidden="true"></i><span>Jadwal</span>
+        </a>
+        <a href="{{ route('siswa.tatib.index') }}"
+            class="{{ request()->routeIs('siswa.tatib.*') ? 'active' : '' }}">
+            <i class="bi bi-clipboard-check" aria-hidden="true"></i><span>Rekap Pelanggaran</span>
+        </a>
+
+        <div class="menu-title">Perizinan</div>
+        <a href="{{ route('siswa.absensi.index') }}"
+            class="{{ request()->routeIs('siswa.absensi.*') ? 'active' : '' }}">
+            <i class="bi bi-calendar-check" aria-hidden="true"></i><span>Absensi</span>
+        </a>
+        <a href="{{ route('siswa.perizinan.index') }}"
+            class="{{ request()->routeIs('siswa.perizinan.*') ? 'active' : '' }}">
+            <i class="bi bi-heart-pulse" aria-hidden="true"></i><span>Izin</span>
+        </a>
+        <a href="{{ route('siswa.dispen.index') }}" class="{{ request()->routeIs('siswa.dispen.*') ? 'active' : '' }}">
+            <i class="bi bi-file-earmark-text" aria-hidden="true"></i><span>Dispensasi</span>
+        </a>
+
+        <div class="menu-title">Rapor</div>
+<a href="{{ route('siswa.rapor.index') }}">
+    <i class="bi bi-journal-text"></i>
+    <span>Rapor Saya</span>
+</a>
+
+
+        <form action="{{ route('logout') }}" method="POST" class="logout-form">
+            @csrf
+            <button type="submit"><i class="bi bi-box-arrow-right" aria-hidden="true"></i><span>Logout</span></button>
+        </form>
+    </nav>
+</aside>
