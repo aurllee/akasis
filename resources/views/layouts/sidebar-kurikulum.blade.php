@@ -6,7 +6,11 @@
 
     <nav class="menu">
         <div class="menu-title">Menu Utama</div>
+<<<<<<< HEAD
         <a href="{{ route('kurikulum.dashboard') }}" class="{{ request()->routeIs('kurikulum.dashboard', 'admin.dashboard', 'dashboard') ? 'active' : '' }}">
+=======
+        <a href="{{ route('kurikulum.dashboard') }}" class="{{ request()->routeIs('kurikulum.dashboard') ? 'active' : '' }}">
+>>>>>>> 2dc084253c21c89355dff0c0ec75be353e7becb4
             <i class="bi bi-speedometer2" aria-hidden="true"></i>
             <span>Dashboard</span>
         </a>
